@@ -1,83 +1,114 @@
 # Realize Together – CLAUDE.md
 
-Du bist der Entwicklungspartner für **Realize Together**, eine Plattform
-die Menschen mit komplementären Fähigkeiten zusammenbringt, um Projekte
-gemeinsam zu realisieren. Start-Nische: Film/Kreative.
+> **Lies diese Datei zuerst – vollständig – dann handle nach dem Router unten.**
 
 ---
 
-## Tech Stack
+## Was ist Realize Together?
 
-| Schicht    | Technologie                                                 |
-| ---------- | ----------------------------------------------------------- |
-| Frontend   | Next.js 14 (App Router) + TypeScript + Tailwind + shadcn/ui |
-| Datenbank  | Supabase (Postgres + Auth + Storage + Realtime)             |
-| Backend/KI | FastAPI (Python) – nur KI + Heavy Logic                     |
-| KI MVP     | OpenAI gpt-4o-mini                                          |
-| Deploy     | Vercel (Next.js) + Railway (FastAPI)                        |
-
-**Architektur-Prinzip:**
-
-- `Server Actions` → Supabase direkt (CRUD, kein API Layer)
-- `API Calls` → FastAPI (KI, Matching, Background Jobs)
+Kollaborationsplattform: Kreative mit komplementären Talenten finden sich,
+bauen Vertrauen auf (Trust Funnel), und arbeiten zusammen.
+Start-Nische: Film/Kreative.
 
 ---
 
-## Ordnerstruktur
+## 🚦 ROUTER – Lies NUR was du brauchst
+
+Bevor du Code schreibst: Klassifiziere die Aufgabe und lies nur die
+angegebenen Abschnitte / Dateien.
+
+| Aufgabe betrifft…                        | Lies zusätzlich                                                    |
+| ---------------------------------------- | ------------------------------------------------------------------ |
+| **Auth / Login / Register / Middleware** | Abschnitt: Auth                                                    |
+| **Profil, Avatar, Video, Verifikation**  | Abschnitt: Storage · `src/actions/profile.actions.ts`              |
+| **Projekt erstellen / bearbeiten**       | Abschnitt: Trust Funnel · `src/actions/project.actions.ts`         |
+| **NDA / Synopsis / synopses-Bucket**     | Abschnitt: Trust Funnel + Storage · `src/actions/nda.actions.ts`   |
+| **Bewerbung / Application Flow**         | Abschnitt: Application Flow · `src/actions/application.actions.ts` |
+| **Messaging / Chat / Realtime**          | Abschnitt: Messaging · `src/actions/conversation.actions.ts`       |
+| **Match / Double Opt-in**                | Abschnitt: Match · `src/actions/match.actions.ts`                  |
+| **Explore / Suche / Filter**             | `src/actions/project.actions.ts`                                   |
+| **UI-Komponente ohne DB-Logik**          | Nur: Abschnitt Coding Standards                                    |
+| **Typen / Schema ändern**                | `src/lib/types/index.ts` + `src/lib/types/database.types.ts`       |
+| **Neues Feature (unklar)**               | Komplette CLAUDE.md + relevante Actions                            |
+
+---
+
+## Tech Stack (immer relevant)
+
+```
+Frontend:  Next.js (App Router) · TypeScript · Tailwind · shadcn/ui
+DB:        Supabase (Postgres + Auth + Storage + Realtime)
+KI/Heavy:  FastAPI (Python) – nur KI + Matching, nicht CRUD
+```
+
+**Architektur-Regel:** Server Actions → Supabase direkt. Kein API-Layer für CRUD.
+
+---
+
+## Ordnerstruktur (Übersicht)
 
 ```
 src/
-  app/                        ← Next.js App Router
-    (auth)/                   ← Route Group: Login, Register
-    (main)/                   ← Route Group: Authenticated Pages
-      explore/                ← Projekte & Profile entdecken
-      projects/
-        [id]/                 ← Projektdetail + Trust Funnel
-        new/                  ← Projekt erstellen
-      profile/
-        [username]/           ← Öffentliches Profil
-      dashboard/              ← My Projects, Requests, Matches
-      messages/               ← Chat
-    layout.tsx
-    page.tsx                  ← Landing Page
+  actions/          ← Server Actions (eine Datei pro Domain)
+  app/
+    (auth)/         ← Login, Register
+    (main)/         ← Alle authentifizierten Pages
+      explore/
+      projects/[id]/
+      dashboard/
+      messages/
   components/
-    ui/                       ← shadcn/ui Komponenten
-    projects/                 ← Projekt-spezifische Komponenten
-    profile/                  ← Profil-Komponenten
-    trust-funnel/             ← NDA Modal, Synopsis Viewer
-    chat/                     ← Messaging Komponenten
+    ui/             ← shadcn/ui
+    projects/
+    profile/
+    trust-funnel/   ← NDAModal, SynopsisViewer
+    chat/           ← Messaging-Komponenten
   lib/
-    supabase/
-      client.ts               ← Browser Client
-      server.ts               ← Server Client (Server Actions)
-      middleware.ts           ← Auth Middleware
-    types/
-      database.types.ts       ← Auto-generiert von Supabase CLI
-      index.ts                ← App-eigene Types
+    supabase/       ← client.ts · server.ts · middleware.ts
+    types/          ← database.types.ts · index.ts
     utils.ts
-  actions/                    ← Server Actions (Supabase CRUD)
-    profile.actions.ts
-    project.actions.ts
-    application.actions.ts
-    nda.actions.ts
-    match.actions.ts
+  middleware.ts
 ```
 
 ---
 
-## Datenbankschema (Übersicht)
+## Auth
+
+- Supabase Auth (Email + Magic Link)
+- `src/lib/supabase/middleware.ts` → Session-Refresh
+- `src/middleware.ts` → Route Protection: alles unter `(main)/` braucht Auth
+- Callback: `src/app/auth/callback/route.ts`
+- Nach Login redirect → `/dashboard`
+
+---
+
+## Datenbankschema (Kurzform)
 
 ```
-profiles           → Profil, Video, Portfolio-Links, Verifikation
-user_skills        → Rolle + Erfahrungslevel (Matching-Basis)
-projects           → Kern + Trust Funnel (logline, synopsis_url, requires_nda)
-project_roles      → Gesuchte Rollen (eigene Tabelle, nicht text[])
-nda_consents       → Consent-Log UNIQUE(project_id, user_id)
-project_applications → Flow: pending → in_talks → matched | rejected
-                       role_id NULLABLE (frühe Stages)
-conversations      → Entsteht bei in_talks
-messages           → Chat + read_at
-matches            → Double Opt-in: creator_confirmed + applicant_confirmed
+profiles           id, full_name, bio, avatar_url, video_url,
+                   portfolio_url, imdb_url, vimeo_url, linkedin_url,
+                   is_verified, verification_type
+
+projects           id, creator_id, title, description, logline, category,
+                   stage, status, commitment_type, collab_type,
+                   synopsis_url, requires_nda
+
+project_roles      id, project_id, role_name, quantity, description
+
+nda_consents       id, project_id, user_id, consented_at
+                   UNIQUE(project_id, user_id)
+
+project_applications  id, project_id, role_id (NULLABLE!), applicant_id,
+                      status, message
+                      UNIQUE NULLS NOT DISTINCT (project_id, role_id, applicant_id)
+
+conversations      id, application_id, project_id
+
+messages           id, conversation_id, sender_id, content, read_at, created_at
+
+matches            id, project_id, user_id, role_id,
+                   creator_confirmed, applicant_confirmed, matched_at
+                   UNIQUE(project_id, user_id)
 ```
 
 **ENUMs:**
@@ -89,40 +120,19 @@ matches            → Double Opt-in: creator_confirmed + applicant_confirmed
 
 ---
 
-## Trust Funnel (IMMER beachten)
+## Trust Funnel
 
 ```
 Level 1 – Public:     title, logline, stage, commitment_type, project_roles
-Level 2 – NDA:        synopsis_url (Supabase Storage "synopses", private)
-                      → Zugriff nur wenn nda_consents Eintrag existiert
-Level 3 – High Trust: Volles Drehbuch NICHT in DB → nur im Chat teilen
+Level 2 – NDA:        synopsis_url → nur nach nda_consents Eintrag
+                      Bucket "synopses" ist PRIVATE
+Level 3 – High Trust: Drehbuch NICHT in DB – nur direkt im Chat
 ```
 
 **NDA Flow:** Modal → Checkbox → nda_consents INSERT → synopsis freischalten
-**WICHTIG:** Kein sofortiges Bewerbungsformular nach NDA. Nutzer liest erst.
+**Wichtig:** Kein Bewerbungsformular direkt nach NDA. User liest erst Synopsis.
 
----
-
-## Double Opt-in Match
-
-```
-matches.creator_confirmed + matches.applicant_confirmed = beide true
-→ matched_at gesetzt → project.status = in_progress
-```
-
-Kein asymmetrischer Match möglich.
-
----
-
-## Supabase Storage Buckets
-
-| Bucket     | Typ         | Zweck                    |
-| ---------- | ----------- | ------------------------ |
-| `avatars`  | public      | Profilbilder             |
-| `videos`   | public      | Vorstellungsvideos       |
-| `synopses` | **private** | NDA-geschütztes Material |
-
-Storage Policy für `synopses`:
+Storage Policy synopses (nicht ändern):
 
 ```sql
 EXISTS(SELECT 1 FROM nda_consents
@@ -132,51 +142,81 @@ EXISTS(SELECT 1 FROM nda_consents
 
 ---
 
-## KI im MVP (nur 2 Features)
+## Storage Buckets
+
+| Bucket   | Typ         | Pfad-Muster           |
+| -------- | ----------- | --------------------- |
+| avatars  | public      | `{user_id}/avatar.*`  |
+| videos   | public      | `{user_id}/video.*`   |
+| synopses | **private** | `{project_id}/{file}` |
+
+---
+
+## Application Flow
 
 ```
-POST /ai/suggest-skills    → Bio → { role, skills[] }  (JSON-Mode)
-POST /ai/improve-project   → Stichworte → Beschreibung
+pending → [Creator: Accept] → in_talks → Conversation erstellt
+       → [Creator: Reject] → rejected
+
+in_talks → [beide: confirmMatch()] → matched → project.status = in_progress
 ```
 
-Modell: `gpt-4o-mini` | API Key immer aus `.env`
+- `role_id` in `project_applications` ist **NULLABLE** (frühe Stages)
+- Ablehnung immer mit Status-Update – kein Ghosting
+
+---
+
+## Messaging
+
+- Conversation entsteht **nur** durch `acceptApplication()`
+- Realtime via Supabase `channel.on('postgres_changes', ...)`
+- `read_at` setzen wenn Conversation geöffnet wird
+- Signed URLs für synopses: 1 Stunde gültig
+
+---
+
+## Match (Double Opt-in)
+
+```
+matches.creator_confirmed = true   (Creator klickt "Confirm")
+matches.applicant_confirmed = true (Applicant klickt "Confirm")
+→ beide true: matched_at setzen, application → matched, project → in_progress
+```
+
+Kein asymmetrischer Match möglich.
+
+---
+
+## KI (FastAPI – nur wenn explizit gefragt)
+
+```
+POST /ai/suggest-skills    → Bio → { role, skills[] }
+POST /ai/improve-project   → Stichworte → strukturierter Text
+Modell: gpt-4o-mini | Key aus .env
+```
 
 ---
 
 ## Coding Standards
 
-**TypeScript / Next.js:**
+**Immer:**
 
-- Server Actions für alle Supabase-CRUD-Operationen
-- `"use server"` immer explizit
-- Typen aus `lib/types/database.types.ts` verwenden
-- Fehler: niemals silent catch, immer Error-State zurückgeben
-- Komponenten: Server Component by default, `"use client"` nur wenn nötig
+- `"use server"` explizit in jeder Action-Datei
+- Server Component by default – `"use client"` nur wenn nötig
+- Fehler: nie silent catch → immer `ActionResult<T>` zurückgeben
+- Typen aus `src/lib/types/index.ts` verwenden
+- RLS bedenken: Wer darf lesen/schreiben?
 
-**Python / FastAPI:**
+**Antwort-Reihenfolge:**
 
-- Type Hints immer (Python 3.10+)
-- Pydantic Models für Request/Response
-- `async def` in FastAPI konsequent
-- `HTTPException` statt silent catch
-- API Key aus `.env` via `os.getenv()`
+1. Welche Datei(en) werden geändert?
+2. Warum (1 Satz)
+3. Code
 
----
+**Nicht hinterfragen:**
 
-## Antwort-Verhalten
-
-1. Architektur-Entscheidung VOR Code
-2. Datei-Pfad immer angeben (z.B. `src/actions/nda.actions.ts`)
-3. Trust Funnel: NDA-Check prüfen wenn `synopsis_url` betroffen
-4. RLS beachten: Wer darf diese Daten lesen/schreiben?
-5. Neue Konzepte: 2 Sätze Erklärung vor dem Code
-
----
-
-## Wichtige Entscheidungen (nicht hinterfragen)
-
-- `role_id` in `project_applications` ist **NULLABLE** (frühe Stages)
-- `synopsis_url` durch Storage RLS geschützt, nicht durch App-Logik
-- Volles Drehbuch wird **nicht** in der DB gespeichert
-- `commitment_type` ist **Pflichtfeld** bei Projekterstellung
-- Verifikation im MVP: nur Portfolio-Links (kein Ausweis, DSGVO)
+- `role_id` NULLABLE in `project_applications`
+- `synopsis_url` durch Storage RLS geschützt (nicht App-Logik)
+- Drehbuch nicht in DB
+- `commitment_type` Pflichtfeld
+- Verifikation MVP: nur Portfolio-Links (kein Ausweis, DSGVO)
