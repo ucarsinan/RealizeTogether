@@ -41,21 +41,22 @@ export function ExploreFilters({ currentStage, currentCommitment }: ExploreFilte
     router.push(`/explore?${params.toString()}`)
   }, [router, searchParams])
 
+  const pillBase = "font-['DM_Sans'] text-[12px] font-medium px-4 py-1.5 rounded-full border transition-colors duration-150"
+  const pillActive = "bg-[#e8621a] border-[#e8621a] text-white"
+  const pillInactive = "bg-white border-[#e0ddd8] text-[#6b6762] hover:border-[#1a1918] hover:text-[#1a1918]"
+
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
       <div>
-        <p className="text-xs font-medium text-zinc-500 mb-2">Stage</p>
-        <div className="flex flex-wrap gap-2">
+        <p className="font-['DM_Sans'] text-[11px] font-medium text-[#6b6762] uppercase tracking-widest mb-2.5">
+          Stage
+        </p>
+        <div className="flex flex-wrap gap-2 overflow-x-auto">
           {STAGES.map(s => (
             <button
               key={s.value}
               onClick={() => updateFilter("stage", s.value)}
-              className={cn(
-                "px-3 py-1.5 rounded-full text-xs font-medium border transition-all",
-                (s.value === "all" ? !currentStage : currentStage === s.value)
-                  ? "bg-zinc-900 text-white border-zinc-900"
-                  : "bg-white text-zinc-600 border-zinc-200 hover:border-zinc-400"
-              )}
+              className={cn(pillBase, (s.value === "all" ? !currentStage : currentStage === s.value) ? pillActive : pillInactive)}
             >
               {s.label}
             </button>
@@ -64,18 +65,15 @@ export function ExploreFilters({ currentStage, currentCommitment }: ExploreFilte
       </div>
 
       <div>
-        <p className="text-xs font-medium text-zinc-500 mb-2">Commitment</p>
-        <div className="flex flex-wrap gap-2">
+        <p className="font-['DM_Sans'] text-[11px] font-medium text-[#6b6762] uppercase tracking-widest mb-2.5">
+          Commitment
+        </p>
+        <div className="flex flex-wrap gap-2 overflow-x-auto">
           {COMMITMENTS.map(c => (
             <button
               key={c.value}
               onClick={() => updateFilter("commitment", c.value)}
-              className={cn(
-                "px-3 py-1.5 rounded-full text-xs font-medium border transition-all",
-                (c.value === "all" ? !currentCommitment : currentCommitment === c.value)
-                  ? "bg-zinc-900 text-white border-zinc-900"
-                  : "bg-white text-zinc-600 border-zinc-200 hover:border-zinc-400"
-              )}
+              className={cn(pillBase, (c.value === "all" ? !currentCommitment : currentCommitment === c.value) ? pillActive : pillInactive)}
             >
               {c.label}
             </button>

@@ -5,11 +5,6 @@ import { useRouter } from "next/navigation"
 import { createProject, uploadSynopsis, type ProjectRoleInput } from "@/actions/project.actions"
 import type { ProjectStage, CommitmentType, CollabType } from "@/lib/types"
 import { cn, COMMITMENT_LABELS, STAGE_LABELS, COLLAB_LABELS } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Separator } from "@/components/ui/separator"
 import { Lightbulb, Users, Lock, Plus, Trash2, Loader2, AlertCircle, CheckCircle, Upload, Info } from "lucide-react"
 
 const STAGES: { value: ProjectStage; hint: string }[] = [
@@ -34,15 +29,19 @@ const COLLABS: { value: CollabType }[] = [
   { value: "both" },
 ]
 
+const inputClass = "w-full bg-white border-[1.5px] border-[#e0ddd8] focus:border-[#e8621a] rounded-full px-5 py-2.5 text-[13px] text-[#1a1918] placeholder:text-[#bab7b2] outline-none transition-colors font-['DM_Sans']"
+const textareaClass = "w-full bg-white border-[1.5px] border-[#e0ddd8] focus:border-[#e8621a] rounded-xl px-5 py-3 text-[13px] text-[#1a1918] placeholder:text-[#bab7b2] outline-none transition-colors font-['DM_Sans'] resize-none"
+const labelClass = "block font-['DM_Sans'] text-[12px] font-medium text-[#6b6762] mb-1.5"
+
 function SectionHeader({ icon: Icon, title, description }: { icon: React.ElementType; title: string; description: string }) {
   return (
     <div className="flex gap-3 mb-5">
-      <div className="w-9 h-9 rounded-lg bg-zinc-100 flex items-center justify-center shrink-0">
-        <Icon className="w-4 h-4 text-zinc-600" />
+      <div className="w-9 h-9 rounded-xl bg-[#fdf2ec] flex items-center justify-center shrink-0">
+        <Icon className="w-4 h-4 text-[#e8621a]" />
       </div>
       <div>
-        <h3 className="font-medium text-sm text-zinc-900">{title}</h3>
-        <p className="text-xs text-zinc-500 mt-0.5">{description}</p>
+        <h3 className="font-['Unbounded'] font-bold text-[13px] tracking-[-0.01em] text-[#1a1918]">{title}</h3>
+        <p className="font-['DM_Sans'] text-[12px] text-[#6b6762] mt-0.5">{description}</p>
       </div>
     </div>
   )
@@ -50,7 +49,7 @@ function SectionHeader({ icon: Icon, title, description }: { icon: React.Element
 
 function StatusMessage({ type, message }: { type: "success" | "error"; message: string }) {
   return (
-    <div className={cn("flex items-center gap-2 text-sm px-3 py-2 rounded-lg", type === "success" ? "bg-green-50 text-green-700" : "bg-red-50 text-red-600")}>
+    <div className={cn("flex items-center gap-2 font-['DM_Sans'] text-[12px] px-4 py-2.5 rounded-xl", type === "success" ? "bg-green-50 text-green-700" : "bg-red-50 text-red-600")}>
       {type === "success" ? <CheckCircle className="w-4 h-4 shrink-0" /> : <AlertCircle className="w-4 h-4 shrink-0" />}
       {message}
     </div>
@@ -70,43 +69,67 @@ function RolesSection({ stage, roles, onChange }: { stage: ProjectStage; roles: 
 
   return (
     <div className="space-y-4">
-      <div className={cn("flex items-start gap-2 text-xs p-3 rounded-lg", isEarlyStage ? "bg-amber-50 text-amber-700" : "bg-blue-50 text-blue-700")}>
+      <div className={cn("flex items-start gap-2 font-['DM_Sans'] text-[12px] p-3 rounded-xl", isEarlyStage ? "bg-amber-50 text-amber-700" : "bg-[#fdf2ec] text-[#e8621a]")}>
         <Info className="w-3.5 h-3.5 mt-0.5 shrink-0" />
         {isEarlyStage ? "Early stage: Add roles broadly. Who could help bring this to life?" : "Ready stage: Be specific. What exact role are you looking for?"}
       </div>
 
-      {roles.length === 0 && <p className="text-sm text-zinc-400 text-center py-4">No roles added yet.</p>}
+      {roles.length === 0 && (
+        <p className="font-['DM_Sans'] text-[13px] text-[#6b6762] text-center py-4">No roles added yet.</p>
+      )}
 
       {roles.map((role, i) => (
-        <div key={i} className="bg-zinc-50 rounded-xl p-4 space-y-3">
+        <div key={i} className="bg-[#f2f0ed] rounded-xl p-4 space-y-3 border border-[#e0ddd8]">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-zinc-500">Role #{i + 1}</span>
-            <button type="button" onClick={() => removeRole(i)} className="text-zinc-400 hover:text-red-500 transition-colors">
+            <span className="font-['DM_Sans'] text-[11px] font-medium text-[#6b6762]">Role #{i + 1}</span>
+            <button type="button" onClick={() => removeRole(i)} className="text-[#6b6762] hover:text-red-500 transition-colors">
               <Trash2 className="w-3.5 h-3.5" />
             </button>
           </div>
           <div className="grid grid-cols-3 gap-3">
-            <div className="col-span-2 space-y-1">
-              <Label className="text-xs">Role Name</Label>
-              <Input value={role.role_name} onChange={e => updateRole(i, "role_name", e.target.value)} placeholder="e.g. Director of Photography" className="h-9 text-sm" />
+            <div className="col-span-2">
+              <label className={labelClass}>Role Name</label>
+              <input
+                value={role.role_name}
+                onChange={e => updateRole(i, "role_name", e.target.value)}
+                placeholder="e.g. Director of Photography"
+                className={inputClass}
+              />
             </div>
-            <div className="space-y-1">
-              <Label className="text-xs">Spots</Label>
-              <Input type="number" min={1} max={10} value={role.quantity} onChange={e => updateRole(i, "quantity", parseInt(e.target.value) || 1)} className="h-9 text-sm" />
+            <div>
+              <label className={labelClass}>Spots</label>
+              <input
+                type="number"
+                min={1}
+                max={10}
+                value={role.quantity}
+                onChange={e => updateRole(i, "quantity", parseInt(e.target.value) || 1)}
+                className={inputClass}
+              />
             </div>
           </div>
           {!isEarlyStage && (
-            <div className="space-y-1">
-              <Label className="text-xs">What are you looking for? (optional)</Label>
-              <Textarea value={role.description} onChange={e => updateRole(i, "description", e.target.value)} placeholder="Specific experience, style, availability..." rows={2} className="text-sm resize-none" />
+            <div>
+              <label className={labelClass}>What are you looking for? (optional)</label>
+              <textarea
+                value={role.description}
+                onChange={e => updateRole(i, "description", e.target.value)}
+                placeholder="Specific experience, style, availability..."
+                rows={2}
+                className={textareaClass}
+              />
             </div>
           )}
         </div>
       ))}
 
-      <Button type="button" variant="outline" size="sm" onClick={addRole} className="w-full border-dashed">
-        <Plus className="w-3.5 h-3.5 mr-2" /> Add Role
-      </Button>
+      <button
+        type="button"
+        onClick={addRole}
+        className="w-full border border-dashed border-[#e0ddd8] hover:border-[#e8621a] text-[#6b6762] hover:text-[#e8621a] font-['DM_Sans'] text-[12px] font-medium py-2.5 rounded-full transition-colors flex items-center justify-center gap-1.5"
+      >
+        <Plus className="w-3.5 h-3.5" /> Add Role
+      </button>
     </div>
   )
 }
@@ -131,10 +154,18 @@ function SynopsisUpload({ projectId }: { projectId: string }) {
 
   return (
     <div className="space-y-3">
-      <label htmlFor="synopsis-upload" className="flex flex-col items-center gap-2 p-6 border-2 border-dashed border-zinc-200 rounded-xl cursor-pointer hover:border-zinc-400 transition-colors">
-        {isPending ? <Loader2 className="w-6 h-6 text-zinc-400 animate-spin" /> : <Upload className="w-6 h-6 text-zinc-300" />}
-        <span className="text-sm text-zinc-500">{isPending ? "Uploading..." : "Upload Synopsis or Pitch Deck (PDF)"}</span>
-        <span className="text-xs text-zinc-400">Max 20MB · Automatically NDA-protected</span>
+      <label
+        htmlFor="synopsis-upload"
+        className="flex flex-col items-center gap-2 p-6 border-2 border-dashed border-[#e0ddd8] hover:border-[#e8621a] hover:bg-[#fdf2ec] rounded-xl cursor-pointer transition-colors"
+      >
+        {isPending
+          ? <Loader2 className="w-6 h-6 text-[#e8621a] animate-spin" />
+          : <Upload className="w-6 h-6 text-[#e0ddd8]" />
+        }
+        <span className="font-['DM_Sans'] text-[13px] text-[#6b6762]">
+          {isPending ? "Uploading..." : "Upload Synopsis or Pitch Deck (PDF)"}
+        </span>
+        <span className="font-['DM_Sans'] text-[11px] text-[#6b6762]">Max 20MB · Automatically NDA-protected</span>
       </label>
       <input id="synopsis-upload" type="file" accept="application/pdf" className="hidden" onChange={handleFileChange} disabled={isPending} />
       {status && <StatusMessage type={status.type} message={status.message} />}
@@ -182,98 +213,146 @@ export function ProjectForm() {
 
   if (createdProjectId) {
     return (
-      <div className="max-w-xl mx-auto space-y-6 pb-12">
+      <div className="space-y-6 pb-12">
         <div className="bg-green-50 border border-green-200 rounded-2xl p-6 text-center space-y-2">
           <CheckCircle className="w-10 h-10 text-green-500 mx-auto" />
-          <h2 className="font-semibold text-green-800">Project created!</h2>
-          <p className="text-sm text-green-700">Optionally upload your synopsis — it will be NDA-protected.</p>
+          <h2 className="font-['Unbounded'] font-bold text-[16px] tracking-[-0.02em] text-green-800">Project created!</h2>
+          <p className="font-['DM_Sans'] text-[13px] text-green-700">
+            Optionally upload your synopsis — it will be NDA-protected.
+          </p>
         </div>
 
-        <div className="bg-white rounded-2xl border border-zinc-200 p-6 space-y-4">
+        <div className="bg-white border border-[#e0ddd8] rounded-2xl p-6 space-y-4">
           <SectionHeader icon={Lock} title="Upload Synopsis (Optional)" description="Level 2 of the Trust Funnel — only accessible after NDA consent" />
           <SynopsisUpload projectId={createdProjectId} />
         </div>
 
         <div className="flex gap-3">
-          <Button variant="outline" className="flex-1" onClick={() => router.push(`/projects/${createdProjectId}`)}>View Project</Button>
-          <Button className="flex-1" onClick={() => router.push("/dashboard")}>Go to Dashboard</Button>
+          <button
+            onClick={() => router.push(`/projects/${createdProjectId}`)}
+            className="flex-1 border border-[#e0ddd8] hover:border-[#1a1918] text-[#6b6762] hover:text-[#1a1918] font-['DM_Sans'] text-[13px] px-5 py-2.5 rounded-full transition-colors"
+          >
+            View Project
+          </button>
+          <button
+            onClick={() => router.push("/dashboard")}
+            className="flex-1 bg-[#e8621a] hover:bg-[#c9521a] text-white font-bold font-['DM_Sans'] text-[13px] px-5 py-2.5 rounded-full transition-colors"
+          >
+            Go to Dashboard
+          </button>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="max-w-xl mx-auto space-y-6 pb-20">
-      <div>
-        <h1 className="text-xl font-semibold text-zinc-900">Create Project</h1>
-        <p className="text-sm text-zinc-500 mt-0.5">Be honest about stage and commitment — it builds trust</p>
-      </div>
+    <div className="space-y-6 pb-20">
 
       {/* Basics */}
-      <div className="bg-white rounded-2xl border border-zinc-200 p-6 space-y-5">
+      <div className="bg-white border border-[#e0ddd8] rounded-2xl p-6 space-y-5 shadow-[0_4px_32px_rgba(0,0,0,0.07)]">
         <SectionHeader icon={Lightbulb} title="The Project" description="What are you making?" />
-        <div className="space-y-1.5">
-          <Label htmlFor="title">Title <span className="text-red-500">*</span></Label>
-          <Input id="title" value={formData.title} onChange={e => handleChange("title", e.target.value)} placeholder="e.g. Psychological Thriller — Feature Film" />
+        <div>
+          <label htmlFor="title" className={labelClass}>Title <span className="text-red-500">*</span></label>
+          <input
+            id="title"
+            value={formData.title}
+            onChange={e => handleChange("title", e.target.value)}
+            placeholder="e.g. Psychological Thriller — Feature Film"
+            className={inputClass}
+          />
         </div>
-        <div className="space-y-1.5">
-          <Label htmlFor="logline">Logline</Label>
-          <Input id="logline" value={formData.logline} onChange={e => handleChange("logline", e.target.value)} placeholder="1–2 sentences. Like Se7en meets Inception." />
-          <p className="text-xs text-zinc-400">This is always public — make it intriguing</p>
+        <div>
+          <label htmlFor="logline" className={labelClass}>Logline</label>
+          <input
+            id="logline"
+            value={formData.logline}
+            onChange={e => handleChange("logline", e.target.value)}
+            placeholder="1–2 sentences. Like Se7en meets Inception."
+            className={inputClass}
+          />
+          <p className="font-['DM_Sans'] text-[11px] text-[#6b6762] mt-1">This is always public — make it intriguing</p>
         </div>
-        <div className="space-y-1.5">
-          <Label htmlFor="description">Description <span className="text-red-500">*</span></Label>
-          <Textarea id="description" value={formData.description} onChange={e => handleChange("description", e.target.value)} placeholder="What's the story? What makes it special?" rows={5} className="resize-none" />
-          <p className="text-xs text-zinc-400">{formData.description.length} characters (min. 20)</p>
+        <div>
+          <label htmlFor="description" className={labelClass}>Description <span className="text-red-500">*</span></label>
+          <textarea
+            id="description"
+            value={formData.description}
+            onChange={e => handleChange("description", e.target.value)}
+            placeholder="What's the story? What makes it special?"
+            rows={5}
+            className={textareaClass}
+          />
+          <p className="font-['DM_Sans'] text-[11px] text-[#6b6762] mt-1">{formData.description.length} characters (min. 20)</p>
         </div>
       </div>
 
       {/* Stage & Commitment */}
-      <div className="bg-white rounded-2xl border border-zinc-200 p-6 space-y-6">
+      <div className="bg-white border border-[#e0ddd8] rounded-2xl p-6 space-y-6 shadow-[0_4px_32px_rgba(0,0,0,0.07)]">
         <SectionHeader icon={Users} title="Expectations" description="These two fields prevent the most frustration" />
 
         <div className="space-y-2">
-          <Label className="text-sm font-medium">Project Stage</Label>
+          <label className={labelClass}>Project Stage</label>
           <div className="grid grid-cols-2 gap-2">
             {STAGES.map(s => (
-              <button key={s.value} type="button" onClick={() => handleChange("stage", s.value)}
-                className={cn("text-left px-3 py-2.5 rounded-xl border text-sm transition-all",
-                  formData.stage === s.value ? "border-zinc-900 bg-zinc-900 text-white" : "border-zinc-200 hover:border-zinc-400 text-zinc-700"
-                )}>
+              <button
+                key={s.value}
+                type="button"
+                onClick={() => handleChange("stage", s.value)}
+                className={cn(
+                  "text-left px-4 py-3 rounded-xl border font-['DM_Sans'] text-[13px] transition-colors",
+                  formData.stage === s.value
+                    ? "border-[#e8621a] bg-[#fdf2ec] text-[#e8621a]"
+                    : "border-[#e0ddd8] hover:border-[#1a1918] text-[#1a1918]"
+                )}
+              >
                 <div className="font-medium">{STAGE_LABELS[s.value]}</div>
-                <div className="text-xs mt-0.5 text-zinc-400">{s.hint}</div>
+                <div className="text-[11px] mt-0.5 text-[#6b6762]">{s.hint}</div>
               </button>
             ))}
           </div>
         </div>
 
-        <Separator />
+        <div className="border-t border-[#e0ddd8]" />
 
         <div className="space-y-2">
-          <Label className="text-sm font-medium">Commitment Level <span className="text-red-500">*</span></Label>
+          <label className={labelClass}>Commitment Level <span className="text-red-500">*</span></label>
           <div className="grid grid-cols-2 gap-2">
             {COMMITMENTS.map(c => (
-              <button key={c.value} type="button" onClick={() => handleChange("commitment_type", c.value)}
-                className={cn("text-left px-3 py-2.5 rounded-xl border text-sm transition-all",
-                  formData.commitment_type === c.value ? "border-zinc-900 bg-zinc-900 text-white" : "border-zinc-200 hover:border-zinc-400 text-zinc-700"
-                )}>
+              <button
+                key={c.value}
+                type="button"
+                onClick={() => handleChange("commitment_type", c.value)}
+                className={cn(
+                  "text-left px-4 py-3 rounded-xl border font-['DM_Sans'] text-[13px] transition-colors",
+                  formData.commitment_type === c.value
+                    ? "border-[#e8621a] bg-[#fdf2ec] text-[#e8621a]"
+                    : "border-[#e0ddd8] hover:border-[#1a1918] text-[#1a1918]"
+                )}
+              >
                 <div className="font-medium">{COMMITMENT_LABELS[c.value]}</div>
-                <div className="text-xs mt-0.5 text-zinc-400">{c.hint}</div>
+                <div className="text-[11px] mt-0.5 text-[#6b6762]">{c.hint}</div>
               </button>
             ))}
           </div>
         </div>
 
-        <Separator />
+        <div className="border-t border-[#e0ddd8]" />
 
         <div className="space-y-2">
-          <Label className="text-sm font-medium">Collaboration Type <span className="text-red-500">*</span></Label>
+          <label className={labelClass}>Collaboration Type <span className="text-red-500">*</span></label>
           <div className="flex gap-2 flex-wrap">
             {COLLABS.map(c => (
-              <button key={c.value} type="button" onClick={() => handleChange("collab_type", c.value)}
-                className={cn("px-4 py-2 rounded-full border text-sm transition-all",
-                  formData.collab_type === c.value ? "border-zinc-900 bg-zinc-900 text-white" : "border-zinc-200 hover:border-zinc-400 text-zinc-700"
-                )}>
+              <button
+                key={c.value}
+                type="button"
+                onClick={() => handleChange("collab_type", c.value)}
+                className={cn(
+                  "px-5 py-2 rounded-full border font-['DM_Sans'] text-[13px] transition-colors",
+                  formData.collab_type === c.value
+                    ? "border-[#e8621a] bg-[#fdf2ec] text-[#e8621a] font-medium"
+                    : "border-[#e0ddd8] hover:border-[#1a1918] text-[#6b6762]"
+                )}
+              >
                 {COLLAB_LABELS[c.value]}
               </button>
             ))}
@@ -282,30 +361,39 @@ export function ProjectForm() {
       </div>
 
       {/* Roles */}
-      <div className="bg-white rounded-2xl border border-zinc-200 p-6">
+      <div className="bg-white border border-[#e0ddd8] rounded-2xl p-6 shadow-[0_4px_32px_rgba(0,0,0,0.07)]">
         <SectionHeader icon={Users} title="Roles Needed" description="Who are you looking for?" />
         <RolesSection stage={formData.stage} roles={roles} onChange={setRoles} />
       </div>
 
       {/* Trust Funnel hint */}
-      <div className="bg-zinc-50 rounded-2xl border border-zinc-200 p-5">
-        <div className="flex items-start gap-3">
-          <Lock className="w-4 h-4 text-zinc-500 mt-0.5 shrink-0" />
-          <div>
-            <p className="text-sm font-medium text-zinc-800">Trust Funnel</p>
-            <p className="text-xs text-zinc-500 mt-1">Your logline and description are public. After creating, you can upload a synopsis — NDA-protected (Level 2). Full script stays private in chat (Level 3).</p>
-          </div>
+      <div className="flex items-start gap-3 bg-white border border-[#e0ddd8] rounded-2xl p-5">
+        <Lock className="w-4 h-4 text-[#e8621a] mt-0.5 shrink-0" />
+        <div>
+          <p className="font-['DM_Sans'] text-[13px] font-medium text-[#1a1918]">Trust Funnel</p>
+          <p className="font-['DM_Sans'] text-[12px] text-[#6b6762] mt-1 leading-relaxed">
+            Your logline and description are public. After creating, you can upload a synopsis — NDA-protected (Level 2). Full script stays private in chat (Level 3).
+          </p>
         </div>
       </div>
 
       {error && <StatusMessage type="error" message={error} />}
 
-      <div className="sticky bottom-0 bg-white/80 backdrop-blur-sm border-t border-zinc-100 -mx-4 px-4 py-3">
-        <Button onClick={handleSubmit} disabled={isPending || !isValid} className="w-full" size="lg">
-          {isPending && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+      {/* Sticky submit */}
+      <div className="sticky bottom-0 bg-white/90 backdrop-blur-sm border-t border-[#e0ddd8] -mx-10 max-md:-mx-5 px-10 max-md:px-5 py-4">
+        <button
+          onClick={handleSubmit}
+          disabled={isPending || !isValid}
+          className="w-full bg-[#e8621a] hover:bg-[#c9521a] text-white font-bold font-['DM_Sans'] text-[13px] px-6 py-3 rounded-full transition-colors duration-150 disabled:opacity-50 flex items-center justify-center gap-2"
+        >
+          {isPending && <Loader2 className="w-4 h-4 animate-spin" />}
           {isPending ? "Creating..." : "Create Project"}
-        </Button>
-        {!isValid && <p className="text-xs text-center text-zinc-400 mt-2">Title (min. 3 chars) and description (min. 20 chars) required</p>}
+        </button>
+        {!isValid && (
+          <p className="font-['DM_Sans'] text-[11px] text-center text-[#6b6762] mt-2">
+            Title (min. 3 chars) and description (min. 20 chars) required
+          </p>
+        )}
       </div>
     </div>
   )

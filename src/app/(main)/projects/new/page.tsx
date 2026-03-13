@@ -20,23 +20,40 @@ export default async function NewProjectPage() {
   const isProfileComplete = profile?.full_name && profile?.bio
 
   return (
-    <div className="min-h-screen bg-zinc-50">
-      <div className="max-w-xl mx-auto px-4 py-8">
+    <div className="min-h-screen bg-[#f2f0ed]">
+      <div className="max-w-180 mx-auto px-10 max-md:px-5 py-10">
+
+        <div className="mb-8">
+          <p className="font-['Unbounded'] text-[10px] font-bold tracking-[.18em] uppercase text-[#e8621a] mb-3">
+            NEW PROJECT
+          </p>
+          <h1 className="font-['Unbounded'] font-black text-[clamp(28px,3.5vw,52px)] tracking-[-0.04em] leading-[.95] text-[#1a1918]">
+            Create a project
+          </h1>
+        </div>
+
         {!isProfileComplete && (
-          <div className="mb-6 flex items-start gap-3 bg-amber-50 border border-amber-200 rounded-xl p-4">
-            <span className="text-amber-500 text-lg">💡</span>
+          <div className="mb-6 flex items-start gap-3 bg-[#fdf2ec] border border-[#e8621a]/20 rounded-xl p-4">
+            <span className="text-[#e8621a] text-lg shrink-0">💡</span>
             <div>
-              <p className="text-sm font-medium text-amber-800">Complete your profile first</p>
-              <p className="text-xs text-amber-700 mt-0.5">
+              <p className="font-['DM_Sans'] text-[13px] font-medium text-[#1a1918]">
+                Complete your profile first
+              </p>
+              <p className="font-['DM_Sans'] text-[12px] text-[#6b6762] mt-0.5">
                 Collaborators will check your profile before applying.
               </p>
-              <a href="/dashboard/profile" className="text-xs text-amber-800 underline mt-1 inline-block">
+              <a
+                href="/dashboard/profile"
+                className="font-['DM_Sans'] text-[12px] text-[#e8621a] hover:text-[#c9521a] transition-colors mt-1 inline-block"
+              >
                 Complete profile →
               </a>
             </div>
           </div>
         )}
+
         <ProjectForm />
+
       </div>
     </div>
   )

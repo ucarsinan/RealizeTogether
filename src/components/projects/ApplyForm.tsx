@@ -3,9 +3,6 @@
 import { useState, useTransition } from "react"
 import { useRouter } from "next/navigation"
 import { submitApplication } from "@/actions/application.actions"
-import { Button } from "@/components/ui/button"
-import { Textarea } from "@/components/ui/textarea"
-import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils"
 import { CheckCircle, Loader2, AlertCircle, ArrowLeft } from "lucide-react"
 import Link from "next/link"
@@ -49,42 +46,58 @@ export function ApplyForm({ projectId, projectTitle, roles, isEarlyStage }: Appl
 
   if (submitted) {
     return (
-      <div className="max-w-xl mx-auto px-4 py-16 text-center space-y-4">
-        <div className="w-16 h-16 rounded-full bg-green-50 flex items-center justify-center mx-auto">
-          <CheckCircle className="w-8 h-8 text-green-500" />
+      <div className="max-w-150 mx-auto px-10 max-md:px-5 py-16 text-center space-y-5">
+        <div className="w-16 h-16 rounded-full bg-[#fdf2ec] flex items-center justify-center mx-auto">
+          <CheckCircle className="w-8 h-8 text-[#e8621a]" />
         </div>
-        <h2 className="text-xl font-semibold text-zinc-900">Application sent!</h2>
-        <p className="text-sm text-zinc-500 max-w-sm mx-auto">
+        <h2 className="font-['Unbounded'] font-bold text-[22px] tracking-[-0.03em] text-[#1a1918]">
+          Application sent!
+        </h2>
+        <p className="font-['DM_Sans'] text-[13px] text-[#6b6762] max-w-sm mx-auto leading-relaxed">
           The creator will review your profile and get back to you.
         </p>
         <div className="flex gap-3 justify-center pt-2">
-          <Link href="/explore"><Button variant="outline">Back to Explore</Button></Link>
-          <Link href="/dashboard"><Button>My Applications</Button></Link>
+          <Link
+            href="/explore"
+            className="border border-[#e0ddd8] hover:border-[#1a1918] text-[#6b6762] hover:text-[#1a1918] font-['DM_Sans'] text-[13px] px-5 py-2.5 rounded-full transition-colors"
+          >
+            Back to Explore
+          </Link>
+          <Link
+            href="/dashboard"
+            className="bg-[#e8621a] hover:bg-[#c9521a] text-white font-bold font-['DM_Sans'] text-[13px] px-6 py-2.5 rounded-full transition-colors"
+          >
+            My Applications
+          </Link>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="max-w-xl mx-auto px-4 py-8 space-y-6">
+    <div className="max-w-150 mx-auto px-10 max-md:px-5 py-10 space-y-6">
       <Link
         href={`/projects/${projectId}`}
-        className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-800 transition-colors"
+        className="inline-flex items-center gap-1.5 font-['DM_Sans'] text-[13px] text-[#6b6762] hover:text-[#1a1918] transition-colors"
       >
         <ArrowLeft className="w-3.5 h-3.5" />
         Back to project
       </Link>
 
-      <div>
-        <h1 className="text-xl font-semibold text-zinc-900">Apply to collaborate</h1>
-        <p className="text-sm text-zinc-500 mt-0.5">{projectTitle}</p>
+      <div className="mb-2">
+        <p className="font-['Unbounded'] text-[10px] font-bold tracking-[.18em] uppercase text-[#e8621a] mb-2">
+          APPLY
+        </p>
+        <h1 className="font-['Unbounded'] font-black text-[clamp(28px,3.5vw,52px)] tracking-[-0.04em] leading-[.95] text-[#1a1918]">
+          {projectTitle}
+        </h1>
       </div>
 
       {roles.length > 0 && (
-        <div className="bg-white rounded-2xl border border-zinc-200 p-5 space-y-3">
-          <Label className="text-sm font-medium">
+        <div className="bg-white border border-[#e0ddd8] rounded-2xl p-6 shadow-[0_4px_32px_rgba(0,0,0,0.07)] space-y-3">
+          <p className="font-['DM_Sans'] text-[12px] font-medium text-[#6b6762]">
             {isEarlyStage ? "Which role fits you? (optional)" : "Which role are you applying for?"}
-          </Label>
+          </p>
           <div className="flex flex-wrap gap-2">
             {roles.map(role => (
               <button
@@ -92,74 +105,74 @@ export function ApplyForm({ projectId, projectTitle, roles, isEarlyStage }: Appl
                 type="button"
                 onClick={() => setSelectedRoleId(selectedRoleId === role.id ? null : role.id)}
                 className={cn(
-                  "px-3 py-2 rounded-xl border text-sm transition-all text-left",
+                  "font-['DM_Sans'] text-[12px] font-medium px-4 py-2 rounded-full border transition-colors text-left",
                   selectedRoleId === role.id
-                    ? "border-zinc-900 bg-zinc-900 text-white"
-                    : "border-zinc-200 hover:border-zinc-400 text-zinc-700"
+                    ? "border-[#e8621a] bg-[#fdf2ec] text-[#e8621a]"
+                    : "border-[#e0ddd8] text-[#6b6762] hover:border-[#1a1918] hover:text-[#1a1918]"
                 )}
               >
                 {role.role_name}
                 {role.description && (
-                  <span className={cn("block text-xs mt-0.5", selectedRoleId === role.id ? "text-zinc-400" : "text-zinc-400")}>
-                    {role.description}
-                  </span>
+                  <span className="block text-[10px] mt-0.5 text-[#6b6762]">{role.description}</span>
                 )}
               </button>
             ))}
           </div>
           {isEarlyStage && (
-            <p className="text-xs text-zinc-400">Early stage project — you can apply without selecting a specific role</p>
+            <p className="font-['DM_Sans'] text-[11px] text-[#6b6762]">
+              Early stage project — you can apply without selecting a specific role
+            </p>
           )}
         </div>
       )}
 
-      <div className="bg-white rounded-2xl border border-zinc-200 p-5 space-y-3">
-        <Label htmlFor="message" className="text-sm font-medium">
+      <div className="bg-white border border-[#e0ddd8] rounded-2xl p-6 shadow-[0_4px_32px_rgba(0,0,0,0.07)] space-y-3">
+        <label htmlFor="message" className="block font-['DM_Sans'] text-[12px] font-medium text-[#6b6762]">
           Why are you the right collaborator? <span className="text-red-500">*</span>
-        </Label>
-        <Textarea
+        </label>
+        <textarea
           id="message"
           value={message}
           onChange={e => setMessage(e.target.value)}
           placeholder="Tell the creator what draws you to this project, what you bring to the table, and what kind of collaboration you're looking for."
           rows={6}
-          className="resize-none text-sm"
+          className="w-full bg-white border-[1.5px] border-[#e0ddd8] focus:border-[#e8621a] rounded-xl px-5 py-3 text-[13px] text-[#1a1918] placeholder:text-[#bab7b2] outline-none transition-colors font-['DM_Sans'] resize-none"
         />
         <div className="flex items-center justify-between">
-          <p className={cn("text-xs transition-colors", message.length < 30 ? "text-zinc-400" : "text-green-600")}>
-            {message.length < 30 ? `${30 - message.length} more characters to go` : "✓ Good length"}
+          <p className={cn("font-['DM_Sans'] text-[11px] transition-colors", message.length < 30 ? "text-[#6b6762]" : "text-green-600")}>
+            {message.length < 30 ? `${30 - message.length} more characters to go` : "Good length"}
           </p>
-          <p className="text-xs text-zinc-400">{message.length} chars</p>
+          <p className="font-['DM_Sans'] text-[11px] text-[#6b6762]">{message.length} chars</p>
         </div>
       </div>
 
-      <div className="bg-amber-50 rounded-2xl border border-amber-200 p-4 text-xs text-amber-700 space-y-1">
-        <p className="font-medium">Before you apply:</p>
-        <ul className="space-y-1 list-disc list-inside">
+      <div className="bg-[#fdf2ec] rounded-2xl border border-[#e8621a]/20 p-4 font-['DM_Sans'] text-[12px] text-[#e8621a] space-y-1">
+        <p className="font-medium text-[#1a1918]">Before you apply:</p>
+        <ul className="space-y-1 list-disc list-inside text-[#6b6762]">
           <li>Make sure your profile is complete with a bio and portfolio links</li>
           <li>An intro video dramatically increases your acceptance rate</li>
         </ul>
       </div>
 
       {status?.type === "error" && (
-        <div className="flex items-center gap-2 text-sm text-red-600 bg-red-50 px-4 py-3 rounded-xl">
+        <div className="flex items-center gap-2 font-['DM_Sans'] text-[12px] text-red-600 bg-red-50 px-4 py-3 rounded-xl">
           <AlertCircle className="w-4 h-4 shrink-0" />
           {status.message}
         </div>
       )}
 
-      <div className="sticky bottom-0 bg-white/80 backdrop-blur-sm border-t border-zinc-100 -mx-4 px-4 py-3">
-        <Button
+      {/* Sticky submit */}
+      <div className="sticky bottom-0 bg-white/90 backdrop-blur-sm border-t border-[#e0ddd8] -mx-10 max-md:-mx-5 px-10 max-md:px-5 py-4">
+        <button
           onClick={handleSubmit}
           disabled={isPending || !isValid}
-          className="w-full bg-zinc-900 hover:bg-zinc-800"
-          size="lg"
+          className="w-full bg-[#e8621a] hover:bg-[#c9521a] text-white font-bold font-['DM_Sans'] text-[13px] px-6 py-3 rounded-full transition-colors duration-150 disabled:opacity-50 flex items-center justify-center gap-2"
         >
-          {isPending && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-          {isPending ? "Sending..." : "Send Application →"}
-        </Button>
+          {isPending && <Loader2 className="w-4 h-4 animate-spin" />}
+          {isPending ? "Sending..." : "Submit application"}
+        </button>
         {!isValid && (
-          <p className="text-xs text-center text-zinc-400 mt-2">Write at least 30 characters</p>
+          <p className="font-['DM_Sans'] text-[11px] text-center text-[#6b6762] mt-2">Write at least 30 characters</p>
         )}
       </div>
     </div>

@@ -3,7 +3,6 @@
 import { useState, useTransition } from "react"
 import { confirmMatch } from "@/actions/match.actions"
 import type { MatchStatus } from "@/actions/match.actions"
-import { Button } from "@/components/ui/button"
 import { CheckCircle, Loader2, Clock } from "lucide-react"
 
 interface MatchConfirmBannerProps {
@@ -22,7 +21,6 @@ export function MatchConfirmBanner({
   const [status, setStatus] = useState(initialStatus)
   const [isPending, startTransition] = useTransition()
 
-  // Only show when still in_talks
   if (applicationStatus !== "in_talks") return null
 
   const iHaveConfirmed = isCreator ? status.creatorConfirmed : status.applicantConfirmed
@@ -41,48 +39,44 @@ export function MatchConfirmBanner({
     })
   }
 
-  // ── Matched ──
   if (isComplete) {
     return (
-      <div className="bg-green-50 border-b border-green-100 px-4 py-3 flex items-center gap-2">
+      <div className="bg-green-50 border-b border-green-100 px-6 py-3 flex items-center gap-2">
         <CheckCircle className="w-4 h-4 text-green-600 shrink-0" />
-        <p className="text-sm font-medium text-green-800">
+        <p className="font-['DM_Sans'] text-[13px] font-medium text-green-800">
           You&apos;re officially matched! Time to build something great.
         </p>
       </div>
     )
   }
 
-  // ── I've confirmed, waiting for other ──
   if (iHaveConfirmed) {
     return (
-      <div className="bg-blue-50 border-b border-blue-100 px-4 py-3 flex items-center gap-2">
-        <Clock className="w-4 h-4 text-blue-500 shrink-0" />
-        <p className="text-sm text-blue-700">
+      <div className="bg-[#fdf2ec] border-b border-[#e8621a]/20 px-6 py-3 flex items-center gap-2">
+        <Clock className="w-4 h-4 text-[#e8621a] shrink-0" />
+        <p className="font-['DM_Sans'] text-[13px] text-[#e8621a]">
           You confirmed — waiting for the other party to confirm the match.
         </p>
       </div>
     )
   }
 
-  // ── Ready to confirm ──
   return (
-    <div className="bg-zinc-900 px-4 py-3 flex items-center justify-between gap-4">
-      <p className="text-sm text-zinc-100">
+    <div className="bg-[#1a1918] px-6 py-3 flex items-center justify-between gap-4">
+      <p className="font-['DM_Sans'] text-[13px] text-white/90">
         Ready to officially collaborate on this project?
       </p>
-      <Button
-        size="sm"
+      <button
         onClick={handleConfirm}
         disabled={isPending}
-        className="bg-white text-zinc-900 hover:bg-zinc-100 shrink-0"
+        className="flex items-center gap-1.5 bg-[#e8621a] hover:bg-[#c9521a] text-white font-['DM_Sans'] text-[12px] font-bold px-5 py-2 rounded-full transition-colors disabled:opacity-60 shrink-0"
       >
         {isPending ? (
-          <><Loader2 className="w-3.5 h-3.5 mr-1.5 animate-spin" /> Confirming…</>
+          <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Confirming…</>
         ) : (
-          <><CheckCircle className="w-3.5 h-3.5 mr-1.5" /> Confirm Match</>
+          <><CheckCircle className="w-3.5 h-3.5" /> Confirm Match</>
         )}
-      </Button>
+      </button>
     </div>
   )
 }

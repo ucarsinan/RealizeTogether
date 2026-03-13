@@ -26,26 +26,41 @@ export default async function ExplorePage({ searchParams }: { searchParams: Sear
   const projects = result.success ? result.data : []
 
   return (
-    <div className="min-h-screen bg-zinc-50">
-      <div className="max-w-4xl mx-auto px-4 py-8">
+    <div className="min-h-screen bg-[#f2f0ed]">
+      <div className="max-w-270 mx-auto px-10 max-md:px-5 py-10">
+
+        {/* Header */}
         <div className="mb-8">
-          <h1 className="text-2xl font-semibold text-zinc-900">Explore Projects</h1>
-          <p className="text-sm text-zinc-500 mt-1">Find a project that needs your skills</p>
+          <p className="font-['Unbounded'] text-[10px] font-bold tracking-[.18em] uppercase text-[#e8621a] mb-3">
+            DISCOVER
+          </p>
+          <h1 className="font-['Unbounded'] font-black text-[clamp(28px,3.5vw,52px)] tracking-[-0.04em] leading-[.95] text-[#1a1918]">
+            Find your next project.
+          </h1>
         </div>
 
+        {/* Filters */}
         <Suspense>
           <ExploreFilters currentStage={params.stage} currentCommitment={params.commitment} />
         </Suspense>
 
-        <div className="mt-6 space-y-4">
+        {/* Project grid */}
+        <div className="mt-8">
           {projects.length === 0 ? (
-            <div className="text-center py-16 text-zinc-400">
-              <p className="text-sm">No projects found matching your filters.</p>
+            <div className="text-center py-20 bg-white border border-[#e0ddd8] rounded-2xl">
+              <p className="font-['DM_Sans'] text-[13px] text-[#6b6762]">
+                No projects found matching your filters.
+              </p>
             </div>
           ) : (
-            projects.map(project => <ProjectCard key={project.id} project={project} />)
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+              {projects.map(project => (
+                <ProjectCard key={project.id} project={project} />
+              ))}
+            </div>
           )}
         </div>
+
       </div>
     </div>
   )

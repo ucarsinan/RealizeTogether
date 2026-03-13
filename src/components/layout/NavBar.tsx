@@ -3,11 +3,23 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
-import { Compass, LayoutDashboard, MessageCircle, User } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { createClient } from "@/lib/supabase/client"
 
 type NavUser = { full_name: string; avatar_url: string | null } | null
+
+const LogoSVG = () => (
+  <svg viewBox="0 0 500 500" fill="none" width="28" height="28">
+    <path d="m 187.11765,18.563025 v 40 q 0,37.999995 38,37.999995 h 38 q 38,0 38,-37.999995 v -40" stroke="#e8621a" strokeWidth="18" strokeLinecap="round" strokeLinejoin="round"/>
+    <circle cx="-248.63866" cy="167.71428" r="38" stroke="#e8621a" strokeWidth="18" transform="scale(-1,1)"/>
+    <path d="m 306.57983,480.22689 v -40 q 0,-38 -38,-38 h -38 q -38,0 -38,38 v 40" stroke="#e8621a" strokeWidth="18" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="m 18.588235,308.84034 h 40 q 38,0 38,-38 v -38 q 0,-38 -38,-38 h -40" stroke="#e8621a" strokeWidth="18" strokeLinecap="round" strokeLinejoin="round"/>
+    <circle cx="168" cy="250" r="38" stroke="#e8621a" strokeWidth="18"/>
+    <circle cx="332" cy="250" r="38" stroke="#e8621a" strokeWidth="18"/>
+    <path d="m 480.64367,307.33357 h -40.34356 q -38.32636,0 -38.32636,-38.22336 v -38.22337 q 0,-38.22335 38.32636,-38.22335 h 40.34356" stroke="#e8621a" strokeWidth="18.1299" strokeLinecap="round" strokeLinejoin="round"/>
+    <circle cx="248.50162" cy="332.65546" r="38" stroke="#e8621a" strokeWidth="18"/>
+  </svg>
+)
 
 export function NavBar() {
   const pathname = usePathname()
@@ -33,79 +45,61 @@ export function NavBar() {
     return pathname === href || pathname.startsWith(href + "/")
   }
 
-  const linkClass = (href: string) =>
-    `text-sm transition-colors ${
-      isActive(href) ? "text-zinc-900 font-medium" : "text-zinc-500 hover:text-zinc-900"
-    }`
-
-  const mobileLinkClass = (href: string) =>
-    `flex flex-col items-center gap-0.5 text-xs transition-colors ${
-      isActive(href) ? "text-zinc-900" : "text-zinc-400 hover:text-zinc-700"
+  const navLinkClass = (href: string) =>
+    `font-['DM_Sans'] text-[13px] transition-colors duration-150 ${
+      isActive(href)
+        ? "text-[#1a1918] font-medium"
+        : "text-[#6b6762] hover:text-[#1a1918]"
     }`
 
   return (
-    <>
-      {/* ── DESKTOP: sticky top ── */}
-      <nav className="max-md:hidden flex sticky top-0 z-50 w-full bg-white border-b border-zinc-100">
-        <div className="max-w-4xl mx-auto w-full px-4 h-14 flex items-center justify-between">
+    <nav className="fixed top-0 left-0 right-0 z-50 w-full border-b border-[#e0ddd8]"
+      style={{ background: "rgba(242,240,237,0.92)", backdropFilter: "blur(12px)" }}>
+      <div className="max-w-[1080px] mx-auto w-full px-10 max-md:px-5 h-[72px] flex items-center justify-between">
 
-          <Link href="/dashboard" className="text-sm font-semibold text-zinc-900 tracking-tight shrink-0">
-            Realize Together
-          </Link>
+        {/* Logo + Brand */}
+        <Link href="/dashboard" className="flex items-center gap-3 shrink-0">
+          <LogoSVG />
+          <span className="font-['Unbounded'] font-bold text-[13px] tracking-[0.04em] text-[#1a1918] hidden sm:block">
+            REALIZE TOGETHER
+          </span>
+        </Link>
 
-          <div className="flex items-center gap-6">
-            <Link href="/explore" className={linkClass("/explore")}>Explore</Link>
-            <Link href="/dashboard" className={linkClass("/dashboard")}>Dashboard</Link>
-            <Link href="/messages" className={linkClass("/messages")}>Messages</Link>
-          </div>
+        {/* Nav Links */}
+        <div className="flex items-center gap-7">
+          <Link href="/explore" className={navLinkClass("/explore")}>Explore</Link>
+          <Link href="/dashboard" className={navLinkClass("/dashboard")}>Dashboard</Link>
+          <Link href="/messages" className={navLinkClass("/messages")}>Messages</Link>
+        </div>
 
+        {/* Right: User or Auth Buttons */}
+        {user ? (
           <Link href="/dashboard/profile" className="shrink-0">
-            <Avatar className="w-8 h-8 ring-2 ring-transparent hover:ring-zinc-200 transition">
+            <Avatar className="w-8 h-8 ring-2 ring-[#e0ddd8] hover:ring-[#e8621a] transition-all">
               <AvatarImage src={user?.avatar_url ?? undefined} />
-              <AvatarFallback className="bg-zinc-100 text-xs">
+              <AvatarFallback className="bg-[#fdf2ec] text-[#e8621a] text-xs font-['DM_Sans'] font-bold">
                 {user?.full_name?.[0]?.toUpperCase() ?? "?"}
               </AvatarFallback>
             </Avatar>
           </Link>
+        ) : (
+          <div className="flex items-center gap-3 shrink-0">
+            <Link
+              href="/login"
+              className="border border-[#e0ddd8] hover:border-[#1a1918] text-[#6b6762] hover:text-[#1a1918] text-[13px] px-5 py-2 rounded-full transition-colors duration-200 font-['DM_Sans']"
+            >
+              Log in
+            </Link>
+            <Link
+              href="/register"
+              className="bg-[#e8621a] hover:bg-[#c9521a] text-white font-bold text-[13px] px-6 py-2.5 rounded-full transition-colors duration-150 font-['DM_Sans']"
+            >
+              Join free
+            </Link>
+          </div>
+        )}
 
-        </div>
-      </nav>
-
-      {/* ── MOBILE: fixed bottom ── */}
-      <nav className="flex md:hidden fixed bottom-0 left-0 right-0 z-50 w-full bg-white border-t border-zinc-100">
-        <div className="h-16 flex items-center justify-around px-4">
-
-          <Link href="/explore" className={mobileLinkClass("/explore")}>
-            <Compass className="w-5 h-5" />
-            Explore
-          </Link>
-
-          <Link href="/dashboard" className={mobileLinkClass("/dashboard")}>
-            <LayoutDashboard className="w-5 h-5" />
-            Dashboard
-          </Link>
-
-          <Link href="/messages" className={mobileLinkClass("/messages")}>
-            <MessageCircle className="w-5 h-5" />
-            Messages
-          </Link>
-
-          <Link href="/dashboard/profile" className={mobileLinkClass("/dashboard/profile")}>
-            {user?.avatar_url ? (
-              <Avatar className="w-6 h-6">
-                <AvatarImage src={user.avatar_url} />
-                <AvatarFallback className="bg-zinc-100 text-[10px]">
-                  {user.full_name?.[0]?.toUpperCase() ?? "?"}
-                </AvatarFallback>
-              </Avatar>
-            ) : (
-              <User className="w-5 h-5" />
-            )}
-            Profile
-          </Link>
-
-        </div>
-      </nav>
-    </>
+      </div>
+    </nav>
   )
 }

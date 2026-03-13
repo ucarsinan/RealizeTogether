@@ -16,8 +16,6 @@ export default async function ProfileEditPage({ searchParams }: { searchParams: 
 
   const result = await getProfile(user.id)
 
-  // New user: profile may not exist yet (depends on whether DB trigger runs)
-  // Either way, show the form — empty defaults if no profile
   const profile: Profile = result.success
     ? result.data
     : {
@@ -38,9 +36,22 @@ export default async function ProfileEditPage({ searchParams }: { searchParams: 
       }
 
   return (
-    <div className="min-h-screen bg-zinc-50">
-      <div className="max-w-xl mx-auto px-4 py-8">
-        <ProfileForm profile={profile} isNew={isNew} />
+    <div className="min-h-screen bg-[#f2f0ed]">
+      <div className="max-w-270 mx-auto px-10 max-md:px-5 py-10">
+
+        <div className="mb-8">
+          <p className="font-['Unbounded'] text-[10px] font-bold tracking-[.18em] uppercase text-[#e8621a] mb-3">
+            YOUR PROFILE
+          </p>
+          <h1 className="font-['Unbounded'] font-black text-[clamp(28px,3.5vw,52px)] tracking-[-0.04em] leading-[.95] text-[#1a1918]">
+            {isNew ? "Complete your profile" : "Edit profile"}
+          </h1>
+        </div>
+
+        <div className="bg-white border border-[#e0ddd8] rounded-2xl shadow-[0_4px_32px_rgba(0,0,0,0.07)] p-8 max-w-2xl">
+          <ProfileForm profile={profile} isNew={isNew} />
+        </div>
+
       </div>
     </div>
   )

@@ -23,7 +23,7 @@ export default async function ApplyPage({ params }: { params: Params }) {
   const isEarlyStage = ["idea", "concept"].includes(project.stage)
 
   return (
-    <div className="min-h-screen bg-zinc-50">
+    <div className="min-h-screen bg-[#f2f0ed]">
       <ApplyForm
         projectId={project.id}
         projectTitle={project.title}
