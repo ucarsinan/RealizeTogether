@@ -1,5 +1,5 @@
 # Realize Together – Claude Sync
-**2026-03-12 23:28** | Projekt-Stand für Brainstorming & Planung
+**2026-03-13 13:42** | Projekt-Stand für Brainstorming & Planung
 
 ---
 
@@ -25,7 +25,7 @@ app/(main)/projects/[id]/page.tsx
 app/(main)/projects/new/page.tsx
 app/auth/callback/route.ts
 app/layout.tsx
-app/page.tsx
+app/route.ts
 components/chat/ChatView.tsx
 components/chat/MatchConfirmBanner.tsx
 components/layout/NavBar.tsx
@@ -59,62 +59,17 @@ proxy.ts
 ## 🔀 Git Status
 ```
 ### Letzte Commits:
+4beb6fc feat: complete MVP – auth, profiles, projects, messaging, match system, NavBar
 0da497d feat: initial commit
 9f9839b Initial commit from Create Next App
 
 ### Geändert (unstaged):
-CLAUDE.md
-package-lock.json
-package.json
+claude-sync.md
+src/app/layout.tsx
 src/app/page.tsx
-src/lib/utils.ts
 
 ### Neu (untracked):
-src/actions/application.actions.ts
-src/actions/conversation.actions.ts
-src/actions/match.actions.ts
-src/actions/nda.actions.ts
-src/actions/profile.actions.ts
-src/actions/project.actions.ts
-src/app/(auth)/login/page.tsx
-src/app/(auth)/register/page.tsx
-src/app/(main)/dashboard/page.tsx
-src/app/(main)/dashboard/profile/page.tsx
-src/app/(main)/explore/page.tsx
-src/app/(main)/layout.tsx
-src/app/(main)/messages/[id]/page.tsx
-src/app/(main)/messages/page.tsx
-src/app/(main)/projects/[id]/applications/page.tsx
-src/app/(main)/projects/[id]/apply/page.tsx
-src/app/(main)/projects/[id]/page.tsx
-src/app/(main)/projects/new/page.tsx
-src/app/auth/callback/route.ts
-src/components/chat/ChatView.tsx
-src/components/chat/MatchConfirmBanner.tsx
-src/components/layout/NavBar.tsx
-src/components/profile/ProfileForm.tsx
-src/components/projects/ApplicationsManager.tsx
-src/components/projects/ApplyForm.tsx
-src/components/projects/ExploreFilters.tsx
-src/components/projects/ProjectCard.tsx
-src/components/projects/ProjectForm.tsx
-src/components/trust-funnel/NDAModal.tsx
-src/components/trust-funnel/SynopsisViewer.tsx
-src/components/ui/avatar.tsx
-src/components/ui/badge.tsx
-src/components/ui/card.tsx
-src/components/ui/dialog.tsx
-src/components/ui/input.tsx
-src/components/ui/label.tsx
-src/components/ui/separator.tsx
-src/components/ui/sonner.tsx
-src/components/ui/textarea.tsx
-src/lib/supabase/client.ts
-src/lib/supabase/middleware.ts
-src/lib/supabase/server.ts
-src/lib/types/database.types.ts
-src/lib/types/index.ts
-src/proxy.ts
+src/app/route.ts
 ```
 
 ## 🏷️  Types
@@ -352,7 +307,6 @@ export type ProjectWithRoles = Project & {
 /projects/[id]/apply
 /projects/[id]
 /projects/new
-/
 ```
 
 ## 📦 Dependencies
@@ -382,121 +336,5 @@ export type ProjectWithRoles = Project & {
     "tailwindcss": "^4",
     "typescript": "^5"
   }
-}
-```
-
-## 📄 Vollständige Datei: `src/components/layout/NavBar.tsx`
-```typescript
-"use client"
-
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { useEffect, useState } from "react"
-import { Compass, LayoutDashboard, MessageCircle, User } from "lucide-react"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { createClient } from "@/lib/supabase/client"
-
-type NavUser = { full_name: string; avatar_url: string | null } | null
-
-export function NavBar() {
-  const pathname = usePathname()
-  const [user, setUser] = useState<NavUser>(null)
-
-  useEffect(() => {
-    const supabase = createClient()
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      if (!user) return
-      supabase
-        .from("profiles")
-        .select("full_name, avatar_url")
-        .eq("id", user.id)
-        .single()
-        .then(({ data }) => {
-          setUser(data ?? { full_name: user.user_metadata?.full_name ?? "?", avatar_url: null })
-        })
-    })
-  }, [])
-
-  function isActive(href: string) {
-    if (href === "/dashboard") return pathname === "/dashboard" || pathname.startsWith("/dashboard")
-    return pathname === href || pathname.startsWith(href + "/")
-  }
-
-  const linkClass = (href: string) =>
-    `text-sm transition-colors ${
-      isActive(href) ? "text-zinc-900 font-medium" : "text-zinc-500 hover:text-zinc-900"
-    }`
-
-  const mobileLinkClass = (href: string) =>
-    `flex flex-col items-center gap-0.5 text-xs transition-colors ${
-      isActive(href) ? "text-zinc-900" : "text-zinc-400 hover:text-zinc-700"
-    }`
-
-  return (
-    // Single nav — fixed bottom on mobile, sticky top on desktop
-    <nav className="fixed bottom-0 left-0 right-0 w-full z-50 bg-white md:sticky md:bottom-auto md:top-0">
-
-      {/* ── Desktop ── */}
-      <div className="hidden md:flex border-b border-zinc-100 w-full">
-        <div className="max-w-4xl mx-auto w-full px-4 h-14 flex items-center justify-between">
-
-          <Link href="/dashboard" className="text-sm font-semibold text-zinc-900 tracking-tight shrink-0">
-            Realize Together
-          </Link>
-
-          <div className="flex items-center gap-6">
-            <Link href="/explore" className={linkClass("/explore")}>Explore</Link>
-            <Link href="/dashboard" className={linkClass("/dashboard")}>Dashboard</Link>
-            <Link href="/messages" className={linkClass("/messages")}>Messages</Link>
-          </div>
-
-          <Link href="/dashboard/profile" className="shrink-0">
-            <Avatar className="w-8 h-8 ring-2 ring-transparent hover:ring-zinc-200 transition">
-              <AvatarImage src={user?.avatar_url ?? undefined} />
-              <AvatarFallback className="bg-zinc-100 text-xs">
-                {user?.full_name?.[0]?.toUpperCase() ?? "?"}
-              </AvatarFallback>
-            </Avatar>
-          </Link>
-
-        </div>
-      </div>
-
-      {/* ── Mobile ── */}
-      <div className="flex md:hidden border-t border-zinc-100 w-full h-16 items-center justify-around px-4">
-
-        <Link href="/explore" className={mobileLinkClass("/explore")}>
-          <Compass className="w-5 h-5" />
-          Explore
-        </Link>
-
-        <Link href="/dashboard" className={mobileLinkClass("/dashboard")}>
-          <LayoutDashboard className="w-5 h-5" />
-          Dashboard
-        </Link>
-
-        <Link href="/messages" className={mobileLinkClass("/messages")}>
-          <MessageCircle className="w-5 h-5" />
-          Messages
-        </Link>
-
-        <Link href="/dashboard/profile" className={mobileLinkClass("/dashboard/profile")}>
-          {user?.avatar_url ? (
-            <Avatar className="w-6 h-6">
-              <AvatarImage src={user.avatar_url} />
-              <AvatarFallback className="bg-zinc-100 text-[10px]">
-                {user.full_name?.[0]?.toUpperCase() ?? "?"}
-              </AvatarFallback>
-            </Avatar>
-          ) : (
-            <User className="w-5 h-5" />
-          )}
-          Profile
-        </Link>
-
-      </div>
-
-    </nav>
-  )
 }
 ```
