@@ -1,823 +1,1502 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Realize Together — Find your film team</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;700;900&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html,body{width:100%;height:100%;overscroll-behavior:none;}
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Realize Together — Find your film team</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;700;900&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        overscroll-behavior: none;
+      }
 
-:root{
-  --bg:    #f2f0ed;
-  --card:  #ffffff;
-  --ink:   #1a1918;
-  --mid:   #6b6762;
-  --line:  #e0ddd8;
-  --or:    #e8621a;
-  --or-dk: #c9521a;
-  --or-lt: #fdf2ec;
-}
+      :root {
+        --bg: #f2f0ed;
+        --card: #ffffff;
+        --ink: #1a1918;
+        --mid: #6b6762;
+        --line: #e0ddd8;
+        --or: #e8621a;
+        --or-dk: #c9521a;
+        --or-lt: #fdf2ec;
+      }
 
-body{
-  background:var(--bg);
-  color:var(--ink);
-  font-family:'DM Sans',sans-serif;
-  -webkit-font-smoothing:antialiased;
-  overflow:hidden;
-}
+      body {
+        background: var(--bg);
+        color: var(--ink);
+        font-family: "DM Sans", sans-serif;
+        -webkit-font-smoothing: antialiased;
+        overflow: hidden;
+      }
 
-/* ── NAV ── */
-#nav{
-  position:fixed;top:0;left:0;right:0;z-index:5000;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:18px 40px;
-  background:rgba(242,240,237,0.92);
-  backdrop-filter:blur(12px);
-  -webkit-backdrop-filter:blur(12px);
-  border-bottom:1px solid var(--line);
-}
-.n-logo{
-  font-family:'Unbounded',sans-serif;
-  font-weight:700;font-size:12px;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--ink);text-decoration:none;
-  display:flex;align-items:center;gap:6px;
-}
-.n-logo .dot{
-  width:7px;height:7px;border-radius:50%;
-  background:var(--or);display:inline-block;
-}
-.n-r{display:flex;gap:10px;align-items:center;}
-.n-login{
-  font-family:'DM Sans',sans-serif;
-  font-size:13px;font-weight:500;
-  color:var(--mid);text-decoration:none;
-  padding:8px 18px;
-  border:1px solid var(--line);
-  border-radius:100px;
-  transition:border-color .2s,color .2s;
-}
-.n-login:hover{border-color:var(--ink);color:var(--ink);}
-.n-signup{
-  font-family:'DM Sans',sans-serif;
-  font-size:13px;font-weight:700;
-  color:#fff;background:var(--or);
-  padding:8px 20px;border-radius:100px;
-  text-decoration:none;transition:background .2s;
-}
-.n-signup:hover{background:var(--or-dk);}
+      /* ── NAV ── */
+      #nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 5000;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 18px 40px;
+        background: rgba(242, 240, 237, 0.92);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--line);
+      }
+      .n-logo {
+        font-family: "Unbounded", sans-serif;
+        font-weight: 700;
+        font-size: 12px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--ink);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .n-logo .dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--or);
+        display: inline-block;
+      }
+      .n-r {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      .n-login {
+        font-family: "DM Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--mid);
+        text-decoration: none;
+        padding: 8px 18px;
+        border: 1px solid var(--line);
+        border-radius: 100px;
+        transition:
+          border-color 0.2s,
+          color 0.2s;
+      }
+      .n-login:hover {
+        border-color: var(--ink);
+        color: var(--ink);
+      }
+      .n-signup {
+        font-family: "DM Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: #fff;
+        background: var(--or);
+        padding: 8px 20px;
+        border-radius: 100px;
+        text-decoration: none;
+        transition: background 0.2s;
+      }
+      .n-signup:hover {
+        background: var(--or-dk);
+      }
 
-/* ── SCROLL ENGINE ── */
-#scroll-wrap{position:fixed;inset:0;overflow:hidden;}
-#canvas{
-  display:flex;width:500vw;height:100vh;
-  will-change:transform;
-  transition:transform .72s cubic-bezier(.16,1,.3,1);
-}
-.panel{
-  width:100vw;height:100vh;
-  position:relative;overflow:hidden;
-  flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;
-}
+      /* ── SCROLL ENGINE ── */
+      #scroll-wrap {
+        position: fixed;
+        inset: 0;
+        overflow: hidden;
+      }
+      #canvas {
+        display: flex;
+        width: 500vw;
+        height: 100vh;
+        will-change: transform;
+        transition: transform 0.72s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .panel {
+        width: 100vw;
+        height: 100vh;
+        position: relative;
+        overflow: hidden;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
 
-/* ══════════════════════════════
+      /* ══════════════════════════════
    P0 — HERO
 ══════════════════════════════ */
-#p0{background:var(--bg);}
+      #p0 {
+        background: var(--bg);
+      }
 
-.p0-inner{
-  display:grid;
-  grid-template-columns:1fr 400px;
-  gap:48px;
-  align-items:center;
-  width:100%;max-width:1160px;
-  padding:88px 40px 32px;
-}
+      .p0-inner {
+        display: grid;
+        grid-template-columns: 1fr 400px;
+        gap: 48px;
+        align-items: center;
+        width: 100%;
+        max-width: 1160px;
+        padding: 88px 40px 32px;
+      }
 
-/* SVG graphic */
-.p0-graphic{
-  position:absolute;
-  right:-60px;top:50%;
-  transform:translateY(-50%);
-  width:520px;height:520px;
-  opacity:.055;
-  pointer-events:none;
-}
+      /* SVG graphic */
+      .p0-graphic {
+        position: absolute;
+        right: -60px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 520px;
+        height: 520px;
+        opacity: 0.055;
+        pointer-events: none;
+      }
 
-.p0-kicker{
-  display:inline-flex;align-items:center;gap:8px;
-  font-size:11px;font-weight:700;letter-spacing:.18em;
-  text-transform:uppercase;color:var(--or);
-  margin-bottom:20px;
-}
-.p0-kicker::before{
-  content:'';width:18px;height:2px;
-  background:var(--or);border-radius:2px;
-}
+      .p0-kicker {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--or);
+        margin-bottom: 20px;
+      }
+      .p0-kicker::before {
+        content: "";
+        width: 18px;
+        height: 2px;
+        background: var(--or);
+        border-radius: 2px;
+      }
 
-.p0-h1{
-  font-family:'Unbounded',sans-serif;
-  font-weight:900;
-  font-size:clamp(40px,5.8vw,86px);
-  line-height:.92;letter-spacing:-.04em;
-  color:var(--ink);
-  margin-bottom:20px;
-}
-.p0-h1 .outline{
-  -webkit-text-stroke:2px var(--ink);
-  color:transparent;display:block;
-}
-.p0-h1 .or{color:var(--or);}
+      .p0-h1 {
+        font-family: "Unbounded", sans-serif;
+        font-weight: 900;
+        font-size: clamp(40px, 5.8vw, 86px);
+        line-height: 0.92;
+        letter-spacing: -0.04em;
+        color: var(--ink);
+        margin-bottom: 20px;
+      }
+      .p0-h1 .outline {
+        -webkit-text-stroke: 2px var(--ink);
+        color: transparent;
+        display: block;
+      }
+      .p0-h1 .or {
+        color: var(--or);
+      }
 
-.p0-desc{
-  font-size:clamp(14px,1.2vw,16px);
-  font-weight:300;line-height:1.75;
-  color:var(--mid);max-width:440px;
-  margin-bottom:28px;
-}
+      .p0-desc {
+        font-size: clamp(14px, 1.2vw, 16px);
+        font-weight: 300;
+        line-height: 1.75;
+        color: var(--mid);
+        max-width: 440px;
+        margin-bottom: 28px;
+      }
 
-.p0-proof{
-  display:flex;align-items:center;gap:12px;
-  font-size:11px;font-weight:500;letter-spacing:.04em;
-  color:var(--mid);margin-bottom:14px;
-}
-.proof-avatars{display:flex;}
-.proof-av{
-  width:28px;height:28px;border-radius:50%;
-  border:2px solid var(--bg);
-  background:var(--line);margin-left:-6px;
-}
-.proof-av:first-child{margin-left:0;}
-.proof-av:nth-child(1){background:#d4b8a0;}
-.proof-av:nth-child(2){background:#a8c4b8;}
-.proof-av:nth-child(3){background:#c4a8b8;}
-.proof-av:nth-child(4){background:#b8c4a8;}
+      .p0-proof {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+        color: var(--mid);
+        margin-bottom: 14px;
+      }
+      .proof-avatars {
+        display: flex;
+      }
+      .proof-av {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        border: 2px solid var(--bg);
+        background: var(--line);
+        margin-left: -6px;
+      }
+      .proof-av:first-child {
+        margin-left: 0;
+      }
+      .proof-av:nth-child(1) {
+        background: #d4b8a0;
+      }
+      .proof-av:nth-child(2) {
+        background: #a8c4b8;
+      }
+      .proof-av:nth-child(3) {
+        background: #c4a8b8;
+      }
+      .proof-av:nth-child(4) {
+        background: #b8c4a8;
+      }
 
-.p0-browse{
-  font-size:12px;font-weight:500;
-  color:var(--mid);text-decoration:none;
-  display:inline-flex;align-items:center;gap:6px;
-  transition:color .2s;
-}
-.p0-browse:hover{color:var(--or);}
-.p0-browse::after{content:'→';}
+      .p0-browse {
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--mid);
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: color 0.2s;
+      }
+      .p0-browse:hover {
+        color: var(--or);
+      }
+      .p0-browse::after {
+        content: "→";
+      }
 
-/* CARD */
-.p0-card{
-  background:var(--card);
-  border:1px solid var(--line);
-  border-radius:16px;
-  padding:32px 28px;
-  box-shadow:0 4px 32px rgba(0,0,0,0.07);
-}
-.card-head{
-  display:flex;align-items:center;gap:10px;
-  margin-bottom:6px;
-}
-.card-icon{
-  width:36px;height:36px;border-radius:10px;
-  background:var(--or-lt);
-  display:flex;align-items:center;justify-content:center;
-}
-.card-icon svg{width:18px;height:18px;stroke:var(--or);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
-.card-title{
-  font-family:'Unbounded',sans-serif;
-  font-size:13px;font-weight:700;letter-spacing:-.01em;
-}
-.card-sub{
-  font-size:12px;font-weight:300;color:var(--mid);
-  margin-bottom:22px;line-height:1.5;
-}
+      /* CARD */
+      .p0-card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 32px 28px;
+        box-shadow: 0 4px 32px rgba(0, 0, 0, 0.07);
+      }
+      .card-head {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 6px;
+      }
+      .card-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        background: var(--or-lt);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .card-icon svg {
+        width: 18px;
+        height: 18px;
+        stroke: var(--or);
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .card-title {
+        font-family: "Unbounded", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+      }
+      .card-sub {
+        font-size: 12px;
+        font-weight: 300;
+        color: var(--mid);
+        margin-bottom: 22px;
+        line-height: 1.5;
+      }
 
-.ff{margin-bottom:12px;}
-.ff label{
-  display:block;font-size:11px;font-weight:500;
-  color:var(--mid);margin-bottom:5px;letter-spacing:.02em;
-}
-.ff input{
-  width:100%;
-  background:#fff;
-  border:1.5px solid var(--line);
-  border-radius:100px;
-  color:var(--ink);padding:10px 18px;
-  font-family:'DM Sans',sans-serif;
-  font-size:13px;font-weight:400;
-  outline:none;transition:border-color .2s;
-  -webkit-appearance:none;
-}
-.ff input::placeholder{color:#bab7b2;}
-.ff input:focus{border-color:var(--or);}
+      .ff {
+        margin-bottom: 12px;
+      }
+      .ff label {
+        display: block;
+        font-size: 11px;
+        font-weight: 500;
+        color: var(--mid);
+        margin-bottom: 5px;
+        letter-spacing: 0.02em;
+      }
+      .ff input {
+        width: 100%;
+        background: #fff;
+        border: 1.5px solid var(--line);
+        border-radius: 100px;
+        color: var(--ink);
+        padding: 10px 18px;
+        font-family: "DM Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 400;
+        outline: none;
+        transition: border-color 0.2s;
+        -webkit-appearance: none;
+      }
+      .ff input::placeholder {
+        color: #bab7b2;
+      }
+      .ff input:focus {
+        border-color: var(--or);
+      }
 
-.role-lbl{
-  font-size:11px;font-weight:500;color:var(--mid);
-  margin-bottom:8px;display:block;letter-spacing:.02em;
-}
-.role-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:16px;}
-.role-btn{
-  padding:9px 6px;text-align:center;
-  background:#fff;
-  border:1.5px solid var(--line);
-  border-radius:100px;
-  color:var(--mid);
-  font-family:'DM Sans',sans-serif;
-  font-size:11px;font-weight:500;
-  cursor:pointer;transition:all .15s;
-}
-.role-btn:hover{border-color:var(--or);color:var(--or);}
-.role-btn.active{
-  background:var(--or);border-color:var(--or);
-  color:#fff;font-weight:700;
-}
+      .role-lbl {
+        font-size: 11px;
+        font-weight: 500;
+        color: var(--mid);
+        margin-bottom: 8px;
+        display: block;
+        letter-spacing: 0.02em;
+      }
+      .role-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 6px;
+        margin-bottom: 16px;
+      }
+      .role-btn {
+        padding: 9px 6px;
+        text-align: center;
+        background: #fff;
+        border: 1.5px solid var(--line);
+        border-radius: 100px;
+        color: var(--mid);
+        font-family: "DM Sans", sans-serif;
+        font-size: 11px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.15s;
+      }
+      .role-btn:hover {
+        border-color: var(--or);
+        color: var(--or);
+      }
+      .role-btn.active {
+        background: var(--or);
+        border-color: var(--or);
+        color: #fff;
+        font-weight: 700;
+      }
 
-.btn-submit{
-  width:100%;padding:13px;border:none;cursor:pointer;
-  background:var(--or);color:#fff;
-  border-radius:100px;
-  font-family:'DM Sans',sans-serif;
-  font-size:13px;font-weight:700;letter-spacing:.01em;
-  transition:background .15s;display:flex;align-items:center;
-  justify-content:center;gap:8px;
-}
-.btn-submit:hover{background:var(--or-dk);}
-.btn-submit svg{width:16px;height:16px;stroke:#fff;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;}
+      .btn-submit {
+        width: 100%;
+        padding: 13px;
+        border: none;
+        cursor: pointer;
+        background: var(--or);
+        color: #fff;
+        border-radius: 100px;
+        font-family: "DM Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.01em;
+        transition: background 0.15s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+      .btn-submit:hover {
+        background: var(--or-dk);
+      }
+      .btn-submit svg {
+        width: 16px;
+        height: 16px;
+        stroke: #fff;
+        fill: none;
+        stroke-width: 2.5;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
 
-.form-alt{
-  text-align:center;margin-top:12px;
-  font-size:12px;color:var(--mid);
-}
-.form-alt a{
-  color:var(--or);text-decoration:none;font-weight:500;
-}
-.form-alt a:hover{text-decoration:underline;}
+      .form-alt {
+        text-align: center;
+        margin-top: 12px;
+        font-size: 12px;
+        color: var(--mid);
+      }
+      .form-alt a {
+        color: var(--or);
+        text-decoration: none;
+        font-weight: 500;
+      }
+      .form-alt a:hover {
+        text-decoration: underline;
+      }
 
-/* ══════════════════════════════
+      /* ══════════════════════════════
    P1 — WHAT IT DOES
 ══════════════════════════════ */
-#p1{background:#fff;}
+      #p1 {
+        background: #fff;
+      }
 
-.p1-inner{max-width:1080px;width:100%;padding:40px;}
+      .p1-inner {
+        max-width: 1080px;
+        width: 100%;
+        padding: 40px;
+      }
 
-.p1-top{
-  display:flex;align-items:flex-end;justify-content:space-between;
-  margin-bottom:40px;gap:24px;flex-wrap:wrap;
-}
-.p1-h{
-  font-family:'Unbounded',sans-serif;
-  font-weight:900;
-  font-size:clamp(28px,3.5vw,52px);
-  letter-spacing:-.04em;line-height:.95;color:var(--ink);
-}
-.p1-h .or{color:var(--or);}
-.p1-top-sub{
-  font-size:13px;font-weight:300;color:var(--mid);
-  max-width:240px;text-align:right;line-height:1.7;
-}
+      .p1-top {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        margin-bottom: 40px;
+        gap: 24px;
+        flex-wrap: wrap;
+      }
+      .p1-h {
+        font-family: "Unbounded", sans-serif;
+        font-weight: 900;
+        font-size: clamp(28px, 3.5vw, 52px);
+        letter-spacing: -0.04em;
+        line-height: 0.95;
+        color: var(--ink);
+      }
+      .p1-h .or {
+        color: var(--or);
+      }
+      .p1-top-sub {
+        font-size: 13px;
+        font-weight: 300;
+        color: var(--mid);
+        max-width: 240px;
+        text-align: right;
+        line-height: 1.7;
+      }
 
-.p1-cols{
-  display:grid;grid-template-columns:repeat(3,1fr);
-  gap:1px;background:var(--line);
-  border:1px solid var(--line);border-radius:12px;overflow:hidden;
-}
-.p1-col{
-  background:#fff;padding:32px 28px;
-  transition:background .2s;
-}
-.p1-col:hover{background:var(--or-lt);}
-.p1-col-icon{
-  width:40px;height:40px;border-radius:10px;
-  background:var(--or-lt);border:1px solid rgba(232,98,26,.15);
-  display:flex;align-items:center;justify-content:center;
-  margin-bottom:16px;
-}
-.p1-col-icon svg{width:20px;height:20px;stroke:var(--or);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
-.p1-col-n{
-  font-family:'Unbounded',sans-serif;
-  font-size:9px;font-weight:700;letter-spacing:.2em;
-  color:var(--or);margin-bottom:10px;
-}
-.p1-col-title{
-  font-family:'Unbounded',sans-serif;
-  font-weight:700;
-  font-size:clamp(13px,1.3vw,16px);
-  line-height:1.35;letter-spacing:-.02em;
-  color:var(--ink);margin-bottom:10px;
-}
-.p1-col-body{
-  font-size:13px;line-height:1.8;
-  color:var(--mid);font-weight:300;
-}
+      .p1-cols {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1px;
+        background: var(--line);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      .p1-col {
+        background: #fff;
+        padding: 32px 28px;
+        transition: background 0.2s;
+      }
+      .p1-col:hover {
+        background: var(--or-lt);
+      }
+      .p1-col-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        background: var(--or-lt);
+        border: 1px solid rgba(232, 98, 26, 0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 16px;
+      }
+      .p1-col-icon svg {
+        width: 20px;
+        height: 20px;
+        stroke: var(--or);
+        fill: none;
+        stroke-width: 1.8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .p1-col-n {
+        font-family: "Unbounded", sans-serif;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.2em;
+        color: var(--or);
+        margin-bottom: 10px;
+      }
+      .p1-col-title {
+        font-family: "Unbounded", sans-serif;
+        font-weight: 700;
+        font-size: clamp(13px, 1.3vw, 16px);
+        line-height: 1.35;
+        letter-spacing: -0.02em;
+        color: var(--ink);
+        margin-bottom: 10px;
+      }
+      .p1-col-body {
+        font-size: 13px;
+        line-height: 1.8;
+        color: var(--mid);
+        font-weight: 300;
+      }
 
-.p1-foot{
-  margin-top:28px;
-  display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
-}
-.p1-note{font-size:11px;font-weight:500;color:var(--mid);}
-.p1-cta{
-  font-family:'DM Sans',sans-serif;
-  font-size:13px;font-weight:700;
-  color:#fff;background:var(--or);
-  padding:10px 24px;border-radius:100px;
-  text-decoration:none;transition:background .2s;
-}
-.p1-cta:hover{background:var(--or-dk);}
+      .p1-foot {
+        margin-top: 28px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .p1-note {
+        font-size: 11px;
+        font-weight: 500;
+        color: var(--mid);
+      }
+      .p1-cta {
+        font-family: "DM Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: #fff;
+        background: var(--or);
+        padding: 10px 24px;
+        border-radius: 100px;
+        text-decoration: none;
+        transition: background 0.2s;
+      }
+      .p1-cta:hover {
+        background: var(--or-dk);
+      }
 
-/* ══════════════════════════════
+      /* ══════════════════════════════
    P2 — HOW IT WORKS
 ══════════════════════════════ */
-#p2{background:var(--bg);}
+      #p2 {
+        background: var(--bg);
+      }
 
-.p2-inner{max-width:1080px;width:100%;padding:40px;}
+      .p2-inner {
+        max-width: 1080px;
+        width: 100%;
+        padding: 40px;
+      }
 
-.p2-hd{
-  display:flex;justify-content:space-between;align-items:flex-end;
-  margin-bottom:32px;gap:24px;flex-wrap:wrap;
-}
-.p2-h{
-  font-family:'Unbounded',sans-serif;
-  font-weight:900;
-  font-size:clamp(26px,3.2vw,48px);
-  letter-spacing:-.04em;line-height:.95;color:var(--ink);
-}
-.p2-meta{font-size:12px;font-weight:300;color:var(--mid);max-width:180px;text-align:right;line-height:1.7;}
+      .p2-hd {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-bottom: 32px;
+        gap: 24px;
+        flex-wrap: wrap;
+      }
+      .p2-h {
+        font-family: "Unbounded", sans-serif;
+        font-weight: 900;
+        font-size: clamp(26px, 3.2vw, 48px);
+        letter-spacing: -0.04em;
+        line-height: 0.95;
+        color: var(--ink);
+      }
+      .p2-meta {
+        font-size: 12px;
+        font-weight: 300;
+        color: var(--mid);
+        max-width: 180px;
+        text-align: right;
+        line-height: 1.7;
+      }
 
-.p2-steps{
-  display:grid;grid-template-columns:repeat(4,1fr);
-  gap:12px;
-}
-.p2-step{
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:12px;
-  padding:24px 20px;
-  transition:border-color .2s,box-shadow .2s;
-}
-.p2-step:hover{
-  border-color:var(--or);
-  box-shadow:0 4px 20px rgba(232,98,26,.1);
-}
-.p2-step-n{
-  width:32px;height:32px;border-radius:50%;
-  background:var(--or);color:#fff;
-  font-family:'Unbounded',sans-serif;
-  font-size:11px;font-weight:900;
-  display:flex;align-items:center;justify-content:center;
-  margin-bottom:14px;letter-spacing:0;
-}
-.p2-step-title{
-  font-family:'Unbounded',sans-serif;
-  font-weight:700;
-  font-size:clamp(12px,1.1vw,14px);
-  letter-spacing:-.01em;line-height:1.3;
-  color:var(--ink);margin-bottom:8px;
-}
-.p2-step-body{
-  font-size:12px;line-height:1.8;color:var(--mid);font-weight:300;
-}
+      .p2-steps {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+      }
+      .p2-step {
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 24px 20px;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
+      }
+      .p2-step:hover {
+        border-color: var(--or);
+        box-shadow: 0 4px 20px rgba(232, 98, 26, 0.1);
+      }
+      .p2-step-n {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: var(--or);
+        color: #fff;
+        font-family: "Unbounded", sans-serif;
+        font-size: 11px;
+        font-weight: 900;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 14px;
+        letter-spacing: 0;
+      }
+      .p2-step-title {
+        font-family: "Unbounded", sans-serif;
+        font-weight: 700;
+        font-size: clamp(12px, 1.1vw, 14px);
+        letter-spacing: -0.01em;
+        line-height: 1.3;
+        color: var(--ink);
+        margin-bottom: 8px;
+      }
+      .p2-step-body {
+        font-size: 12px;
+        line-height: 1.8;
+        color: var(--mid);
+        font-weight: 300;
+      }
 
-/* ══════════════════════════════
+      /* ══════════════════════════════
    P3 — ORANGE MANIFESTO
 ══════════════════════════════ */
-#p3{background:var(--or);}
-.p3-bg{
-  position:absolute;
-  inset:0;
-  display:flex;align-items:center;justify-content:center;
-  pointer-events:none;user-select:none;
-  padding:40px;
-}
-.p3-inner{
-  position:relative;z-index:2;
-  max-width:900px;padding:40px;
-}
-.p3-q{
-  font-family:'Unbounded',sans-serif;
-  font-weight:300;
-  font-size:clamp(20px,3vw,44px);
-  line-height:1.3;
-  letter-spacing:-.03em;
-  color:#fff;margin-bottom:36px;
-}
-.p3-q strong{font-weight:900;display:block;}
-.p3-btns{display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
-.btn-wh{
-  font-family:'DM Sans',sans-serif;
-  font-size:13px;font-weight:700;
-  color:var(--or);background:#fff;
-  padding:12px 28px;border-radius:100px;
-  text-decoration:none;transition:background .2s;white-space:nowrap;
-}
-.btn-wh:hover{background:var(--or-lt);}
-.btn-ghost-or{
-  font-family:'DM Sans',sans-serif;
-  font-size:13px;font-weight:500;
-  color:rgba(255,255,255,.75);
-  text-decoration:none;
-  border-bottom:1px solid rgba(255,255,255,.4);padding-bottom:2px;
-}
-.btn-ghost-or:hover{color:#fff;}
+      #p3 {
+        background: var(--or);
+      }
+      .p3-bg {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+        user-select: none;
+        padding: 40px;
+      }
+      .p3-inner {
+        position: relative;
+        z-index: 2;
+        max-width: 900px;
+        padding: 40px;
+      }
+      .p3-q {
+        font-family: "Unbounded", sans-serif;
+        font-weight: 300;
+        font-size: clamp(20px, 3vw, 44px);
+        line-height: 1.3;
+        letter-spacing: -0.03em;
+        color: #fff;
+        margin-bottom: 36px;
+      }
+      .p3-q strong {
+        font-weight: 900;
+        display: block;
+      }
+      .p3-btns {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .btn-wh {
+        font-family: "DM Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--or);
+        background: #fff;
+        padding: 12px 28px;
+        border-radius: 100px;
+        text-decoration: none;
+        transition: background 0.2s;
+        white-space: nowrap;
+      }
+      .btn-wh:hover {
+        background: var(--or-lt);
+      }
+      .btn-ghost-or {
+        font-family: "DM Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.75);
+        text-decoration: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+        padding-bottom: 2px;
+      }
+      .btn-ghost-or:hover {
+        color: #fff;
+      }
 
-/* ══════════════════════════════
+      /* ══════════════════════════════
    P4 — TRUST
 ══════════════════════════════ */
-#p4{background:#fff;}
+      #p4 {
+        background: #fff;
+      }
 
-.p4-inner{
-  max-width:1080px;width:100%;padding:40px;
-}
-.p4-top{
-  display:flex;justify-content:space-between;align-items:flex-end;
-  margin-bottom:32px;gap:24px;flex-wrap:wrap;
-}
-.p4-h{
-  font-family:'Unbounded',sans-serif;
-  font-weight:900;
-  font-size:clamp(26px,3.2vw,48px);
-  letter-spacing:-.04em;line-height:.95;color:var(--ink);
-}
-.p4-h .or{color:var(--or);}
-.p4-sub{font-size:13px;font-weight:300;color:var(--mid);max-width:260px;text-align:right;line-height:1.7;}
+      .p4-inner {
+        max-width: 1080px;
+        width: 100%;
+        padding: 40px;
+      }
+      .p4-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-bottom: 32px;
+        gap: 24px;
+        flex-wrap: wrap;
+      }
+      .p4-h {
+        font-family: "Unbounded", sans-serif;
+        font-weight: 900;
+        font-size: clamp(26px, 3.2vw, 48px);
+        letter-spacing: -0.04em;
+        line-height: 0.95;
+        color: var(--ink);
+      }
+      .p4-h .or {
+        color: var(--or);
+      }
+      .p4-sub {
+        font-size: 13px;
+        font-weight: 300;
+        color: var(--mid);
+        max-width: 260px;
+        text-align: right;
+        line-height: 1.7;
+      }
 
-.p4-grid{
-  display:grid;grid-template-columns:repeat(3,1fr);
-  gap:12px;margin-bottom:28px;
-}
-.p4-item{
-  background:var(--bg);
-  border:1px solid var(--line);
-  border-radius:12px;
-  padding:24px 20px;
-}
-.p4-item-dot{
-  width:8px;height:8px;border-radius:50%;
-  background:var(--or);margin-bottom:14px;
-}
-.p4-item-title{
-  font-family:'Unbounded',sans-serif;
-  font-weight:700;
-  font-size:clamp(12px,1.1vw,14px);
-  letter-spacing:-.01em;line-height:1.3;
-  color:var(--ink);margin-bottom:8px;
-}
-.p4-item-body{
-  font-size:12px;line-height:1.8;color:var(--mid);font-weight:300;
-}
+      .p4-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-bottom: 28px;
+      }
+      .p4-item {
+        background: var(--bg);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 24px 20px;
+      }
+      .p4-item-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--or);
+        margin-bottom: 14px;
+      }
+      .p4-item-title {
+        font-family: "Unbounded", sans-serif;
+        font-weight: 700;
+        font-size: clamp(12px, 1.1vw, 14px);
+        letter-spacing: -0.01em;
+        line-height: 1.3;
+        color: var(--ink);
+        margin-bottom: 8px;
+      }
+      .p4-item-body {
+        font-size: 12px;
+        line-height: 1.8;
+        color: var(--mid);
+        font-weight: 300;
+      }
 
-.p4-cta-row{
-  display:flex;align-items:center;justify-content:center;gap:16px;
-  padding:24px;background:var(--or-lt);border-radius:12px;border:1px solid rgba(232,98,26,.15);
-  flex-wrap:wrap;
-}
-.p4-cta-txt{font-size:14px;font-weight:500;color:var(--ink);}
-.p4-cta-txt span{color:var(--or);font-weight:700;}
+      .p4-cta-row {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        padding: 24px;
+        background: var(--or-lt);
+        border-radius: 12px;
+        border: 1px solid rgba(232, 98, 26, 0.15);
+        flex-wrap: wrap;
+      }
+      .p4-cta-txt {
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--ink);
+      }
+      .p4-cta-txt span {
+        color: var(--or);
+        font-weight: 700;
+      }
 
-/* ══════════════════════════════
+      /* ══════════════════════════════
    DOTS — ALWAYS VISIBLE
 ══════════════════════════════ */
-#dots{
-  position:fixed;bottom:24px;left:50%;
-  transform:translateX(-50%);
-  z-index:8000;
-  display:flex;gap:8px;align-items:center;
-  background:rgba(255,255,255,0.85);
-  backdrop-filter:blur(8px);
-  padding:8px 16px;
-  border-radius:100px;
-  border:1px solid var(--line);
-  box-shadow:0 2px 12px rgba(0,0,0,0.08);
-}
-.dot{
-  width:6px;height:6px;border-radius:50%;
-  background:var(--line);
-  cursor:pointer;transition:all .25s;
-}
-.dot.active{
-  background:var(--or);
-  transform:scale(1.4);
-}
-.dot.on-wh.active{background:#fff;}
+      #dots {
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 8000;
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(8px);
+        padding: 8px 16px;
+        border-radius: 100px;
+        border: 1px solid var(--line);
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+      }
+      .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--line);
+        cursor: pointer;
+        transition: all 0.25s;
+      }
+      .dot.active {
+        background: var(--or);
+        transform: scale(1.4);
+      }
+      .dot.on-wh.active {
+        background: #fff;
+      }
 
-/* ══════════════════════════════
+      /* ══════════════════════════════
    RESPONSIVE
 ══════════════════════════════ */
-@media(max-width:900px){
-  #nav{padding:14px 20px;}
-  .p0-inner{
-    grid-template-columns:1fr;
-    padding:76px 20px 100px;
-    gap:24px;
-    overflow-y:auto;max-height:100vh;
-  }
-  .p0-h1{font-size:clamp(36px,10vw,60px);}
-  .p0-graphic{display:none;}
-  .p1-inner,.p2-inner,.p4-inner{padding:28px 20px;}
-  .p1-cols{grid-template-columns:1fr;border-radius:8px;}
-  .p2-steps{grid-template-columns:1fr 1fr;}
-  .p4-grid{grid-template-columns:1fr;}
-  #p3 .p3-inner{padding:28px 20px;}
-}
-@media(max-width:480px){
-  .p2-steps{grid-template-columns:1fr;}
-  .p0-h1{font-size:clamp(32px,12vw,52px);}
-  .role-grid{grid-template-columns:1fr 1fr 1fr;}
-}
-</style>
-</head>
-<body>
+      @media (max-width: 900px) {
+        #nav {
+          padding: 14px 20px;
+        }
+        .p0-inner {
+          grid-template-columns: 1fr;
+          padding: 76px 20px 100px;
+          gap: 24px;
+          overflow-y: auto;
+          max-height: 100vh;
+        }
+        .p0-h1 {
+          font-size: clamp(36px, 10vw, 60px);
+        }
+        .p0-graphic {
+          display: none;
+        }
+        .p1-inner,
+        .p2-inner,
+        .p4-inner {
+          padding: 28px 20px;
+        }
+        .p1-cols {
+          grid-template-columns: 1fr;
+          border-radius: 8px;
+        }
+        .p2-steps {
+          grid-template-columns: 1fr 1fr;
+        }
+        .p4-grid {
+          grid-template-columns: 1fr;
+        }
+        #p3 .p3-inner {
+          padding: 28px 20px;
+        }
+      }
+      @media (max-width: 480px) {
+        .p2-steps {
+          grid-template-columns: 1fr;
+        }
+        .p0-h1 {
+          font-size: clamp(32px, 12vw, 52px);
+        }
+        .role-grid {
+          grid-template-columns: 1fr 1fr 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav id="nav">
+      <a href="/" class="n-logo">
+        <svg
+          viewBox="0 0 500 500"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          width="32"
+          height="32"
+          style="flex-shrink: 0"
+        >
+          <path
+            d="m 187.11765,18.563025 v 40 q 0,37.999995 38,37.999995 h 38 q 38,0 38,-37.999995 v -40"
+            stroke="#e8621a"
+            stroke-width="18"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            fill="none"
+          />
+          <circle
+            cx="-248.63866"
+            cy="167.71428"
+            r="38"
+            stroke="#e8621a"
+            stroke-width="18"
+            transform="scale(-1,1)"
+            fill="none"
+          />
+          <path
+            d="m 306.57983,480.22689 v -40 q 0,-38 -38,-38 h -38 q -38,0 -38,38 v 40"
+            stroke="#e8621a"
+            stroke-width="18"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            fill="none"
+          />
+          <path
+            d="m 18.588235,308.84034 h 40 q 38,0 38,-38 v -38 q 0,-38 -38,-38 h -40"
+            stroke="#e8621a"
+            stroke-width="18"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            fill="none"
+          />
+          <circle
+            cx="168"
+            cy="250"
+            r="38"
+            stroke="#e8621a"
+            stroke-width="18"
+            fill="none"
+          />
+          <circle
+            cx="332"
+            cy="250"
+            r="38"
+            stroke="#e8621a"
+            stroke-width="18"
+            fill="none"
+          />
+          <path
+            d="m 480.64367,307.33357 h -40.34356 q -38.32636,0 -38.32636,-38.22336 v -38.22337 q 0,-38.22335 38.32636,-38.22335 h 40.34356"
+            stroke="#e8621a"
+            stroke-width="18.1299"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            fill="none"
+          />
+          <circle
+            cx="248.50162"
+            cy="332.65546"
+            r="38"
+            stroke="#e8621a"
+            stroke-width="18"
+            fill="none"
+          />
+        </svg>
+        Realize Together
+      </a>
+      <div class="n-r">
+        <a href="/login" class="n-login">Log in</a>
+        <a href="/register" class="n-signup">Join free</a>
+      </div>
+    </nav>
 
-<nav id="nav">
-  <a href="/" class="n-logo">
-    <svg viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg" width="32" height="32" style="flex-shrink:0;">
-      <path d="m 187.11765,18.563025 v 40 q 0,37.999995 38,37.999995 h 38 q 38,0 38,-37.999995 v -40" stroke="#e8621a" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-      <circle cx="-248.63866" cy="167.71428" r="38" stroke="#e8621a" stroke-width="18" transform="scale(-1,1)" fill="none"/>
-      <path d="m 306.57983,480.22689 v -40 q 0,-38 -38,-38 h -38 q -38,0 -38,38 v 40" stroke="#e8621a" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-      <path d="m 18.588235,308.84034 h 40 q 38,0 38,-38 v -38 q 0,-38 -38,-38 h -40" stroke="#e8621a" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-      <circle cx="168" cy="250" r="38" stroke="#e8621a" stroke-width="18" fill="none"/>
-      <circle cx="332" cy="250" r="38" stroke="#e8621a" stroke-width="18" fill="none"/>
-      <path d="m 480.64367,307.33357 h -40.34356 q -38.32636,0 -38.32636,-38.22336 v -38.22337 q 0,-38.22335 38.32636,-38.22335 h 40.34356" stroke="#e8621a" stroke-width="18.1299" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-      <circle cx="248.50162" cy="332.65546" r="38" stroke="#e8621a" stroke-width="18" fill="none"/>
-    </svg>
-    Realize Together
-  </a>
-  <div class="n-r">
-    <a href="/login" class="n-login">Log in</a>
-    <a href="/register" class="n-signup">Join free</a>
-  </div>
-</nav>
+    <div id="scroll-wrap">
+      <div id="canvas">
+        <!-- ════ P0: HERO ════ -->
+        <div class="panel" id="p0">
+          <!-- Background concentric circles -->
+          <svg
+            class="p0-graphic"
+            viewBox="0 0 500 500"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="250"
+              cy="250"
+              r="240"
+              stroke="#e8621a"
+              stroke-width="1"
+              fill="none"
+            />
+            <circle
+              cx="250"
+              cy="250"
+              r="190"
+              stroke="#e8621a"
+              stroke-width="1"
+              fill="none"
+            />
+            <circle
+              cx="250"
+              cy="250"
+              r="140"
+              stroke="#e8621a"
+              stroke-width="1"
+              fill="none"
+            />
+            <circle
+              cx="250"
+              cy="250"
+              r="90"
+              stroke="#e8621a"
+              stroke-width="1"
+              fill="none"
+            />
+            <circle
+              cx="250"
+              cy="250"
+              r="40"
+              stroke="#e8621a"
+              stroke-width="1"
+              fill="none"
+            />
+            <line
+              x1="250"
+              y1="10"
+              x2="250"
+              y2="490"
+              stroke="#e8621a"
+              stroke-width="0.5"
+            />
+            <line
+              x1="10"
+              y1="250"
+              x2="490"
+              y2="250"
+              stroke="#e8621a"
+              stroke-width="0.5"
+            />
+          </svg>
 
-<div id="scroll-wrap">
-<div id="canvas">
+          <div class="p0-inner">
+            <div>
+              <p class="p0-kicker">For filmmakers &amp; creatives</p>
+              <h1 class="p0-h1">
+                FIND<br />
+                YOUR<br />
+                <span class="outline">FILM</span>
+                🎬<br />
+                <span class="or">TEAM.</span>
+              </h1>
+              <p class="p0-desc">
+                The platform where filmmakers, directors, DPs, writers and
+                producers find each other — with protected pitches, verified
+                portfolios, and a match that only happens when both sides are
+                ready.
+              </p>
+              <div class="p0-proof">
+                <div class="proof-avatars">
+                  <div class="proof-av"></div>
+                  <div class="proof-av"></div>
+                  <div class="proof-av"></div>
+                  <div class="proof-av"></div>
+                </div>
+                <span>Trusted by filmmakers worldwide</span>
+              </div>
+              <a href="/explore" class="p0-browse"
+                >Browse open projects first</a
+              >
+            </div>
 
-<!-- ════ P0: HERO ════ -->
-<div class="panel" id="p0">
+            <div class="p0-card">
+              <div class="card-head">
+                <div class="card-icon">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                  </svg>
+                </div>
+                <h2 class="card-title">Create your profile</h2>
+              </div>
+              <p class="card-sub">
+                Free. No credit card. Start finding collaborators today.
+              </p>
 
-  <!-- Background concentric circles -->
-  <svg class="p0-graphic" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="250" cy="250" r="240" stroke="#e8621a" stroke-width="1" fill="none"/>
-    <circle cx="250" cy="250" r="190" stroke="#e8621a" stroke-width="1" fill="none"/>
-    <circle cx="250" cy="250" r="140" stroke="#e8621a" stroke-width="1" fill="none"/>
-    <circle cx="250" cy="250" r="90" stroke="#e8621a" stroke-width="1" fill="none"/>
-    <circle cx="250" cy="250" r="40" stroke="#e8621a" stroke-width="1" fill="none"/>
-    <line x1="250" y1="10" x2="250" y2="490" stroke="#e8621a" stroke-width="0.5"/>
-    <line x1="10" y1="250" x2="490" y2="250" stroke="#e8621a" stroke-width="0.5"/>
-  </svg>
+              <div class="ff">
+                <label>Full name</label>
+                <input type="text" placeholder="Jane Doe" />
+              </div>
+              <div class="ff">
+                <label>Email address</label>
+                <input type="email" placeholder="you@example.com" />
+              </div>
+              <div class="ff">
+                <label>Password</label>
+                <input type="password" placeholder="Min. 8 characters" />
+              </div>
 
-  <div class="p0-inner">
-    <div>
-      <p class="p0-kicker">For filmmakers &amp; creatives</p>
-      <h1 class="p0-h1">
-        FIND<br>
-        YOUR<br>
-        <span class="outline">FILM</span><br>
-        <span class="or">TEAM.</span>
-      </h1>
-      <p class="p0-desc">
-        The platform where filmmakers, directors, DPs, writers and producers find each other — with protected pitches, verified portfolios, and a match that only happens when both sides are ready.
-      </p>
-      <div class="p0-proof">
-        <div class="proof-avatars">
-          <div class="proof-av"></div>
-          <div class="proof-av"></div>
-          <div class="proof-av"></div>
-          <div class="proof-av"></div>
+              <span class="role-lbl">I am a —</span>
+              <div class="role-grid">
+                <button class="role-btn active">Director</button>
+                <button class="role-btn">Writer</button>
+                <button class="role-btn">DP</button>
+                <button class="role-btn">Producer</button>
+                <button class="role-btn">Editor</button>
+                <button class="role-btn">Other</button>
+              </div>
+
+              <button
+                class="btn-submit"
+                onclick="window.location = '/register'"
+              >
+                Get started — it's free
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </button>
+              <p class="form-alt">
+                Already a member? <a href="/login">Log in</a>
+              </p>
+            </div>
+          </div>
         </div>
-        <span>Trusted by filmmakers worldwide</span>
-      </div>
-      <a href="/explore" class="p0-browse">Browse open projects first</a>
-    </div>
 
-    <div class="p0-card">
-      <div class="card-head">
-        <div class="card-icon">
-          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <!-- ════ P1: WHAT IT DOES ════ -->
+        <div class="panel" id="p1">
+          <div class="p1-inner">
+            <div class="p1-top">
+              <h2 class="p1-h">
+                What we<br />do for<br /><span class="or">you.</span>
+              </h2>
+              <p class="p1-top-sub">
+                Three core features that make serious film collaboration
+                possible.
+              </p>
+            </div>
+            <div class="p1-cols">
+              <div class="p1-col">
+                <div class="p1-col-icon">
+                  <svg viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="7" />
+                    <line x1="16.5" y1="16.5" x2="22" y2="22" />
+                  </svg>
+                </div>
+                <p class="p1-col-n">01 —</p>
+                <h3 class="p1-col-title">
+                  Find the exact collaborator your project needs
+                </h3>
+                <p class="p1-col-body">
+                  Post your project. Specify the role, stage, and commitment.
+                  Get applications from people whose verified credits actually
+                  match what you need.
+                </p>
+              </div>
+              <div class="p1-col">
+                <div class="p1-col-icon">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                  </svg>
+                </div>
+                <p class="p1-col-n">02 —</p>
+                <h3 class="p1-col-title">
+                  Share your pitch — protected by NDA
+                </h3>
+                <p class="p1-col-body">
+                  Your synopsis and script stay behind a digital NDA. Every
+                  collaborator who reads your pitch signs first. Every access is
+                  timestamped and logged.
+                </p>
+              </div>
+              <div class="p1-col">
+                <div class="p1-col-icon">
+                  <svg viewBox="0 0 24 24">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                </div>
+                <p class="p1-col-n">03 —</p>
+                <h3 class="p1-col-title">Match when both sides are ready</h3>
+                <p class="p1-col-body">
+                  A collaboration only starts when creator and applicant both
+                  confirm. No pressure, no asymmetry — mutual commitment from
+                  the first frame.
+                </p>
+              </div>
+            </div>
+            <div class="p1-foot">
+              <span class="p1-note"
+                >✓ Free to join &nbsp;&nbsp;✓ No credit card &nbsp;&nbsp;✓
+                Protected pitches</span
+              >
+              <a href="/register" class="p1-cta">Create your free profile →</a>
+            </div>
+          </div>
         </div>
-        <h2 class="card-title">Create your profile</h2>
-      </div>
-      <p class="card-sub">Free. No credit card. Start finding collaborators today.</p>
 
-      <div class="ff">
-        <label>Full name</label>
-        <input type="text" placeholder="Jane Doe">
-      </div>
-      <div class="ff">
-        <label>Email address</label>
-        <input type="email" placeholder="you@example.com">
-      </div>
-      <div class="ff">
-        <label>Password</label>
-        <input type="password" placeholder="Min. 8 characters">
-      </div>
-
-      <span class="role-lbl">I am a —</span>
-      <div class="role-grid">
-        <button class="role-btn active">Director</button>
-        <button class="role-btn">Writer</button>
-        <button class="role-btn">DP</button>
-        <button class="role-btn">Producer</button>
-        <button class="role-btn">Editor</button>
-        <button class="role-btn">Other</button>
-      </div>
-
-      <button class="btn-submit" onclick="window.location='/register'">
-        Get started — it's free
-        <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-      </button>
-      <p class="form-alt">Already a member? <a href="/login">Log in</a></p>
-    </div>
-  </div>
-</div>
-
-<!-- ════ P1: WHAT IT DOES ════ -->
-<div class="panel" id="p1">
-  <div class="p1-inner">
-    <div class="p1-top">
-      <h2 class="p1-h">What we<br>do for<br><span class="or">you.</span></h2>
-      <p class="p1-top-sub">Three core features that make serious film collaboration possible.</p>
-    </div>
-    <div class="p1-cols">
-      <div class="p1-col">
-        <div class="p1-col-icon">
-          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/></svg>
+        <!-- ════ P2: HOW IT WORKS ════ -->
+        <div class="panel" id="p2">
+          <div class="p2-inner">
+            <div class="p2-hd">
+              <h2 class="p2-h">How it<br />works.</h2>
+              <p class="p2-meta">
+                Four simple steps from signup to your first collaboration
+              </p>
+            </div>
+            <div class="p2-steps">
+              <div class="p2-step">
+                <div class="p2-step-n">01</div>
+                <p class="p2-step-title">Build your profile</p>
+                <p class="p2-step-body">
+                  Add your IMDb, Vimeo reel, LinkedIn. Verified credits make you
+                  stand out before a word is sent.
+                </p>
+              </div>
+              <div class="p2-step">
+                <div class="p2-step-n">02</div>
+                <p class="p2-step-title">Discover projects</p>
+                <p class="p2-step-body">
+                  Browse by role, stage, and commitment. See exactly what each
+                  project needs — no vague calls.
+                </p>
+              </div>
+              <div class="p2-step">
+                <div class="p2-step-n">03</div>
+                <p class="p2-step-title">Sign NDA. Read synopsis.</p>
+                <p class="p2-step-body">
+                  Interest in a project? Sign the NDA, then access the full
+                  pitch. Your ideas are protected the same way.
+                </p>
+              </div>
+              <div class="p2-step">
+                <div class="p2-step-n">04</div>
+                <p class="p2-step-title">Double opt-in match</p>
+                <p class="p2-step-body">
+                  Both sides confirm. Only then does collaboration begin. Always
+                  mutual. Always intentional.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
-        <p class="p1-col-n">01 —</p>
-        <h3 class="p1-col-title">Find the exact collaborator your project needs</h3>
-        <p class="p1-col-body">Post your project. Specify the role, stage, and commitment. Get applications from people whose verified credits actually match what you need.</p>
-      </div>
-      <div class="p1-col">
-        <div class="p1-col-icon">
-          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+
+        <!-- ════ P3: MANIFESTO ════ -->
+        <div class="panel" id="p3">
+          <div class="p3-bg">
+            <svg
+              viewBox="0 0 500 500"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              style="width: 100%; height: 100%; opacity: 0.12"
+            >
+              <path
+                d="m 187.11765,18.563025 v 40 q 0,37.999995 38,37.999995 h 38 q 38,0 38,-37.999995 v -40"
+                stroke="white"
+                stroke-width="18"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                fill="none"
+              />
+              <circle
+                cx="-248.63866"
+                cy="167.71428"
+                r="38"
+                stroke="white"
+                stroke-width="18"
+                transform="scale(-1,1)"
+                fill="none"
+              />
+              <path
+                d="m 306.57983,480.22689 v -40 q 0,-38 -38,-38 h -38 q -38,0 -38,38 v 40"
+                stroke="white"
+                stroke-width="18"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                fill="none"
+              />
+              <path
+                d="m 18.588235,308.84034 h 40 q 38,0 38,-38 v -38 q 0,-38 -38,-38 h -40"
+                stroke="white"
+                stroke-width="18"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                fill="none"
+              />
+              <circle
+                cx="168"
+                cy="250"
+                r="38"
+                stroke="white"
+                stroke-width="18"
+                fill="none"
+              />
+              <circle
+                cx="332"
+                cy="250"
+                r="38"
+                stroke="white"
+                stroke-width="18"
+                fill="none"
+              />
+              <path
+                d="m 480.64367,307.33357 h -40.34356 q -38.32636,0 -38.32636,-38.22336 v -38.22337 q 0,-38.22335 38.32636,-38.22335 h 40.34356"
+                stroke="white"
+                stroke-width="18.1299"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                fill="none"
+              />
+              <circle
+                cx="248.50162"
+                cy="332.65546"
+                r="38"
+                stroke="white"
+                stroke-width="18"
+                fill="none"
+              />
+            </svg>
+          </div>
+          <div class="p3-inner">
+            <p class="p3-q">
+              "The best films start<br />with the right team.
+              <strong>Find yours by design —<br />not by accident."</strong>
+            </p>
+            <div class="p3-btns">
+              <a href="/register" class="btn-wh">Create your free profile</a>
+              <a href="/explore" class="btn-ghost-or">Browse open projects</a>
+            </div>
+          </div>
         </div>
-        <p class="p1-col-n">02 —</p>
-        <h3 class="p1-col-title">Share your pitch — protected by NDA</h3>
-        <p class="p1-col-body">Your synopsis and script stay behind a digital NDA. Every collaborator who reads your pitch signs first. Every access is timestamped and logged.</p>
-      </div>
-      <div class="p1-col">
-        <div class="p1-col-icon">
-          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+
+        <!-- ════ P4: TRUST ════ -->
+        <div class="panel" id="p4">
+          <div class="p4-inner">
+            <div class="p4-top">
+              <h2 class="p4-h">
+                Your ideas<br />stay <span class="or">yours.</span>
+              </h2>
+              <p class="p4-sub">
+                Built-in legal protection — no lawyers required.
+              </p>
+            </div>
+            <div class="p4-grid">
+              <div class="p4-item">
+                <div class="p4-item-dot"></div>
+                <h3 class="p4-item-title">NDA-protected synopses</h3>
+                <p class="p4-item-body">
+                  Scripts and pitches live behind digital consent. Every access
+                  timestamped and logged automatically.
+                </p>
+              </div>
+              <div class="p4-item">
+                <div class="p4-item-dot"></div>
+                <h3 class="p4-item-title">Double opt-in matching</h3>
+                <p class="p4-item-body">
+                  A match only happens when both parties explicitly confirm. No
+                  pressure. No one-sided commitments. Ever.
+                </p>
+              </div>
+              <div class="p4-item">
+                <div class="p4-item-dot"></div>
+                <h3 class="p4-item-title">Verified portfolios</h3>
+                <p class="p4-item-body">
+                  Real IMDb credits. Real Vimeo reels. Verified badges signal
+                  genuine experience before the first message is sent.
+                </p>
+              </div>
+            </div>
+            <div class="p4-cta-row">
+              <p class="p4-cta-txt">
+                Ready to find your team? <span>Join free today</span> — no
+                credit card needed.
+              </p>
+              <a href="/register" class="p1-cta">Get started →</a>
+            </div>
+          </div>
         </div>
-        <p class="p1-col-n">03 —</p>
-        <h3 class="p1-col-title">Match when both sides are ready</h3>
-        <p class="p1-col-body">A collaboration only starts when creator and applicant both confirm. No pressure, no asymmetry — mutual commitment from the first frame.</p>
       </div>
     </div>
-    <div class="p1-foot">
-      <span class="p1-note">✓ Free to join &nbsp;&nbsp;✓ No credit card &nbsp;&nbsp;✓ Protected pitches</span>
-      <a href="/register" class="p1-cta">Create your free profile →</a>
+
+    <!-- DOTS -->
+    <div id="dots">
+      <div class="dot active" data-i="0"></div>
+      <div class="dot" data-i="1"></div>
+      <div class="dot" data-i="2"></div>
+      <div class="dot on-wh" data-i="3"></div>
+      <div class="dot" data-i="4"></div>
     </div>
-  </div>
-</div>
 
-<!-- ════ P2: HOW IT WORKS ════ -->
-<div class="panel" id="p2">
-  <div class="p2-inner">
-    <div class="p2-hd">
-      <h2 class="p2-h">How it<br>works.</h2>
-      <p class="p2-meta">Four simple steps from signup to your first collaboration</p>
-    </div>
-    <div class="p2-steps">
-      <div class="p2-step">
-        <div class="p2-step-n">01</div>
-        <p class="p2-step-title">Build your profile</p>
-        <p class="p2-step-body">Add your IMDb, Vimeo reel, LinkedIn. Verified credits make you stand out before a word is sent.</p>
-      </div>
-      <div class="p2-step">
-        <div class="p2-step-n">02</div>
-        <p class="p2-step-title">Discover projects</p>
-        <p class="p2-step-body">Browse by role, stage, and commitment. See exactly what each project needs — no vague calls.</p>
-      </div>
-      <div class="p2-step">
-        <div class="p2-step-n">03</div>
-        <p class="p2-step-title">Sign NDA. Read synopsis.</p>
-        <p class="p2-step-body">Interest in a project? Sign the NDA, then access the full pitch. Your ideas are protected the same way.</p>
-      </div>
-      <div class="p2-step">
-        <div class="p2-step-n">04</div>
-        <p class="p2-step-title">Double opt-in match</p>
-        <p class="p2-step-body">Both sides confirm. Only then does collaboration begin. Always mutual. Always intentional.</p>
-      </div>
-    </div>
-  </div>
-</div>
+    <script>
+      document.querySelectorAll(".role-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          document
+            .querySelectorAll(".role-btn")
+            .forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+        });
+      });
 
-<!-- ════ P3: MANIFESTO ════ -->
-<div class="panel" id="p3">
-  <div class="p3-bg">
-    <svg viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;opacity:0.12;">
-      <path d="m 187.11765,18.563025 v 40 q 0,37.999995 38,37.999995 h 38 q 38,0 38,-37.999995 v -40" stroke="white" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-      <circle cx="-248.63866" cy="167.71428" r="38" stroke="white" stroke-width="18" transform="scale(-1,1)" fill="none"/>
-      <path d="m 306.57983,480.22689 v -40 q 0,-38 -38,-38 h -38 q -38,0 -38,38 v 40" stroke="white" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-      <path d="m 18.588235,308.84034 h 40 q 38,0 38,-38 v -38 q 0,-38 -38,-38 h -40" stroke="white" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-      <circle cx="168" cy="250" r="38" stroke="white" stroke-width="18" fill="none"/>
-      <circle cx="332" cy="250" r="38" stroke="white" stroke-width="18" fill="none"/>
-      <path d="m 480.64367,307.33357 h -40.34356 q -38.32636,0 -38.32636,-38.22336 v -38.22337 q 0,-38.22335 38.32636,-38.22335 h 40.34356" stroke="white" stroke-width="18.1299" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-      <circle cx="248.50162" cy="332.65546" r="38" stroke="white" stroke-width="18" fill="none"/>
-    </svg>
-  </div>
-  <div class="p3-inner">
-    <p class="p3-q">
-      "The best films start<br>with the right team.
-      <strong>Find yours by design —<br>not by accident."</strong>
-    </p>
-    <div class="p3-btns">
-      <a href="/register" class="btn-wh">Create your free profile</a>
-      <a href="/explore" class="btn-ghost-or">Browse open projects</a>
-    </div>
-  </div>
-</div>
+      const canvas = document.getElementById("canvas");
+      const allDots = document.querySelectorAll(".dot");
+      const TOTAL = 5;
+      let cur = 0,
+        busy = false;
 
-<!-- ════ P4: TRUST ════ -->
-<div class="panel" id="p4">
-  <div class="p4-inner">
-    <div class="p4-top">
-      <h2 class="p4-h">Your ideas<br>stay <span class="or">yours.</span></h2>
-      <p class="p4-sub">Built-in legal protection — no lawyers required.</p>
-    </div>
-    <div class="p4-grid">
-      <div class="p4-item">
-        <div class="p4-item-dot"></div>
-        <h3 class="p4-item-title">NDA-protected synopses</h3>
-        <p class="p4-item-body">Scripts and pitches live behind digital consent. Every access timestamped and logged automatically.</p>
-      </div>
-      <div class="p4-item">
-        <div class="p4-item-dot"></div>
-        <h3 class="p4-item-title">Double opt-in matching</h3>
-        <p class="p4-item-body">A match only happens when both parties explicitly confirm. No pressure. No one-sided commitments. Ever.</p>
-      </div>
-      <div class="p4-item">
-        <div class="p4-item-dot"></div>
-        <h3 class="p4-item-title">Verified portfolios</h3>
-        <p class="p4-item-body">Real IMDb credits. Real Vimeo reels. Verified badges signal genuine experience before the first message is sent.</p>
-      </div>
-    </div>
-    <div class="p4-cta-row">
-      <p class="p4-cta-txt">Ready to find your team? <span>Join free today</span> — no credit card needed.</p>
-      <a href="/register" class="p1-cta">Get started →</a>
-    </div>
-  </div>
-</div>
+      function goTo(i) {
+        if (i < 0 || i >= TOTAL || busy) return;
+        busy = true;
+        cur = i;
+        canvas.style.transform = `translateX(${-i * 100}vw)`;
+        allDots.forEach((d, j) => d.classList.toggle("active", j === i));
+        setTimeout(() => {
+          busy = false;
+        }, 780);
+      }
 
-</div></div>
+      let wa = 0,
+        wt = null;
+      window.addEventListener(
+        "wheel",
+        (e) => {
+          e.preventDefault();
+          wa += e.deltaY;
+          clearTimeout(wt);
+          wt = setTimeout(() => {
+            wa = 0;
+          }, 200);
+          if (Math.abs(wa) > 50) {
+            goTo(cur + (wa > 0 ? 1 : -1));
+            wa = 0;
+          }
+        },
+        { passive: false },
+      );
 
-<!-- DOTS -->
-<div id="dots">
-  <div class="dot active" data-i="0"></div>
-  <div class="dot" data-i="1"></div>
-  <div class="dot" data-i="2"></div>
-  <div class="dot on-wh" data-i="3"></div>
-  <div class="dot" data-i="4"></div>
-</div>
+      window.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowRight" || e.key === "ArrowDown") goTo(cur + 1);
+        if (e.key === "ArrowLeft" || e.key === "ArrowUp") goTo(cur - 1);
+      });
 
-<script>
-document.querySelectorAll('.role-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-  });
-});
+      allDots.forEach((d) =>
+        d.addEventListener("click", () => goTo(+d.dataset.i)),
+      );
 
-const canvas = document.getElementById('canvas');
-const allDots = document.querySelectorAll('.dot');
-const TOTAL = 5;
-let cur = 0, busy = false;
-
-function goTo(i) {
-  if (i < 0 || i >= TOTAL || busy) return;
-  busy = true; cur = i;
-  canvas.style.transform = `translateX(${-i * 100}vw)`;
-  allDots.forEach((d,j) => d.classList.toggle('active', j === i));
-  setTimeout(() => { busy = false; }, 780);
-}
-
-let wa = 0, wt = null;
-window.addEventListener('wheel', e => {
-  e.preventDefault();
-  wa += e.deltaY;
-  clearTimeout(wt);
-  wt = setTimeout(() => { wa = 0; }, 200);
-  if (Math.abs(wa) > 50) { goTo(cur + (wa > 0 ? 1 : -1)); wa = 0; }
-}, { passive: false });
-
-window.addEventListener('keydown', e => {
-  if (e.key==='ArrowRight'||e.key==='ArrowDown') goTo(cur+1);
-  if (e.key==='ArrowLeft'||e.key==='ArrowUp') goTo(cur-1);
-});
-
-allDots.forEach(d => d.addEventListener('click', () => goTo(+d.dataset.i)));
-
-let ts=0,tx=0,ty=0,drag=false;
-window.addEventListener('touchstart',e=>{ts=Date.now();tx=e.touches[0].clientX;ty=e.touches[0].clientY;drag=true;},{passive:true});
-window.addEventListener('touchmove',e=>{
-  if(!drag)return;
-  const dx=e.touches[0].clientX-tx,dy=e.touches[0].clientY-ty;
-  if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>10)e.preventDefault();
-},{passive:false});
-window.addEventListener('touchend',e=>{
-  if(!drag)return;drag=false;
-  const dx=e.changedTouches[0].clientX-tx,dy=e.changedTouches[0].clientY-ty;
-  if(Date.now()-ts<400&&Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy)*1.5)goTo(cur+(dx<0?1:-1));
-},{passive:true});
-</script>
-</body>
+      let ts = 0,
+        tx = 0,
+        ty = 0,
+        drag = false;
+      window.addEventListener(
+        "touchstart",
+        (e) => {
+          ts = Date.now();
+          tx = e.touches[0].clientX;
+          ty = e.touches[0].clientY;
+          drag = true;
+        },
+        { passive: true },
+      );
+      window.addEventListener(
+        "touchmove",
+        (e) => {
+          if (!drag) return;
+          const dx = e.touches[0].clientX - tx,
+            dy = e.touches[0].clientY - ty;
+          if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 10)
+            e.preventDefault();
+        },
+        { passive: false },
+      );
+      window.addEventListener(
+        "touchend",
+        (e) => {
+          if (!drag) return;
+          drag = false;
+          const dx = e.changedTouches[0].clientX - tx,
+            dy = e.changedTouches[0].clientY - ty;
+          if (
+            Date.now() - ts < 400 &&
+            Math.abs(dx) > 40 &&
+            Math.abs(dx) > Math.abs(dy) * 1.5
+          )
+            goTo(cur + (dx < 0 ? 1 : -1));
+        },
+        { passive: true },
+      );
+    </script>
+  </body>
 </html>
