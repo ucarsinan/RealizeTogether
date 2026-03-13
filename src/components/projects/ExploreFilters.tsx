@@ -41,22 +41,20 @@ export function ExploreFilters({ currentStage, currentCommitment }: ExploreFilte
     router.push(`/explore?${params.toString()}`)
   }, [router, searchParams])
 
-  const pillBase = "font-['DM_Sans'] text-[12px] font-medium px-4 py-1.5 rounded-full border transition-colors duration-150"
-  const pillActive = "bg-[#e8621a] border-[#e8621a] text-white"
-  const pillInactive = "bg-white border-[#e0ddd8] text-[#6b6762] hover:border-[#1a1918] hover:text-[#1a1918]"
+  const pillActive = "bg-[#e8621a] text-white font-bold rounded-full px-4 py-2 text-[12px] font-['DM_Sans'] border border-[#e8621a] transition-colors"
+  const pillInactive = "bg-white text-[#6b6762] border border-[#e0ddd8] rounded-full px-4 py-2 text-[12px] font-['DM_Sans'] hover:border-[#1a1918] hover:text-[#1a1918] transition-colors"
+  const sectionLabel = "font-['Unbounded'] text-[9px] font-bold tracking-[.15em] uppercase text-[#6b6762] mb-3"
 
   return (
     <div className="space-y-4">
       <div>
-        <p className="font-['DM_Sans'] text-[11px] font-medium text-[#6b6762] uppercase tracking-widest mb-2.5">
-          Stage
-        </p>
+        <p className={sectionLabel}>STAGE</p>
         <div className="flex flex-wrap gap-2 overflow-x-auto">
           {STAGES.map(s => (
             <button
               key={s.value}
               onClick={() => updateFilter("stage", s.value)}
-              className={cn(pillBase, (s.value === "all" ? !currentStage : currentStage === s.value) ? pillActive : pillInactive)}
+              className={(s.value === "all" ? !currentStage : currentStage === s.value) ? pillActive : pillInactive}
             >
               {s.label}
             </button>
@@ -65,15 +63,13 @@ export function ExploreFilters({ currentStage, currentCommitment }: ExploreFilte
       </div>
 
       <div>
-        <p className="font-['DM_Sans'] text-[11px] font-medium text-[#6b6762] uppercase tracking-widest mb-2.5">
-          Commitment
-        </p>
+        <p className={sectionLabel}>COMMITMENT</p>
         <div className="flex flex-wrap gap-2 overflow-x-auto">
           {COMMITMENTS.map(c => (
             <button
               key={c.value}
               onClick={() => updateFilter("commitment", c.value)}
-              className={cn(pillBase, (c.value === "all" ? !currentCommitment : currentCommitment === c.value) ? pillActive : pillInactive)}
+              className={(c.value === "all" ? !currentCommitment : currentCommitment === c.value) ? pillActive : pillInactive}
             >
               {c.label}
             </button>
