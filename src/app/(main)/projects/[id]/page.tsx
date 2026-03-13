@@ -5,8 +5,9 @@ import { getProject } from "@/actions/project.actions"
 import { checkNdaConsent } from "@/actions/nda.actions"
 import { SynopsisViewer } from "@/components/trust-funnel/SynopsisViewer"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { CheckCircle, Lock, Users, Play, ArrowLeft } from "lucide-react"
+import { CheckCircle, Lock, Users, Play } from "lucide-react"
 import { COMMITMENT_LABELS, STAGE_LABELS, COLLAB_LABELS } from "@/lib/utils"
+import { Breadcrumb } from "@/components/layout/Breadcrumb"
 
 const STAGE_COLORS: Record<string, string> = {
   idea:        "bg-[#fdf2ec] text-[#e8621a] border-[#e8621a]/20",
@@ -42,13 +43,10 @@ export default async function ProjectDetailPage({ params }: { params: Params }) 
     <div className="min-h-screen bg-[#f2f0ed]">
       <div className="max-w-270 mx-auto px-10 max-md:px-5 py-10 space-y-6">
 
-        <Link
-          href="/explore"
-          className="inline-flex items-center gap-1.5 font-['DM_Sans'] text-[13px] text-[#6b6762] hover:text-[#1a1918] transition-colors"
-        >
-          <ArrowLeft className="w-3.5 h-3.5" />
-          Back to Explore
-        </Link>
+        <Breadcrumb items={[
+          { label: 'Explore', href: '/explore' },
+          { label: project.title },
+        ]} />
 
         {/* Header card */}
         <div className="bg-white border border-[#e0ddd8] rounded-2xl p-8 shadow-[0_4px_32px_rgba(0,0,0,0.07)] space-y-6">

@@ -2,6 +2,7 @@ import { Suspense } from "react"
 import { getProjects } from "@/actions/project.actions"
 import { ProjectCard } from "@/components/projects/ProjectCard"
 import { ExploreFilters } from "@/components/projects/ExploreFilters"
+import { Breadcrumb } from "@/components/layout/Breadcrumb"
 import type { ProjectStage, CommitmentType } from "@/lib/types"
 
 type SearchParams = Promise<{
@@ -34,6 +35,7 @@ export default async function ExplorePage({ searchParams }: { searchParams: Sear
           <p className="font-['Unbounded'] text-[10px] font-bold tracking-[.18em] uppercase text-[#e8621a] mb-3">
             DISCOVER
           </p>
+          <Breadcrumb items={[{ label: 'Explore' }]} />
           <h1 className="font-['Unbounded'] font-black text-[clamp(28px,3.5vw,52px)] tracking-[-0.04em] leading-[.95] text-[#1a1918]">
             Find your next project.
           </h1>

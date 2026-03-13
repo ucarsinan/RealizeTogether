@@ -4,8 +4,9 @@ import { useState, useTransition } from "react"
 import { useRouter } from "next/navigation"
 import { submitApplication } from "@/actions/application.actions"
 import { cn } from "@/lib/utils"
-import { CheckCircle, Loader2, AlertCircle, ArrowLeft } from "lucide-react"
+import { CheckCircle, Loader2, AlertCircle } from "lucide-react"
 import Link from "next/link"
+import { Breadcrumb } from "@/components/layout/Breadcrumb"
 
 export type Role = { id: string; role_name: string; description: string | null }
 
@@ -76,18 +77,15 @@ export function ApplyForm({ projectId, projectTitle, roles, isEarlyStage }: Appl
 
   return (
     <div className="max-w-150 mx-auto px-10 max-md:px-5 py-10 space-y-6">
-      <Link
-        href={`/projects/${projectId}`}
-        className="inline-flex items-center gap-1.5 font-['DM_Sans'] text-[13px] text-[#6b6762] hover:text-[#1a1918] transition-colors"
-      >
-        <ArrowLeft className="w-3.5 h-3.5" />
-        Back to project
-      </Link>
-
       <div className="mb-2">
         <p className="font-['Unbounded'] text-[10px] font-bold tracking-[.18em] uppercase text-[#e8621a] mb-2">
           APPLY
         </p>
+        <Breadcrumb items={[
+          { label: 'Explore', href: '/explore' },
+          { label: projectTitle, href: `/projects/${projectId}` },
+          { label: 'Apply' },
+        ]} />
         <h1 className="font-['Unbounded'] font-black text-[clamp(28px,3.5vw,52px)] tracking-[-0.04em] leading-[.95] text-[#1a1918]">
           {projectTitle}
         </h1>

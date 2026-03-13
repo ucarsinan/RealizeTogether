@@ -2,6 +2,7 @@ import { notFound, redirect } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
 import { getApplicationsForProject } from "@/actions/application.actions"
 import { ApplicationsManager } from "@/components/projects/ApplicationsManager"
+import { Breadcrumb } from "@/components/layout/Breadcrumb"
 
 type Params = Promise<{ id: string }>
 
@@ -31,6 +32,11 @@ export default async function ApplicationsPage({ params }: { params: Params }) {
           <p className="font-['Unbounded'] text-[10px] font-bold tracking-[.18em] uppercase text-[#e8621a] mb-3">
             APPLICATIONS
           </p>
+          <Breadcrumb items={[
+            { label: 'Dashboard', href: '/dashboard' },
+            { label: project.title, href: `/projects/${id}` },
+            { label: 'Applications' },
+          ]} />
           <h1 className="font-['Unbounded'] font-black text-[clamp(28px,3.5vw,52px)] tracking-[-0.04em] leading-[.95] text-[#1a1918]">
             {project.title}
           </h1>

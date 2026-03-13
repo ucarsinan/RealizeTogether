@@ -2,6 +2,7 @@ import { redirect } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
 import { getProfile } from "@/actions/profile.actions"
 import { ProfileForm } from "@/components/profile/ProfileForm"
+import { Breadcrumb } from "@/components/layout/Breadcrumb"
 import type { Profile } from "@/lib/types"
 
 type SearchParams = Promise<{ new?: string }>
@@ -43,6 +44,10 @@ export default async function ProfileEditPage({ searchParams }: { searchParams: 
           <p className="font-['Unbounded'] text-[10px] font-bold tracking-[.18em] uppercase text-[#e8621a] mb-3">
             YOUR PROFILE
           </p>
+          <Breadcrumb items={[
+            { label: 'Dashboard', href: '/dashboard' },
+            { label: 'Edit Profile' },
+          ]} />
           <h1 className="font-['Unbounded'] font-black text-[clamp(28px,3.5vw,52px)] tracking-[-0.04em] leading-[.95] text-[#1a1918]">
             {isNew ? "Complete your profile" : "Edit profile"}
           </h1>

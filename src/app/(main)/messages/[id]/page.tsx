@@ -4,6 +4,7 @@ import { getConversation, markAsRead } from "@/actions/conversation.actions"
 import { getMatchStatus } from "@/actions/match.actions"
 import { ChatView } from "@/components/chat/ChatView"
 import { MatchConfirmBanner } from "@/components/chat/MatchConfirmBanner"
+import { Breadcrumb } from "@/components/layout/Breadcrumb"
 
 type Params = Promise<{ id: string }>
 
@@ -29,6 +30,12 @@ export default async function ConversationPage({ params }: { params: Params }) {
 
   return (
     <div className="flex-1 flex flex-col min-h-0">
+      <div className="px-10 max-md:px-5 pt-4">
+        <Breadcrumb items={[
+          { label: 'Messages', href: '/messages' },
+          { label: conv.other_user.full_name },
+        ]} />
+      </div>
       <MatchConfirmBanner
         applicationId={conv.application_id}
         applicationStatus={conv.application_status}
