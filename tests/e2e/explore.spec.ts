@@ -26,9 +26,7 @@ test.describe('Explore', () => {
   test('Explore page renders content area', async ({ page }) => {
     await page.goto('/explore')
     await page.waitForLoadState('networkidle')
-    // The content area always renders — either project cards or empty state
-    const main = page.locator('div.min-h-screen')
-    await expect(main).toBeVisible()
+    await expect(page.locator('div.min-h-screen').first()).toBeVisible()
   })
 
 })

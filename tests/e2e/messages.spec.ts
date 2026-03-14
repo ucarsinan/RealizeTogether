@@ -12,12 +12,11 @@ test.describe('Messages', () => {
 
   test('Messages page loads', async ({ page }) => {
     await page.goto('/messages')
-    await expect(page.getByText(/Conversations/i)).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Conversations' })).toBeVisible()
   })
 
   test('Empty state or list is shown', async ({ page }) => {
     await page.goto('/messages')
-    // Page renders either a list of conversations or an empty state — both are valid
     await page.waitForLoadState('networkidle')
     const hasList = await page.locator('a[href*="/messages/"]').count()
     expect(hasList >= 0).toBeTruthy()

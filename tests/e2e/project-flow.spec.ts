@@ -15,15 +15,16 @@ test.describe('Project Creation & Application Flow', () => {
     await expect(page.getByText(/Create a project/i)).toBeVisible()
   })
 
-  test('Project form validates required fields', async ({ page }) => {
+  test('Project form submit button is disabled when form is empty', async ({ page }) => {
     await page.goto('/projects/new')
-    await page.getByRole('button', { name: /Create project/i }).click()
-    await expect(page).toHaveURL(/projects\/new/)
+    const submitBtn = page.getByRole('button', { name: /Create project/i })
+    await expect(submitBtn).toBeVisible()
+    await expect(submitBtn).toBeDisabled()
   })
 
-  test('Dashboard shows "New project" button', async ({ page }) => {
+  test('Dashboard has link to create a new project', async ({ page }) => {
     await page.goto('/dashboard')
-    await expect(page.getByText(/New project/i)).toBeVisible()
+    await expect(page.locator('a[href="/projects/new"]').first()).toBeVisible()
   })
 
 })
