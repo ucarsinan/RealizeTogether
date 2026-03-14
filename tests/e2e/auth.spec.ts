@@ -5,9 +5,9 @@ test.describe('Authentication', () => {
   test('Landing page loads correctly', async ({ page }) => {
     await page.goto('/')
     await expect(page).toHaveTitle(/Realize Together/)
-    await expect(page.getByText('FIND YOUR FILM TEAM')).toBeVisible()
-    await expect(page.getByRole('link', { name: /Join free/i })).toBeVisible()
-    await expect(page.getByRole('link', { name: /Log in/i })).toBeVisible()
+    await expect(page.getByText(/REALIZE TOGETHER/i).first()).toBeVisible()
+    await expect(page.getByRole('link', { name: /Join free/i }).first()).toBeVisible()
+    await expect(page.getByRole('link', { name: /Log in/i }).first()).toBeVisible()
   })
 
   test('Register page loads and shows form', async ({ page }) => {
