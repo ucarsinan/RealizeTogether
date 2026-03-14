@@ -1,9 +1,9 @@
-"use client"
+'use client'
 
-import { useState, useTransition } from "react"
-import { confirmMatch } from "@/actions/match.actions"
-import type { MatchStatus } from "@/actions/match.actions"
-import { CheckCircle, Loader2, Clock } from "lucide-react"
+import { useState, useTransition } from 'react'
+import { confirmMatch } from '@/actions/match.actions'
+import type { MatchStatus } from '@/actions/match.actions'
+import { CheckCircle, Loader2, Clock } from 'lucide-react'
 
 interface MatchConfirmBannerProps {
   applicationId: string
@@ -21,16 +21,17 @@ export function MatchConfirmBanner({
   const [status, setStatus] = useState(initialStatus)
   const [isPending, startTransition] = useTransition()
 
-  if (applicationStatus !== "in_talks") return null
+  if (applicationStatus !== 'in_talks') return null
 
   const iHaveConfirmed = isCreator ? status.creatorConfirmed : status.applicantConfirmed
-  const isComplete = status.matchedAt !== null || (status.creatorConfirmed && status.applicantConfirmed)
+  const isComplete =
+    status.matchedAt !== null || (status.creatorConfirmed && status.applicantConfirmed)
 
   function handleConfirm() {
     startTransition(async () => {
       const result = await confirmMatch(applicationId)
       if (result.success) {
-        setStatus(prev => ({
+        setStatus((prev) => ({
           creatorConfirmed: isCreator ? true : prev.creatorConfirmed,
           applicantConfirmed: !isCreator ? true : prev.applicantConfirmed,
           matchedAt: result.data.isComplete ? new Date().toISOString() : null,
@@ -72,9 +73,13 @@ export function MatchConfirmBanner({
         className="flex items-center gap-1.5 bg-[#e8621a] hover:bg-[#c9521a] text-white font-['DM_Sans'] text-[12px] font-bold px-5 py-2 rounded-full transition-colors disabled:opacity-60 shrink-0"
       >
         {isPending ? (
-          <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Confirming…</>
+          <>
+            <Loader2 className="w-3.5 h-3.5 animate-spin" /> Confirming…
+          </>
         ) : (
-          <><CheckCircle className="w-3.5 h-3.5" /> Confirm Match</>
+          <>
+            <CheckCircle className="w-3.5 h-3.5" /> Confirm Match
+          </>
         )}
       </button>
     </div>

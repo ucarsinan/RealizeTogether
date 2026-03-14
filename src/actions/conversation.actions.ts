@@ -1,8 +1,8 @@
-"use server"
+'use server'
 
-import { createClient } from "@/lib/supabase/server"
-import { revalidatePath } from "next/cache"
-import type { ActionResult } from "@/lib/types"
+import { createClient } from '@/lib/supabase/server'
+import { revalidatePath } from 'next/cache'
+import type { ActionResult } from '@/lib/types'
 
 // ─────────────────────────────────────────────
 // TYPES
@@ -45,16 +45,19 @@ export type ConversationDetail = {
 
 export async function getMyConversations(): Promise<ActionResult<ConversationPreview[]>> {
   const supabase = await createClient()
-  const { data: { user }, error: authError } = await supabase.auth.getUser()
-  if (authError || !user) return { success: false, error: "Not authenticated" }
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser()
+  if (authError || !user) return { success: false, error: 'Not authenticated' }
 
   const [{ data: myProjects }, { data: myApps }] = await Promise.all([
-    supabase.from("projects").select("id").eq("creator_id", user.id),
-    supabase.from("project_applications").select("id").eq("applicant_id", user.id),
+    supabase.from('projects').select('id').eq('creator_id', user.id),
+    supabase.from('project_applications').select('id').eq('applicant_id', user.id),
   ])
 
-  const projectIds = (myProjects ?? []).map(p => p.id)
-  const appIds = (myApps ?? []).map(a => a.id)
+  const projectIds = (myProjects ?? []).map((p) => p.id)
+  const appIds = (myApps ?? []).map((a) => a.id)
 
   if (projectIds.length === 0 && appIds.length === 0) {
     return { success: true, data: [] }
@@ -65,28 +68,33 @@ export async function getMyConversations(): Promise<ActionResult<ConversationPre
   // Conversations as creator — other user = applicant
   if (projectIds.length > 0) {
     const { data } = await supabase
-      .from("conversations")
-      .select(`
+      .from('conversations')
+      .select(
+        `
         id, project_id, application_id,
         projects(id, title),
         project_applications(applicant_id, profiles(id, full_name, avatar_url)),
         messages(id, content, sender_id, created_at, read_at)
-      `)
-      .in("project_id", projectIds)
+      `
+      )
+      .in('project_id', projectIds)
 
-    for (const conv of (data ?? [])) {
+    for (const conv of data ?? []) {
       const msgs = sortDesc(conv.messages as RawMessage[])
       const lastMsg = msgs[0] ?? null
-      const app = conv.project_applications as unknown as { applicant_id: string; profiles: OtherUser }
+      const app = conv.project_applications as unknown as {
+        applicant_id: string
+        profiles: OtherUser
+      }
 
       results.push({
         id: conv.id,
         application_id: conv.application_id,
         project_id: conv.project_id,
-        project_title: (conv.projects as unknown as { title: string })?.title ?? "Project",
+        project_title: (conv.projects as unknown as { title: string })?.title ?? 'Project',
         other_user: app?.profiles ?? UNKNOWN_USER,
         last_message: lastMsg ? toLastMsg(lastMsg, user.id) : null,
-        unread_count: msgs.filter(m => m.sender_id !== user.id && !m.read_at).length,
+        unread_count: msgs.filter((m) => m.sender_id !== user.id && !m.read_at).length,
       })
     }
   }
@@ -94,16 +102,18 @@ export async function getMyConversations(): Promise<ActionResult<ConversationPre
   // Conversations as applicant — other user = creator
   if (appIds.length > 0) {
     const { data } = await supabase
-      .from("conversations")
-      .select(`
+      .from('conversations')
+      .select(
+        `
         id, project_id, application_id,
         projects(id, title, profiles(id, full_name, avatar_url)),
         messages(id, content, sender_id, created_at, read_at)
-      `)
-      .in("application_id", appIds)
+      `
+      )
+      .in('application_id', appIds)
 
-    for (const conv of (data ?? [])) {
-      if (results.find(r => r.id === conv.id)) continue
+    for (const conv of data ?? []) {
+      if (results.find((r) => r.id === conv.id)) continue
 
       const msgs = sortDesc(conv.messages as RawMessage[])
       const lastMsg = msgs[0] ?? null
@@ -113,17 +123,17 @@ export async function getMyConversations(): Promise<ActionResult<ConversationPre
         id: conv.id,
         application_id: conv.application_id,
         project_id: conv.project_id,
-        project_title: project?.title ?? "Project",
+        project_title: project?.title ?? 'Project',
         other_user: project?.profiles ?? UNKNOWN_USER,
         last_message: lastMsg ? toLastMsg(lastMsg, user.id) : null,
-        unread_count: msgs.filter(m => m.sender_id !== user.id && !m.read_at).length,
+        unread_count: msgs.filter((m) => m.sender_id !== user.id && !m.read_at).length,
       })
     }
   }
 
   results.sort((a, b) => {
-    const at = a.last_message?.created_at ?? "0"
-    const bt = b.last_message?.created_at ?? "0"
+    const at = a.last_message?.created_at ?? '0'
+    const bt = b.last_message?.created_at ?? '0'
     return bt.localeCompare(at)
   })
 
@@ -136,27 +146,40 @@ export async function getMyConversations(): Promise<ActionResult<ConversationPre
 
 export async function getConversation(id: string): Promise<ActionResult<ConversationDetail>> {
   const supabase = await createClient()
-  const { data: { user }, error: authError } = await supabase.auth.getUser()
-  if (authError || !user) return { success: false, error: "Not authenticated" }
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser()
+  if (authError || !user) return { success: false, error: 'Not authenticated' }
 
   const { data: conv, error } = await supabase
-    .from("conversations")
-    .select(`
+    .from('conversations')
+    .select(
+      `
       id, project_id, application_id,
       projects(id, title, creator_id, profiles(id, full_name, avatar_url)),
       project_applications(applicant_id, status, profiles(id, full_name, avatar_url)),
       messages(id, conversation_id, sender_id, content, read_at, created_at, profiles(id, full_name, avatar_url))
-    `)
-    .eq("id", id)
+    `
+    )
+    .eq('id', id)
     .single()
 
-  if (error || !conv) return { success: false, error: "Conversation not found" }
+  if (error || !conv) return { success: false, error: 'Conversation not found' }
 
-  const project = conv.projects as unknown as { title: string; creator_id: string; profiles: OtherUser }
-  const application = conv.project_applications as unknown as { applicant_id: string; status: string; profiles: OtherUser }
+  const project = conv.projects as unknown as {
+    title: string
+    creator_id: string
+    profiles: OtherUser
+  }
+  const application = conv.project_applications as unknown as {
+    applicant_id: string
+    status: string
+    profiles: OtherUser
+  }
 
   if (user.id !== project?.creator_id && user.id !== application?.applicant_id) {
-    return { success: false, error: "Not authorized" }
+    return { success: false, error: 'Not authorized' }
   }
 
   const isCreator = user.id === project?.creator_id
@@ -174,9 +197,9 @@ export async function getConversation(id: string): Promise<ActionResult<Conversa
       id: conv.id,
       application_id: conv.application_id,
       project_id: conv.project_id,
-      project_title: project?.title ?? "Project",
+      project_title: project?.title ?? 'Project',
       other_user: otherUser,
-      application_status: application?.status ?? "in_talks",
+      application_status: application?.status ?? 'in_talks',
       is_creator: isCreator,
       messages,
     },
@@ -187,16 +210,22 @@ export async function getConversation(id: string): Promise<ActionResult<Conversa
 // NACHRICHT SENDEN
 // ─────────────────────────────────────────────
 
-export async function sendMessage(conversationId: string, content: string): Promise<ActionResult<undefined>> {
+export async function sendMessage(
+  conversationId: string,
+  content: string
+): Promise<ActionResult<undefined>> {
   const supabase = await createClient()
-  const { data: { user }, error: authError } = await supabase.auth.getUser()
-  if (authError || !user) return { success: false, error: "Not authenticated" }
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser()
+  if (authError || !user) return { success: false, error: 'Not authenticated' }
 
   const trimmed = content.trim()
-  if (!trimmed) return { success: false, error: "Message cannot be empty" }
+  if (!trimmed) return { success: false, error: 'Message cannot be empty' }
 
   const { error } = await supabase
-    .from("messages")
+    .from('messages')
     .insert({ conversation_id: conversationId, sender_id: user.id, content: trimmed })
 
   if (error) return { success: false, error: error.message }
@@ -211,19 +240,22 @@ export async function sendMessage(conversationId: string, content: string): Prom
 
 export async function markAsRead(conversationId: string): Promise<ActionResult<undefined>> {
   const supabase = await createClient()
-  const { data: { user }, error: authError } = await supabase.auth.getUser()
-  if (authError || !user) return { success: false, error: "Not authenticated" }
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser()
+  if (authError || !user) return { success: false, error: 'Not authenticated' }
 
   const { error } = await supabase
-    .from("messages")
+    .from('messages')
     .update({ read_at: new Date().toISOString() })
-    .eq("conversation_id", conversationId)
-    .neq("sender_id", user.id)
-    .is("read_at", null)
+    .eq('conversation_id', conversationId)
+    .neq('sender_id', user.id)
+    .is('read_at', null)
 
   if (error) return { success: false, error: error.message }
 
-  revalidatePath("/messages")
+  revalidatePath('/messages')
   return { success: true, data: undefined }
 }
 
@@ -232,9 +264,15 @@ export async function markAsRead(conversationId: string): Promise<ActionResult<u
 // ─────────────────────────────────────────────
 
 type OtherUser = { id: string; full_name: string; avatar_url: string | null }
-type RawMessage = { id: string; content: string; sender_id: string; created_at: string; read_at: string | null }
+type RawMessage = {
+  id: string
+  content: string
+  sender_id: string
+  created_at: string
+  read_at: string | null
+}
 
-const UNKNOWN_USER: OtherUser = { id: "?", full_name: "Unknown", avatar_url: null }
+const UNKNOWN_USER: OtherUser = { id: '?', full_name: 'Unknown', avatar_url: null }
 
 function sortDesc(msgs: RawMessage[]): RawMessage[] {
   return [...(msgs ?? [])].sort(

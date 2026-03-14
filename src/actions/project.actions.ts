@@ -1,8 +1,8 @@
-"use server"
+'use server'
 
-import { createClient } from "@/lib/supabase/server"
-import { revalidatePath } from "next/cache"
-import type { ActionResult, Project, ProjectWithRoles } from "@/lib/types"
+import { createClient } from '@/lib/supabase/server'
+import { revalidatePath } from 'next/cache'
+import type { ActionResult, Project, ProjectWithRoles } from '@/lib/types'
 
 // ─────────────────────────────────────────────
 // TYPES
@@ -19,9 +19,9 @@ export type CreateProjectInput = {
   description: string
   logline: string
   category: string
-  stage: Project["stage"]
-  commitment_type: Project["commitment_type"]
-  collab_type: Project["collab_type"]
+  stage: Project['stage']
+  commitment_type: Project['commitment_type']
+  collab_type: Project['collab_type']
   requires_nda: boolean
   roles: ProjectRoleInput[]
 }
@@ -35,11 +35,14 @@ export async function createProject(
 ): Promise<ActionResult<{ id: string }>> {
   const supabase = await createClient()
 
-  const { data: { user }, error: authError } = await supabase.auth.getUser()
-  if (authError || !user) return { success: false, error: "Not authenticated" }
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser()
+  if (authError || !user) return { success: false, error: 'Not authenticated' }
 
   const { data: project, error: projectError } = await supabase
-    .from("projects")
+    .from('projects')
     .insert({
       creator_id: user.id,
       title: input.title.trim(),
@@ -50,17 +53,17 @@ export async function createProject(
       commitment_type: input.commitment_type,
       collab_type: input.collab_type,
       requires_nda: input.requires_nda,
-      status: "open",
+      status: 'open',
     })
-    .select("id")
+    .select('id')
     .single()
 
   if (projectError) return { success: false, error: projectError.message }
 
   if (input.roles.length > 0) {
     const rolesData = input.roles
-      .filter(r => r.role_name.trim() !== "")
-      .map(r => ({
+      .filter((r) => r.role_name.trim() !== '')
+      .map((r) => ({
         project_id: project.id,
         role_name: r.role_name.trim(),
         quantity: r.quantity,
@@ -68,19 +71,17 @@ export async function createProject(
       }))
 
     if (rolesData.length > 0) {
-      const { error: rolesError } = await supabase
-        .from("project_roles")
-        .insert(rolesData)
+      const { error: rolesError } = await supabase.from('project_roles').insert(rolesData)
 
       if (rolesError) {
-        await supabase.from("projects").delete().eq("id", project.id)
+        await supabase.from('projects').delete().eq('id', project.id)
         return { success: false, error: rolesError.message }
       }
     }
   }
 
-  revalidatePath("/dashboard")
-  revalidatePath("/explore")
+  revalidatePath('/dashboard')
+  revalidatePath('/explore')
 
   return { success: true, data: { id: project.id } }
 }
@@ -95,64 +96,63 @@ export async function uploadSynopsis(
 ): Promise<ActionResult<{ synopsis_url: string }>> {
   const supabase = await createClient()
 
-  const { data: { user }, error: authError } = await supabase.auth.getUser()
-  if (authError || !user) return { success: false, error: "Not authenticated" }
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser()
+  if (authError || !user) return { success: false, error: 'Not authenticated' }
 
   const { data: project } = await supabase
-    .from("projects")
-    .select("creator_id")
-    .eq("id", projectId)
+    .from('projects')
+    .select('creator_id')
+    .eq('id', projectId)
     .single()
 
   if (!project || project.creator_id !== user.id) {
-    return { success: false, error: "Not authorized" }
+    return { success: false, error: 'Not authorized' }
   }
 
-  const file = formData.get("synopsis")
+  const file = formData.get('synopsis')
   if (!file || !(file instanceof File) || file.size === 0) {
-    return { success: false, error: "No file provided" }
+    return { success: false, error: 'No file provided' }
   }
 
-  if (file.type !== "application/pdf") {
-    return { success: false, error: "Only PDF files allowed" }
+  if (file.type !== 'application/pdf') {
+    return { success: false, error: 'Only PDF files allowed' }
   }
 
   if (file.size > 20 * 1024 * 1024) {
-    return { success: false, error: "File too large (max 20MB)" }
+    return { success: false, error: 'File too large (max 20MB)' }
   }
 
   const timestamp = Date.now()
   const filePath = `${projectId}/synopsis-${timestamp}.pdf`
 
   // Alte Dateien löschen
-  const { data: existingFiles } = await supabase.storage
-    .from("synopses")
-    .list(projectId)
+  const { data: existingFiles } = await supabase.storage.from('synopses').list(projectId)
 
   if (existingFiles && existingFiles.length > 0) {
-    const toDelete = existingFiles.map(f => `${projectId}/${f.name}`)
-    await supabase.storage.from("synopses").remove(toDelete)
+    const toDelete = existingFiles.map((f) => `${projectId}/${f.name}`)
+    await supabase.storage.from('synopses').remove(toDelete)
   }
 
-  const { error: uploadError } = await supabase.storage
-    .from("synopses")
-    .upload(filePath, file)
+  const { error: uploadError } = await supabase.storage.from('synopses').upload(filePath, file)
 
   if (uploadError) return { success: false, error: uploadError.message }
 
   const { data: signedData, error: urlError } = await supabase.storage
-    .from("synopses")
+    .from('synopses')
     .createSignedUrl(filePath, 60 * 60 * 24 * 7)
 
-  if (urlError || !signedData?.signedUrl) return { success: false, error: "Could not generate URL" }
+  if (urlError || !signedData?.signedUrl) return { success: false, error: 'Could not generate URL' }
 
   const { error: updateError } = await supabase
-    .from("projects")
+    .from('projects')
     .update({
       synopsis_url: filePath,
       requires_nda: true,
     })
-    .eq("id", projectId)
+    .eq('id', projectId)
 
   if (updateError) return { success: false, error: updateError.message }
 
@@ -166,25 +166,27 @@ export async function uploadSynopsis(
 // ─────────────────────────────────────────────
 
 export async function getProjects(filters?: {
-  stage?: Project["stage"]
-  commitment_type?: Project["commitment_type"]
+  stage?: Project['stage']
+  commitment_type?: Project['commitment_type']
   category?: string
 }): Promise<ActionResult<ProjectWithRoles[]>> {
   const supabase = await createClient()
 
   let query = supabase
-    .from("projects")
-    .select(`
+    .from('projects')
+    .select(
+      `
       *,
       project_roles (id, role_name, quantity, description),
       profiles (id, full_name, avatar_url, is_verified, video_url)
-    `)
-    .eq("status", "open")
-    .order("created_at", { ascending: false })
+    `
+    )
+    .eq('status', 'open')
+    .order('created_at', { ascending: false })
 
-  if (filters?.stage) query = query.eq("stage", filters.stage)
-  if (filters?.commitment_type) query = query.eq("commitment_type", filters.commitment_type)
-  if (filters?.category) query = query.eq("category", filters.category)
+  if (filters?.stage) query = query.eq('stage', filters.stage)
+  if (filters?.commitment_type) query = query.eq('commitment_type', filters.commitment_type)
+  if (filters?.category) query = query.eq('category', filters.category)
 
   const { data, error } = await query
 
@@ -196,13 +198,15 @@ export async function getProject(id: string): Promise<ActionResult<ProjectWithRo
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from("projects")
-    .select(`
+    .from('projects')
+    .select(
+      `
       *,
       project_roles (id, role_name, quantity, description),
       profiles (id, full_name, avatar_url, is_verified, video_url)
-    `)
-    .eq("id", id)
+    `
+    )
+    .eq('id', id)
     .single()
 
   if (error) return { success: false, error: error.message }
@@ -212,18 +216,23 @@ export async function getProject(id: string): Promise<ActionResult<ProjectWithRo
 export async function getMyProjects(): Promise<ActionResult<ProjectWithRoles[]>> {
   const supabase = await createClient()
 
-  const { data: { user }, error: authError } = await supabase.auth.getUser()
-  if (authError || !user) return { success: false, error: "Not authenticated" }
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser()
+  if (authError || !user) return { success: false, error: 'Not authenticated' }
 
   const { data, error } = await supabase
-    .from("projects")
-    .select(`
+    .from('projects')
+    .select(
+      `
       *,
       project_roles (id, role_name, quantity, description),
       profiles (id, full_name, avatar_url, is_verified, video_url)
-    `)
-    .eq("creator_id", user.id)
-    .order("created_at", { ascending: false })
+    `
+    )
+    .eq('creator_id', user.id)
+    .order('created_at', { ascending: false })
 
   if (error) return { success: false, error: error.message }
   return { success: true, data: data as ProjectWithRoles[] }

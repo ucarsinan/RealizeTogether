@@ -1,17 +1,17 @@
-@import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
 
 @custom-variant dark (&:is(.dark *));
 
 /* ── Realize Together Design System ── */
 :root {
-  --bg:    #f2f0ed;
-  --card:  #ffffff;
-  --ink:   #1a1918;
-  --mid:   #6b6762;
-  --line:  #e0ddd8;
-  --or:    #e8621a;
+  --bg: #f2f0ed;
+  --card: #ffffff;
+  --ink: #1a1918;
+  --mid: #6b6762;
+  --line: #e0ddd8;
+  --or: #e8621a;
   --or-dk: #c9521a;
   --or-lt: #fdf2ec;
 }

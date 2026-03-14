@@ -1,21 +1,21 @@
-import { notFound } from "next/navigation"
-import Link from "next/link"
-import { createClient } from "@/lib/supabase/server"
-import { getProject } from "@/actions/project.actions"
-import { checkNdaConsent } from "@/actions/nda.actions"
-import { SynopsisViewer } from "@/components/trust-funnel/SynopsisViewer"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { CheckCircle, Lock, Users, Play } from "lucide-react"
-import { COMMITMENT_LABELS, STAGE_LABELS, COLLAB_LABELS } from "@/lib/utils"
-import { Breadcrumb } from "@/components/layout/Breadcrumb"
+import { notFound } from 'next/navigation'
+import Link from 'next/link'
+import { createClient } from '@/lib/supabase/server'
+import { getProject } from '@/actions/project.actions'
+import { checkNdaConsent } from '@/actions/nda.actions'
+import { SynopsisViewer } from '@/components/trust-funnel/SynopsisViewer'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { CheckCircle, Lock, Users, Play } from 'lucide-react'
+import { COMMITMENT_LABELS, STAGE_LABELS, COLLAB_LABELS } from '@/lib/utils'
+import { Breadcrumb } from '@/components/layout/Breadcrumb'
 
 const STAGE_COLORS: Record<string, string> = {
-  idea:        "bg-[#fdf2ec] text-[#e8621a] border-[#e8621a]/20",
-  concept:     "bg-blue-50 text-blue-700 border-blue-200",
-  development: "bg-amber-50 text-amber-700 border-amber-200",
-  ready:       "bg-green-50 text-green-700 border-green-200",
-  production:  "bg-[#fdf2ec] text-[#e8621a] border-[#e8621a]/30",
-  completed:   "bg-[#f2f0ed] text-[#6b6762] border-[#e0ddd8]",
+  idea: 'bg-[#fdf2ec] text-[#e8621a] border-[#e8621a]/20',
+  concept: 'bg-blue-50 text-blue-700 border-blue-200',
+  development: 'bg-amber-50 text-amber-700 border-amber-200',
+  ready: 'bg-green-50 text-green-700 border-green-200',
+  production: 'bg-[#fdf2ec] text-[#e8621a] border-[#e8621a]/30',
+  completed: 'bg-[#f2f0ed] text-[#6b6762] border-[#e0ddd8]',
 }
 
 type Params = Promise<{ id: string }>
@@ -23,7 +23,9 @@ type Params = Promise<{ id: string }>
 export default async function ProjectDetailPage({ params }: { params: Params }) {
   const { id } = await params
   const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
 
   const result = await getProject(id)
   if (!result.success) notFound()
@@ -42,18 +44,15 @@ export default async function ProjectDetailPage({ params }: { params: Params }) 
   return (
     <div className="min-h-screen bg-[#f2f0ed]">
       <div className="max-w-270 mx-auto px-10 max-md:px-5 py-10 space-y-6">
-
-        <Breadcrumb items={[
-          { label: 'Explore', href: '/explore' },
-          { label: project.title },
-        ]} />
+        <Breadcrumb items={[{ label: 'Explore', href: '/explore' }, { label: project.title }]} />
 
         {/* Header card */}
         <div className="bg-white border border-[#e0ddd8] rounded-2xl p-8 shadow-[0_4px_32px_rgba(0,0,0,0.07)] space-y-6">
-
           {/* Badges */}
           <div className="flex flex-wrap items-center gap-2">
-            <span className={`font-['DM_Sans'] text-[11px] font-medium px-3 py-1 rounded-full border ${STAGE_COLORS[project.stage] ?? STAGE_COLORS.idea}`}>
+            <span
+              className={`font-['DM_Sans'] text-[11px] font-medium px-3 py-1 rounded-full border ${STAGE_COLORS[project.stage] ?? STAGE_COLORS.idea}`}
+            >
               {STAGE_LABELS[project.stage]}
             </span>
             <span className="font-['DM_Sans'] text-[11px] font-medium px-3 py-1 rounded-full bg-[#f2f0ed] text-[#6b6762]">
@@ -93,12 +92,14 @@ export default async function ProjectDetailPage({ params }: { params: Params }) 
             <Avatar className="w-10 h-10 ring-2 ring-[#e0ddd8]">
               <AvatarImage src={creator?.avatar_url ?? undefined} />
               <AvatarFallback className="bg-[#fdf2ec] text-[#e8621a] text-sm font-['DM_Sans'] font-bold">
-                {creator?.full_name?.[0]?.toUpperCase() ?? "?"}
+                {creator?.full_name?.[0]?.toUpperCase() ?? '?'}
               </AvatarFallback>
             </Avatar>
             <div>
               <div className="flex items-center gap-1.5">
-                <span className="font-['DM_Sans'] text-[13px] font-medium text-[#1a1918]">{creator?.full_name}</span>
+                <span className="font-['DM_Sans'] text-[13px] font-medium text-[#1a1918]">
+                  {creator?.full_name}
+                </span>
                 {creator?.is_verified && <CheckCircle className="w-3.5 h-3.5 text-green-500" />}
               </div>
               <p className="font-['DM_Sans'] text-[11px] text-[#6b6762]">Project creator</p>
@@ -138,14 +139,16 @@ export default async function ProjectDetailPage({ params }: { params: Params }) 
               </h2>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {roles.map(role => (
+              {roles.map((role) => (
                 <div
                   key={role.id}
                   className="flex items-start justify-between gap-4 p-4 rounded-xl bg-[#f2f0ed] border border-[#e0ddd8]"
                 >
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className="font-['DM_Sans'] text-[13px] font-medium text-[#1a1918]">{role.role_name}</span>
+                      <span className="font-['DM_Sans'] text-[13px] font-medium text-[#1a1918]">
+                        {role.role_name}
+                      </span>
                       {role.quantity > 1 && (
                         <span className="font-['DM_Sans'] text-[11px] px-2 py-0.5 rounded-full bg-white border border-[#e0ddd8] text-[#6b6762]">
                           ×{role.quantity}
@@ -153,10 +156,12 @@ export default async function ProjectDetailPage({ params }: { params: Params }) 
                       )}
                     </div>
                     {role.description && (
-                      <p className="font-['DM_Sans'] text-[12px] text-[#6b6762] mt-1">{role.description}</p>
+                      <p className="font-['DM_Sans'] text-[12px] text-[#6b6762] mt-1">
+                        {role.description}
+                      </p>
                     )}
                   </div>
-                  {!isOwner && project.status === "open" && user && (
+                  {!isOwner && project.status === 'open' && user && (
                     <Link
                       href={`/projects/${project.id}/apply`}
                       className="bg-[#e8621a] hover:bg-[#c9521a] text-white font-bold text-[11px] px-3 py-1.5 rounded-full transition-colors duration-150 font-['DM_Sans'] shrink-0"
@@ -196,13 +201,13 @@ export default async function ProjectDetailPage({ params }: { params: Params }) 
         <div className="flex items-start gap-3 px-5 py-4 bg-white border border-[#e0ddd8] rounded-2xl font-['DM_Sans'] text-[12px] text-[#6b6762]">
           <Lock className="w-3.5 h-3.5 mt-0.5 shrink-0 text-[#6b6762]" />
           <span>
-            <strong className="text-[#1a1918] font-medium">Full script (Level 3):</strong>{" "}
-            Shared privately in chat after a conversation — never stored on this platform.
+            <strong className="text-[#1a1918] font-medium">Full script (Level 3):</strong> Shared
+            privately in chat after a conversation — never stored on this platform.
           </span>
         </div>
 
         {/* Apply CTA */}
-        {!isOwner && project.status === "open" && (
+        {!isOwner && project.status === 'open' && (
           <div className="bg-white border border-[#e0ddd8] rounded-2xl p-8 shadow-[0_4px_32px_rgba(0,0,0,0.07)] space-y-4">
             <h2 className="font-['Unbounded'] font-bold text-[14px] tracking-[-0.01em] text-[#1a1918]">
               Interested in collaborating?
@@ -239,7 +244,6 @@ export default async function ProjectDetailPage({ params }: { params: Params }) 
             </Link>
           </div>
         )}
-
       </div>
     </div>
   )

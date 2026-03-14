@@ -1,8 +1,8 @@
-"use server"
+'use server'
 
-import { createClient } from "@/lib/supabase/server"
-import { revalidatePath } from "next/cache"
-import type { ActionResult } from "@/lib/types"
+import { createClient } from '@/lib/supabase/server'
+import { revalidatePath } from 'next/cache'
+import type { ActionResult } from '@/lib/types'
 
 // ─────────────────────────────────────────────
 // TYPES
@@ -13,7 +13,7 @@ export type ApplicationWithDetails = {
   project_id: string
   role_id: string | null
   applicant_id: string
-  status: "pending" | "in_talks" | "matched" | "rejected"
+  status: 'pending' | 'in_talks' | 'matched' | 'rejected'
   message: string | null
   created_at: string
   profiles: {
@@ -48,34 +48,39 @@ export async function submitApplication(input: {
 }): Promise<ActionResult<{ id: string }>> {
   const supabase = await createClient()
 
-  const { data: { user }, error: authError } = await supabase.auth.getUser()
-  if (authError || !user) return { success: false, error: "Not authenticated" }
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser()
+  if (authError || !user) return { success: false, error: 'Not authenticated' }
 
   const { data: project } = await supabase
-    .from("projects")
-    .select("creator_id, status")
-    .eq("id", input.project_id)
+    .from('projects')
+    .select('creator_id, status')
+    .eq('id', input.project_id)
     .single()
 
-  if (!project) return { success: false, error: "Project not found" }
-  if (project.creator_id === user.id) return { success: false, error: "You cannot apply to your own project" }
-  if (project.status !== "open") return { success: false, error: "Project is no longer accepting applications" }
+  if (!project) return { success: false, error: 'Project not found' }
+  if (project.creator_id === user.id)
+    return { success: false, error: 'You cannot apply to your own project' }
+  if (project.status !== 'open')
+    return { success: false, error: 'Project is no longer accepting applications' }
 
   const { data, error } = await supabase
-    .from("project_applications")
+    .from('project_applications')
     .insert({
       project_id: input.project_id,
       role_id: input.role_id,
       applicant_id: user.id,
       message: input.message.trim(),
-      status: "pending",
+      status: 'pending',
     })
-    .select("id")
+    .select('id')
     .single()
 
   if (error) {
-    if (error.code === "23505") {
-      return { success: false, error: "You have already applied to this project" }
+    if (error.code === '23505') {
+      return { success: false, error: 'You have already applied to this project' }
     }
     return { success: false, error: error.message }
   }
@@ -94,31 +99,36 @@ export async function getApplicationsForProject(
 ): Promise<ActionResult<ApplicationWithDetails[]>> {
   const supabase = await createClient()
 
-  const { data: { user }, error: authError } = await supabase.auth.getUser()
-  if (authError || !user) return { success: false, error: "Not authenticated" }
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser()
+  if (authError || !user) return { success: false, error: 'Not authenticated' }
 
   const { data: project } = await supabase
-    .from("projects")
-    .select("creator_id")
-    .eq("id", projectId)
+    .from('projects')
+    .select('creator_id')
+    .eq('id', projectId)
     .single()
 
   if (!project || project.creator_id !== user.id) {
-    return { success: false, error: "Not authorized" }
+    return { success: false, error: 'Not authorized' }
   }
 
   const { data, error } = await supabase
-    .from("project_applications")
-    .select(`
+    .from('project_applications')
+    .select(
+      `
       *,
       profiles (
         id, full_name, avatar_url, video_url, is_verified,
         portfolio_url, imdb_url, vimeo_url, linkedin_url
       ),
       project_roles (id, role_name)
-    `)
-    .eq("project_id", projectId)
-    .order("created_at", { ascending: false })
+    `
+    )
+    .eq('project_id', projectId)
+    .order('created_at', { ascending: false })
 
   if (error) return { success: false, error: error.message }
 
@@ -134,52 +144,55 @@ export async function acceptApplication(
 ): Promise<ActionResult<{ conversationId: string }>> {
   const supabase = await createClient()
 
-  const { data: { user }, error: authError } = await supabase.auth.getUser()
-  if (authError || !user) return { success: false, error: "Not authenticated" }
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser()
+  if (authError || !user) return { success: false, error: 'Not authenticated' }
 
   const { data: application } = await supabase
-    .from("project_applications")
-    .select("*, projects(creator_id)")
-    .eq("id", applicationId)
+    .from('project_applications')
+    .select('*, projects(creator_id)')
+    .eq('id', applicationId)
     .single()
 
-  if (!application) return { success: false, error: "Application not found" }
+  if (!application) return { success: false, error: 'Application not found' }
 
   const project = application.projects as unknown as { creator_id: string }
   if (project.creator_id !== user.id) {
-    return { success: false, error: "Not authorized" }
+    return { success: false, error: 'Not authorized' }
   }
 
-  if (application.status !== "pending") {
-    return { success: false, error: "Application is no longer pending" }
+  if (application.status !== 'pending') {
+    return { success: false, error: 'Application is no longer pending' }
   }
 
   const { error: updateError } = await supabase
-    .from("project_applications")
-    .update({ status: "in_talks" })
-    .eq("id", applicationId)
+    .from('project_applications')
+    .update({ status: 'in_talks' })
+    .eq('id', applicationId)
 
   if (updateError) return { success: false, error: updateError.message }
 
   const { data: conversation, error: convError } = await supabase
-    .from("conversations")
+    .from('conversations')
     .insert({
       application_id: applicationId,
       project_id: application.project_id,
     })
-    .select("id")
+    .select('id')
     .single()
 
   if (convError) {
     await supabase
-      .from("project_applications")
-      .update({ status: "pending" })
-      .eq("id", applicationId)
+      .from('project_applications')
+      .update({ status: 'pending' })
+      .eq('id', applicationId)
     return { success: false, error: convError.message }
   }
 
   revalidatePath(`/projects/${application.project_id}/applications`)
-  revalidatePath("/messages")
+  revalidatePath('/messages')
 
   return { success: true, data: { conversationId: conversation.id } }
 }
@@ -188,31 +201,32 @@ export async function acceptApplication(
 // BEWERBUNG ABLEHNEN
 // ─────────────────────────────────────────────
 
-export async function rejectApplication(
-  applicationId: string
-): Promise<ActionResult<void>> {
+export async function rejectApplication(applicationId: string): Promise<ActionResult<void>> {
   const supabase = await createClient()
 
-  const { data: { user }, error: authError } = await supabase.auth.getUser()
-  if (authError || !user) return { success: false, error: "Not authenticated" }
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser()
+  if (authError || !user) return { success: false, error: 'Not authenticated' }
 
   const { data: application } = await supabase
-    .from("project_applications")
-    .select("project_id, projects(creator_id)")
-    .eq("id", applicationId)
+    .from('project_applications')
+    .select('project_id, projects(creator_id)')
+    .eq('id', applicationId)
     .single()
 
-  if (!application) return { success: false, error: "Application not found" }
+  if (!application) return { success: false, error: 'Application not found' }
 
   const project = application.projects as unknown as { creator_id: string }
   if (project.creator_id !== user.id) {
-    return { success: false, error: "Not authorized" }
+    return { success: false, error: 'Not authorized' }
   }
 
   const { error } = await supabase
-    .from("project_applications")
-    .update({ status: "rejected" })
-    .eq("id", applicationId)
+    .from('project_applications')
+    .update({ status: 'rejected' })
+    .eq('id', applicationId)
 
   if (error) return { success: false, error: error.message }
 
@@ -230,18 +244,21 @@ export async function confirmMatch(
 ): Promise<ActionResult<{ isComplete: boolean }>> {
   const supabase = await createClient()
 
-  const { data: { user }, error: authError } = await supabase.auth.getUser()
-  if (authError || !user) return { success: false, error: "Not authenticated" }
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser()
+  if (authError || !user) return { success: false, error: 'Not authenticated' }
 
   const { data: application } = await supabase
-    .from("project_applications")
-    .select("*, projects(creator_id)")
-    .eq("id", applicationId)
+    .from('project_applications')
+    .select('*, projects(creator_id)')
+    .eq('id', applicationId)
     .single()
 
-  if (!application) return { success: false, error: "Application not found" }
-  if (application.status !== "in_talks") {
-    return { success: false, error: "Must be in talks to confirm match" }
+  if (!application) return { success: false, error: 'Application not found' }
+  if (application.status !== 'in_talks') {
+    return { success: false, error: 'Must be in talks to confirm match' }
   }
 
   const project = application.projects as unknown as { creator_id: string }
@@ -249,14 +266,14 @@ export async function confirmMatch(
   const isApplicant = application.applicant_id === user.id
 
   if (!isCreator && !isApplicant) {
-    return { success: false, error: "Not authorized" }
+    return { success: false, error: 'Not authorized' }
   }
 
   const { data: existingMatch } = await supabase
-    .from("matches")
-    .select("*")
-    .eq("project_id", application.project_id)
-    .eq("user_id", application.applicant_id)
+    .from('matches')
+    .select('*')
+    .eq('project_id', application.project_id)
+    .eq('user_id', application.applicant_id)
     .maybeSingle()
 
   let creatorConfirmed = existingMatch?.creator_confirmed ?? false
@@ -269,44 +286,42 @@ export async function confirmMatch(
 
   if (existingMatch) {
     const { error } = await supabase
-      .from("matches")
+      .from('matches')
       .update({
         creator_confirmed: creatorConfirmed,
         applicant_confirmed: applicantConfirmed,
         ...(isComplete ? { matched_at: new Date().toISOString() } : {}),
       })
-      .eq("id", existingMatch.id)
+      .eq('id', existingMatch.id)
 
     if (error) return { success: false, error: error.message }
   } else {
-    const { error } = await supabase
-      .from("matches")
-      .insert({
-        project_id: application.project_id,
-        user_id: application.applicant_id,
-        role_id: application.role_id,
-        creator_confirmed: creatorConfirmed,
-        applicant_confirmed: applicantConfirmed,
-        ...(isComplete ? { matched_at: new Date().toISOString() } : {}),
-      })
+    const { error } = await supabase.from('matches').insert({
+      project_id: application.project_id,
+      user_id: application.applicant_id,
+      role_id: application.role_id,
+      creator_confirmed: creatorConfirmed,
+      applicant_confirmed: applicantConfirmed,
+      ...(isComplete ? { matched_at: new Date().toISOString() } : {}),
+    })
 
     if (error) return { success: false, error: error.message }
   }
 
   if (isComplete) {
     await supabase
-      .from("project_applications")
-      .update({ status: "matched" })
-      .eq("id", applicationId)
+      .from('project_applications')
+      .update({ status: 'matched' })
+      .eq('id', applicationId)
 
     await supabase
-      .from("projects")
-      .update({ status: "in_progress" })
-      .eq("id", application.project_id)
+      .from('projects')
+      .update({ status: 'in_progress' })
+      .eq('id', application.project_id)
   }
 
-  revalidatePath("/messages")
-  revalidatePath("/dashboard")
+  revalidatePath('/messages')
+  revalidatePath('/dashboard')
 
   return { success: true, data: { isComplete } }
 }
@@ -318,20 +333,25 @@ export async function confirmMatch(
 export async function getMyApplications(): Promise<ActionResult<ApplicationWithDetails[]>> {
   const supabase = await createClient()
 
-  const { data: { user }, error: authError } = await supabase.auth.getUser()
-  if (authError || !user) return { success: false, error: "Not authenticated" }
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser()
+  if (authError || !user) return { success: false, error: 'Not authenticated' }
 
   const { data, error } = await supabase
-    .from("project_applications")
-    .select(`
+    .from('project_applications')
+    .select(
+      `
       *,
       projects (id, title),
       profiles (id, full_name, avatar_url, video_url, is_verified,
                 portfolio_url, imdb_url, vimeo_url, linkedin_url),
       project_roles (id, role_name)
-    `)
-    .eq("applicant_id", user.id)
-    .order("created_at", { ascending: false })
+    `
+    )
+    .eq('applicant_id', user.id)
+    .order('created_at', { ascending: false })
 
   if (error) return { success: false, error: error.message }
 

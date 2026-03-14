@@ -1,7 +1,7 @@
-"use server"
+'use server'
 
-import { createClient } from "@/lib/supabase/server"
-import type { ActionResult } from "@/lib/types"
+import { createClient } from '@/lib/supabase/server'
+import type { ActionResult } from '@/lib/types'
 
 // ─────────────────────────────────────────────
 // NDA-ZUSTIMMUNG PRÜFEN
@@ -12,14 +12,16 @@ export async function checkNdaConsent(
 ): Promise<ActionResult<{ hasConsented: boolean }>> {
   const supabase = await createClient()
 
-  const { data: { user } } = await supabase.auth.getUser()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
   if (!user) return { success: true, data: { hasConsented: false } }
 
   const { data, error } = await supabase
-    .from("nda_consents")
-    .select("id")
-    .eq("project_id", projectId)
-    .eq("user_id", user.id)
+    .from('nda_consents')
+    .select('id')
+    .eq('project_id', projectId)
+    .eq('user_id', user.id)
     .maybeSingle()
 
   if (error) return { success: false, error: error.message }
@@ -31,19 +33,20 @@ export async function checkNdaConsent(
 // NDA-ZUSTIMMUNG EINTRAGEN
 // ─────────────────────────────────────────────
 
-export async function submitNdaConsent(
-  projectId: string
-): Promise<ActionResult<void>> {
+export async function submitNdaConsent(projectId: string): Promise<ActionResult<void>> {
   const supabase = await createClient()
 
-  const { data: { user }, error: authError } = await supabase.auth.getUser()
-  if (authError || !user) return { success: false, error: "Not authenticated" }
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser()
+  if (authError || !user) return { success: false, error: 'Not authenticated' }
 
   const { error } = await supabase
-    .from("nda_consents")
+    .from('nda_consents')
     .upsert(
       { project_id: projectId, user_id: user.id },
-      { onConflict: "project_id,user_id", ignoreDuplicates: true }
+      { onConflict: 'project_id,user_id', ignoreDuplicates: true }
     )
 
   if (error) return { success: false, error: error.message }
@@ -55,42 +58,43 @@ export async function submitNdaConsent(
 // SIGNED URL FÜR SYNOPSIS (nur nach NDA)
 // ─────────────────────────────────────────────
 
-export async function getSynopsisUrl(
-  projectId: string
-): Promise<ActionResult<{ url: string }>> {
+export async function getSynopsisUrl(projectId: string): Promise<ActionResult<{ url: string }>> {
   const supabase = await createClient()
 
-  const { data: { user }, error: authError } = await supabase.auth.getUser()
-  if (authError || !user) return { success: false, error: "Not authenticated" }
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser()
+  if (authError || !user) return { success: false, error: 'Not authenticated' }
 
   const { data: consent } = await supabase
-    .from("nda_consents")
-    .select("id")
-    .eq("project_id", projectId)
-    .eq("user_id", user.id)
+    .from('nda_consents')
+    .select('id')
+    .eq('project_id', projectId)
+    .eq('user_id', user.id)
     .maybeSingle()
 
   const { data: project } = await supabase
-    .from("projects")
-    .select("synopsis_url, creator_id")
-    .eq("id", projectId)
+    .from('projects')
+    .select('synopsis_url, creator_id')
+    .eq('id', projectId)
     .single()
 
   if (!project?.synopsis_url) {
-    return { success: false, error: "No synopsis uploaded" }
+    return { success: false, error: 'No synopsis uploaded' }
   }
 
   // Owner hat immer Zugriff; andere brauchen NDA
   if (project.creator_id !== user.id && !consent) {
-    return { success: false, error: "NDA consent required" }
+    return { success: false, error: 'NDA consent required' }
   }
 
   const { data, error } = await supabase.storage
-    .from("synopses")
+    .from('synopses')
     .createSignedUrl(project.synopsis_url, 60 * 60)
 
   if (error || !data?.signedUrl) {
-    return { success: false, error: "Could not generate URL" }
+    return { success: false, error: 'Could not generate URL' }
   }
 
   return { success: true, data: { url: data.signedUrl } }

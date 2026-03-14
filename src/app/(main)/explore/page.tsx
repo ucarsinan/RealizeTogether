@@ -1,9 +1,9 @@
-import { Suspense } from "react"
-import { getProjects } from "@/actions/project.actions"
-import { ProjectCard } from "@/components/projects/ProjectCard"
-import { ExploreFilters } from "@/components/projects/ExploreFilters"
-import { Breadcrumb } from "@/components/layout/Breadcrumb"
-import type { ProjectStage, CommitmentType } from "@/lib/types"
+import { Suspense } from 'react'
+import { getProjects } from '@/actions/project.actions'
+import { ProjectCard } from '@/components/projects/ProjectCard'
+import { ExploreFilters } from '@/components/projects/ExploreFilters'
+import { Breadcrumb } from '@/components/layout/Breadcrumb'
+import type { ProjectStage, CommitmentType } from '@/lib/types'
 
 type SearchParams = Promise<{
   stage?: ProjectStage
@@ -12,7 +12,7 @@ type SearchParams = Promise<{
 }>
 
 export const metadata = {
-  title: "Explore Projects – Realize Together",
+  title: 'Explore Projects – Realize Together',
 }
 
 export default async function ExplorePage({ searchParams }: { searchParams: SearchParams }) {
@@ -29,7 +29,6 @@ export default async function ExplorePage({ searchParams }: { searchParams: Sear
   return (
     <div className="min-h-screen bg-[#f2f0ed]">
       <div className="max-w-270 mx-auto px-10 max-md:px-5 py-10">
-
         {/* Header */}
         <div className="mb-8">
           <p className="font-['Unbounded'] text-[10px] font-bold tracking-[.18em] uppercase text-[#e8621a] mb-3">
@@ -56,13 +55,12 @@ export default async function ExplorePage({ searchParams }: { searchParams: Sear
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-              {projects.map(project => (
+              {projects.map((project) => (
                 <ProjectCard key={project.id} project={project} />
               ))}
             </div>
           )}
         </div>
-
       </div>
     </div>
   )

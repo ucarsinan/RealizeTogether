@@ -1,4 +1,4 @@
-import Link from "next/link"
+import Link from 'next/link'
 
 type BreadcrumbItem = {
   label: string
@@ -10,9 +10,7 @@ export function Breadcrumb({ items }: { items: BreadcrumbItem[] }) {
     <nav className="flex items-center gap-2 mb-6">
       {items.map((item, i) => (
         <span key={i} className="flex items-center gap-2">
-          {i > 0 && (
-            <span className="text-[#e0ddd8] text-[12px]">/</span>
-          )}
+          {i > 0 && <span className="text-[#e0ddd8] text-[12px]">/</span>}
           {item.href && i < items.length - 1 ? (
             <Link
               href={item.href}

@@ -1,15 +1,17 @@
-import { redirect } from "next/navigation"
-import Link from "next/link"
-import { createClient } from "@/lib/supabase/server"
-import { getMyProjects } from "@/actions/project.actions"
-import { getMyApplications } from "@/actions/application.actions"
-import { STAGE_LABELS, COMMITMENT_LABELS } from "@/lib/utils"
-import { Plus, MessageCircle } from "lucide-react"
+import { redirect } from 'next/navigation'
+import Link from 'next/link'
+import { createClient } from '@/lib/supabase/server'
+import { getMyProjects } from '@/actions/project.actions'
+import { getMyApplications } from '@/actions/application.actions'
+import { STAGE_LABELS, COMMITMENT_LABELS } from '@/lib/utils'
+import { Plus, MessageCircle } from 'lucide-react'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) redirect("/login")
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) redirect('/login')
 
   const [projectsResult, applicationsResult] = await Promise.all([
     getMyProjects(),
@@ -20,27 +22,26 @@ export default async function DashboardPage() {
   const applications = applicationsResult.success ? applicationsResult.data : []
 
   const { data: profile } = await supabase
-    .from("profiles")
-    .select("full_name")
-    .eq("id", user.id)
+    .from('profiles')
+    .select('full_name')
+    .eq('id', user.id)
     .single()
 
-  const firstName = profile?.full_name?.split(" ")[0] ?? "there"
+  const firstName = profile?.full_name?.split(' ')[0] ?? 'there'
 
-  const inTalksIds = applications.filter(a => a.status === "in_talks").map(a => a.id)
+  const inTalksIds = applications.filter((a) => a.status === 'in_talks').map((a) => a.id)
   const convMap: Record<string, string> = {}
   if (inTalksIds.length > 0) {
     const { data: convData } = await supabase
-      .from("conversations")
-      .select("id, application_id")
-      .in("application_id", inTalksIds)
-    for (const c of (convData ?? [])) convMap[c.application_id] = c.id
+      .from('conversations')
+      .select('id, application_id')
+      .in('application_id', inTalksIds)
+    for (const c of convData ?? []) convMap[c.application_id] = c.id
   }
 
   return (
     <div className="min-h-screen bg-[#f2f0ed]">
       <div className="max-w-[1080px] mx-auto px-10 max-md:px-5 py-10">
-
         {/* Header */}
         <div className="mb-10">
           <p className="font-['Unbounded'] text-[10px] font-bold tracking-[.18em] uppercase text-[#e8621a] mb-3">
@@ -53,7 +54,6 @@ export default async function DashboardPage() {
 
         {/* 3-column grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-
           {/* Your Projects */}
           <div className="bg-white border border-[#e0ddd8] rounded-2xl p-6 shadow-[0_4px_32px_rgba(0,0,0,0.07)] flex flex-col gap-4">
             <div className="flex items-center justify-between">
@@ -93,9 +93,13 @@ export default async function DashboardPage() {
                         </span>
                       </div>
                       <div className="flex items-center gap-1.5 mt-1">
-                        <span className="font-['DM_Sans'] text-[11px] text-[#6b6762]">{STAGE_LABELS[project.stage]}</span>
+                        <span className="font-['DM_Sans'] text-[11px] text-[#6b6762]">
+                          {STAGE_LABELS[project.stage]}
+                        </span>
                         <span className="text-[#e0ddd8]">·</span>
-                        <span className="font-['DM_Sans'] text-[11px] text-[#6b6762]">{COMMITMENT_LABELS[project.commitment_type]}</span>
+                        <span className="font-['DM_Sans'] text-[11px] text-[#6b6762]">
+                          {COMMITMENT_LABELS[project.commitment_type]}
+                        </span>
                       </div>
                     </div>
                   </Link>
@@ -130,7 +134,7 @@ export default async function DashboardPage() {
                       <div className="flex items-start justify-between gap-2">
                         <Link href={`/projects/${app.project_id}`} className="flex-1 min-w-0">
                           <h4 className="font-['DM_Sans'] text-[13px] font-medium text-[#1a1918] leading-snug hover:text-[#e8621a] transition-colors truncate">
-                            {app.projects?.title ?? "Project"}
+                            {app.projects?.title ?? 'Project'}
                           </h4>
                         </Link>
                         <StatusBadge status={app.status} />
@@ -175,7 +179,6 @@ export default async function DashboardPage() {
               View all messages
             </Link>
           </div>
-
         </div>
 
         {/* Quick links */}
@@ -187,7 +190,6 @@ export default async function DashboardPage() {
             Edit profile
           </Link>
         </div>
-
       </div>
     </div>
   )
@@ -195,19 +197,21 @@ export default async function DashboardPage() {
 
 function StatusBadge({ status }: { status: string }) {
   const styles: Record<string, string> = {
-    pending:  "bg-[#f2f0ed] text-[#6b6762]",
-    in_talks: "bg-[#fdf2ec] text-[#e8621a]",
-    matched:  "bg-green-50 text-green-700",
-    rejected: "bg-red-50 text-red-600",
+    pending: 'bg-[#f2f0ed] text-[#6b6762]',
+    in_talks: 'bg-[#fdf2ec] text-[#e8621a]',
+    matched: 'bg-green-50 text-green-700',
+    rejected: 'bg-red-50 text-red-600',
   }
   const labels: Record<string, string> = {
-    pending:  "Pending",
-    in_talks: "In talks",
-    matched:  "Matched",
-    rejected: "Rejected",
+    pending: 'Pending',
+    in_talks: 'In talks',
+    matched: 'Matched',
+    rejected: 'Rejected',
   }
   return (
-    <span className={`font-['DM_Sans'] text-[10px] font-medium px-2 py-0.5 rounded-full shrink-0 ${styles[status] ?? styles.pending}`}>
+    <span
+      className={`font-['DM_Sans'] text-[10px] font-medium px-2 py-0.5 rounded-full shrink-0 ${styles[status] ?? styles.pending}`}
+    >
       {labels[status] ?? status}
     </span>
   )

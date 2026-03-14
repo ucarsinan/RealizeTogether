@@ -14,9 +14,10 @@ export function SegmentedControl({ options, value, onChange }: SegmentedControlP
           className={`
             px-4 py-1.5 rounded-full text-[12px] font-['DM_Sans'] font-medium
             transition-all duration-200 whitespace-nowrap
-            ${value === option.value
-              ? 'bg-white text-[#1a1918] shadow-sm font-bold'
-              : 'text-[#6b6762] hover:text-[#1a1918]'
+            ${
+              value === option.value
+                ? 'bg-white text-[#1a1918] shadow-sm font-bold'
+                : 'text-[#6b6762] hover:text-[#1a1918]'
             }
           `}
         >

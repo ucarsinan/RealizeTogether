@@ -1,11 +1,11 @@
-"use client"
+'use client'
 
-import { useState, useTransition, useEffect } from "react"
-import { getSynopsisUrl } from "@/actions/nda.actions"
-import { NDAModal } from "./NDAModal"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { ShieldCheck, FileText, ExternalLink, Loader2 } from "lucide-react"
+import { useState, useTransition, useEffect } from 'react'
+import { getSynopsisUrl } from '@/actions/nda.actions'
+import { NDAModal } from './NDAModal'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { ShieldCheck, FileText, ExternalLink, Loader2 } from 'lucide-react'
 
 interface SynopsisViewerProps {
   projectId: string
@@ -61,7 +61,9 @@ export function SynopsisViewer({
           <span>No synopsis uploaded yet</span>
         </div>
         {isOwner && (
-          <p className="text-xs text-zinc-400 mt-1 ml-6">You can add one in your project settings</p>
+          <p className="text-xs text-zinc-400 mt-1 ml-6">
+            You can add one in your project settings
+          </p>
         )}
       </div>
     )
@@ -69,11 +71,7 @@ export function SynopsisViewer({
 
   if (!hasConsented && requiresNda) {
     return (
-      <NDAModal
-        projectId={projectId}
-        projectTitle={projectTitle}
-        onConsented={handleConsented}
-      />
+      <NDAModal projectId={projectId} projectTitle={projectTitle} onConsented={handleConsented} />
     )
   }
 
@@ -110,7 +108,9 @@ export function SynopsisViewer({
     return (
       <div className="flex items-center justify-between px-5 py-4 rounded-2xl bg-red-50 border border-red-200">
         <span className="text-sm text-red-600">{error}</span>
-        <Button variant="outline" size="sm" onClick={loadSynopsis}>Retry</Button>
+        <Button variant="outline" size="sm" onClick={loadSynopsis}>
+          Retry
+        </Button>
       </div>
     )
   }
@@ -125,12 +125,19 @@ export function SynopsisViewer({
           </div>
           <div className="flex items-center gap-2">
             {requiresNda && !isOwner && (
-              <Badge variant="secondary" className="gap-1 text-xs bg-green-50 text-green-700 border-green-200">
+              <Badge
+                variant="secondary"
+                className="gap-1 text-xs bg-green-50 text-green-700 border-green-200"
+              >
                 <ShieldCheck className="w-3 h-3" />
                 NDA signed
               </Badge>
             )}
-            {isOwner && <Badge variant="secondary" className="text-xs">Your project</Badge>}
+            {isOwner && (
+              <Badge variant="secondary" className="text-xs">
+                Your project
+              </Badge>
+            )}
           </div>
         </div>
         <div className="rounded-2xl overflow-hidden border border-zinc-200 bg-zinc-50">

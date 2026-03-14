@@ -1,12 +1,11 @@
-"use client"
+'use client'
 
-import { useState, useTransition } from "react"
-import { useRouter } from "next/navigation"
-import { submitApplication } from "@/actions/application.actions"
-import { cn } from "@/lib/utils"
-import { CheckCircle, Loader2, AlertCircle } from "lucide-react"
-import Link from "next/link"
-import { Breadcrumb } from "@/components/layout/Breadcrumb"
+import { useState, useTransition } from 'react'
+import { submitApplication } from '@/actions/application.actions'
+import { cn } from '@/lib/utils'
+import { CheckCircle, Loader2, AlertCircle } from 'lucide-react'
+import Link from 'next/link'
+import { Breadcrumb } from '@/components/layout/Breadcrumb'
 
 export type Role = { id: string; role_name: string; description: string | null }
 
@@ -18,11 +17,10 @@ interface ApplyFormProps {
 }
 
 export function ApplyForm({ projectId, projectTitle, roles, isEarlyStage }: ApplyFormProps) {
-  const router = useRouter()
   const [isPending, startTransition] = useTransition()
   const [selectedRoleId, setSelectedRoleId] = useState<string | null>(null)
-  const [message, setMessage] = useState("")
-  const [status, setStatus] = useState<{ type: "success" | "error"; message: string } | null>(null)
+  const [message, setMessage] = useState('')
+  const [status, setStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
   const [submitted, setSubmitted] = useState(false)
 
   const isValid = message.trim().length >= 30
@@ -37,7 +35,7 @@ export function ApplyForm({ projectId, projectTitle, roles, isEarlyStage }: Appl
       })
 
       if (!result.success) {
-        setStatus({ type: "error", message: result.error })
+        setStatus({ type: 'error', message: result.error })
         return
       }
 
@@ -81,11 +79,13 @@ export function ApplyForm({ projectId, projectTitle, roles, isEarlyStage }: Appl
         <p className="font-['Unbounded'] text-[10px] font-bold tracking-[.18em] uppercase text-[#e8621a] mb-2">
           APPLY
         </p>
-        <Breadcrumb items={[
-          { label: 'Explore', href: '/explore' },
-          { label: projectTitle, href: `/projects/${projectId}` },
-          { label: 'Apply' },
-        ]} />
+        <Breadcrumb
+          items={[
+            { label: 'Explore', href: '/explore' },
+            { label: projectTitle, href: `/projects/${projectId}` },
+            { label: 'Apply' },
+          ]}
+        />
         <h1 className="font-['Unbounded'] font-black text-[clamp(28px,3.5vw,52px)] tracking-[-0.04em] leading-[.95] text-[#1a1918]">
           {projectTitle}
         </h1>
@@ -94,10 +94,10 @@ export function ApplyForm({ projectId, projectTitle, roles, isEarlyStage }: Appl
       {roles.length > 0 && (
         <div className="bg-white border border-[#e0ddd8] rounded-2xl p-6 shadow-[0_4px_32px_rgba(0,0,0,0.07)] space-y-3">
           <p className="font-['DM_Sans'] text-[12px] font-medium text-[#6b6762]">
-            {isEarlyStage ? "Which role fits you? (optional)" : "Which role are you applying for?"}
+            {isEarlyStage ? 'Which role fits you? (optional)' : 'Which role are you applying for?'}
           </p>
           <div className="flex flex-wrap gap-2">
-            {roles.map(role => (
+            {roles.map((role) => (
               <button
                 key={role.id}
                 type="button"
@@ -105,13 +105,15 @@ export function ApplyForm({ projectId, projectTitle, roles, isEarlyStage }: Appl
                 className={cn(
                   "font-['DM_Sans'] text-[12px] font-medium px-4 py-2 rounded-full border transition-colors text-left",
                   selectedRoleId === role.id
-                    ? "border-[#e8621a] bg-[#fdf2ec] text-[#e8621a]"
-                    : "border-[#e0ddd8] text-[#6b6762] hover:border-[#1a1918] hover:text-[#1a1918]"
+                    ? 'border-[#e8621a] bg-[#fdf2ec] text-[#e8621a]'
+                    : 'border-[#e0ddd8] text-[#6b6762] hover:border-[#1a1918] hover:text-[#1a1918]'
                 )}
               >
                 {role.role_name}
                 {role.description && (
-                  <span className="block text-[10px] mt-0.5 text-[#6b6762]">{role.description}</span>
+                  <span className="block text-[10px] mt-0.5 text-[#6b6762]">
+                    {role.description}
+                  </span>
                 )}
               </button>
             ))}
@@ -125,20 +127,28 @@ export function ApplyForm({ projectId, projectTitle, roles, isEarlyStage }: Appl
       )}
 
       <div className="bg-white border border-[#e0ddd8] rounded-2xl p-6 shadow-[0_4px_32px_rgba(0,0,0,0.07)] space-y-3">
-        <label htmlFor="message" className="block font-['DM_Sans'] text-[12px] font-medium text-[#6b6762]">
+        <label
+          htmlFor="message"
+          className="block font-['DM_Sans'] text-[12px] font-medium text-[#6b6762]"
+        >
           Why are you the right collaborator? <span className="text-red-500">*</span>
         </label>
         <textarea
           id="message"
           value={message}
-          onChange={e => setMessage(e.target.value)}
+          onChange={(e) => setMessage(e.target.value)}
           placeholder="Tell the creator what draws you to this project, what you bring to the table, and what kind of collaboration you're looking for."
           rows={6}
           className="w-full bg-white border-[1.5px] border-[#e0ddd8] focus:border-[#e8621a] rounded-xl px-5 py-3 text-[13px] text-[#1a1918] placeholder:text-[#bab7b2] outline-none transition-colors font-['DM_Sans'] resize-none"
         />
         <div className="flex items-center justify-between">
-          <p className={cn("font-['DM_Sans'] text-[11px] transition-colors", message.length < 30 ? "text-[#6b6762]" : "text-green-600")}>
-            {message.length < 30 ? `${30 - message.length} more characters to go` : "Good length"}
+          <p
+            className={cn(
+              "font-['DM_Sans'] text-[11px] transition-colors",
+              message.length < 30 ? 'text-[#6b6762]' : 'text-green-600'
+            )}
+          >
+            {message.length < 30 ? `${30 - message.length} more characters to go` : 'Good length'}
           </p>
           <p className="font-['DM_Sans'] text-[11px] text-[#6b6762]">{message.length} chars</p>
         </div>
@@ -152,7 +162,7 @@ export function ApplyForm({ projectId, projectTitle, roles, isEarlyStage }: Appl
         </ul>
       </div>
 
-      {status?.type === "error" && (
+      {status?.type === 'error' && (
         <div className="flex items-center gap-2 font-['DM_Sans'] text-[12px] text-red-600 bg-red-50 px-4 py-3 rounded-xl">
           <AlertCircle className="w-4 h-4 shrink-0" />
           {status.message}
@@ -167,10 +177,12 @@ export function ApplyForm({ projectId, projectTitle, roles, isEarlyStage }: Appl
           className="w-full bg-[#e8621a] hover:bg-[#c9521a] text-white font-bold font-['DM_Sans'] text-[13px] px-6 py-3 rounded-full transition-colors duration-150 disabled:opacity-50 flex items-center justify-center gap-2"
         >
           {isPending && <Loader2 className="w-4 h-4 animate-spin" />}
-          {isPending ? "Sending..." : "Submit application"}
+          {isPending ? 'Sending...' : 'Submit application'}
         </button>
         {!isValid && (
-          <p className="font-['DM_Sans'] text-[11px] text-center text-[#6b6762] mt-2">Write at least 30 characters</p>
+          <p className="font-['DM_Sans'] text-[11px] text-center text-[#6b6762] mt-2">
+            Write at least 30 characters
+          </p>
         )}
       </div>
     </div>

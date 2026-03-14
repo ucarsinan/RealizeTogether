@@ -1,21 +1,23 @@
-import { redirect } from "next/navigation"
-import { createClient } from "@/lib/supabase/server"
-import { ProjectForm } from "@/components/projects/ProjectForm"
-import { Breadcrumb } from "@/components/layout/Breadcrumb"
+import { redirect } from 'next/navigation'
+import { createClient } from '@/lib/supabase/server'
+import { ProjectForm } from '@/components/projects/ProjectForm'
+import { Breadcrumb } from '@/components/layout/Breadcrumb'
 
 export const metadata = {
-  title: "Create Project – Realize Together",
+  title: 'Create Project – Realize Together',
 }
 
 export default async function NewProjectPage() {
   const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) redirect("/login?redirectTo=/projects/new")
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) redirect('/login?redirectTo=/projects/new')
 
   const { data: profile } = await supabase
-    .from("profiles")
-    .select("full_name, bio")
-    .eq("id", user.id)
+    .from('profiles')
+    .select('full_name, bio')
+    .eq('id', user.id)
     .single()
 
   const isProfileComplete = profile?.full_name && profile?.bio
@@ -23,15 +25,13 @@ export default async function NewProjectPage() {
   return (
     <div className="min-h-screen bg-[#f2f0ed]">
       <div className="max-w-180 mx-auto px-10 max-md:px-5 py-10">
-
         <div className="mb-8">
           <p className="font-['Unbounded'] text-[10px] font-bold tracking-[.18em] uppercase text-[#e8621a] mb-3">
             NEW PROJECT
           </p>
-          <Breadcrumb items={[
-            { label: 'Dashboard', href: '/dashboard' },
-            { label: 'New Project' },
-          ]} />
+          <Breadcrumb
+            items={[{ label: 'Dashboard', href: '/dashboard' }, { label: 'New Project' }]}
+          />
           <h1 className="font-['Unbounded'] font-black text-[clamp(28px,3.5vw,52px)] tracking-[-0.04em] leading-[.95] text-[#1a1918]">
             Create a project
           </h1>
@@ -58,7 +58,6 @@ export default async function NewProjectPage() {
         )}
 
         <ProjectForm />
-
       </div>
     </div>
   )

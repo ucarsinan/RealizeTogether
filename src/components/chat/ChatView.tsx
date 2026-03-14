@@ -1,12 +1,12 @@
-"use client"
+'use client'
 
-import { useState, useEffect, useRef, useTransition } from "react"
-import Link from "next/link"
-import { sendMessage } from "@/actions/conversation.actions"
-import type { MessageWithSender } from "@/actions/conversation.actions"
-import { createClient } from "@/lib/supabase/client"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { ArrowLeft, Send } from "lucide-react"
+import { useState, useEffect, useLayoutEffect, useRef, useTransition } from 'react'
+import Link from 'next/link'
+import { sendMessage } from '@/actions/conversation.actions'
+import type { MessageWithSender } from '@/actions/conversation.actions'
+import { createClient } from '@/lib/supabase/client'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { ArrowLeft, Send } from 'lucide-react'
 
 interface ChatViewProps {
   conversationId: string
@@ -17,23 +17,31 @@ interface ChatViewProps {
 }
 
 function formatTime(dateStr: string | null): string {
-  if (!dateStr) return ""
-  return new Date(dateStr).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+  if (!dateStr) return ''
+  return new Date(dateStr).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
 }
 
-export function ChatView({ conversationId, projectTitle, otherUser, initialMessages, myUserId }: ChatViewProps) {
+export function ChatView({
+  conversationId,
+  projectTitle,
+  otherUser,
+  initialMessages,
+  myUserId,
+}: ChatViewProps) {
   const [messages, setMessages] = useState<MessageWithSender[]>(initialMessages)
-  const [input, setInput] = useState("")
+  const [input, setInput] = useState('')
   const [isPending, startTransition] = useTransition()
   const bottomRef = useRef<HTMLDivElement>(null)
 
   const myUserIdRef = useRef(myUserId)
   const otherUserRef = useRef(otherUser)
-  myUserIdRef.current = myUserId
-  otherUserRef.current = otherUser
+  useLayoutEffect(() => {
+    myUserIdRef.current = myUserId
+    otherUserRef.current = otherUser
+  })
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" })
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
   useEffect(() => {
@@ -43,18 +51,18 @@ export function ChatView({ conversationId, projectTitle, otherUser, initialMessa
       .channel(`conversation:${conversationId}`)
       .on(
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        "postgres_changes" as any,
+        'postgres_changes' as any,
         {
-          event: "INSERT",
-          schema: "public",
-          table: "messages",
+          event: 'INSERT',
+          schema: 'public',
+          table: 'messages',
           filter: `conversation_id=eq.${conversationId}`,
         },
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (payload: any) => {
           const newMsg = payload.new as MessageWithSender
-          setMessages(prev => {
-            if (prev.find(m => m.id === newMsg.id)) return prev
+          setMessages((prev) => {
+            if (prev.find((m) => m.id === newMsg.id)) return prev
             return [
               ...prev,
               {
@@ -74,20 +82,22 @@ export function ChatView({ conversationId, projectTitle, otherUser, initialMessa
       )
       .subscribe()
 
-    return () => { supabase.removeChannel(channel) }
+    return () => {
+      supabase.removeChannel(channel)
+    }
   }, [conversationId])
 
   function handleSend() {
     const content = input.trim()
     if (!content || isPending) return
-    setInput("")
+    setInput('')
     startTransition(async () => {
       await sendMessage(conversationId, content)
     })
   }
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
-    if (e.key === "Enter" && !e.shiftKey) {
+    if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
       handleSend()
     }
@@ -95,7 +105,6 @@ export function ChatView({ conversationId, projectTitle, otherUser, initialMessa
 
   return (
     <div className="flex flex-col flex-1 min-h-0">
-
       {/* Header */}
       <div className="bg-white border-b border-[#e0ddd8] px-6 py-4 flex items-center gap-3 shrink-0">
         <Link href="/messages" className="text-[#6b6762] hover:text-[#1a1918] transition-colors">
@@ -104,11 +113,13 @@ export function ChatView({ conversationId, projectTitle, otherUser, initialMessa
         <Avatar className="w-9 h-9 ring-2 ring-[#e0ddd8]">
           <AvatarImage src={otherUser.avatar_url ?? undefined} />
           <AvatarFallback className="bg-[#fdf2ec] text-[#e8621a] font-['DM_Sans'] font-bold text-xs">
-            {otherUser.full_name?.[0]?.toUpperCase() ?? "?"}
+            {otherUser.full_name?.[0]?.toUpperCase() ?? '?'}
           </AvatarFallback>
         </Avatar>
         <div className="flex-1 min-w-0">
-          <p className="font-['DM_Sans'] text-[13px] font-medium text-[#1a1918] truncate">{otherUser.full_name}</p>
+          <p className="font-['DM_Sans'] text-[13px] font-medium text-[#1a1918] truncate">
+            {otherUser.full_name}
+          </p>
           <p className="font-['DM_Sans'] text-[11px] text-[#6b6762] truncate">{projectTitle}</p>
         </div>
       </div>
@@ -121,27 +132,33 @@ export function ChatView({ conversationId, projectTitle, otherUser, initialMessa
           </p>
         )}
 
-        {messages.map(msg => {
+        {messages.map((msg) => {
           const isMe = msg.sender_id === myUserId
           return (
-            <div key={msg.id} className={`flex gap-2 ${isMe ? "flex-row-reverse" : "flex-row"}`}>
+            <div key={msg.id} className={`flex gap-2 ${isMe ? 'flex-row-reverse' : 'flex-row'}`}>
               {!isMe && (
                 <Avatar className="w-7 h-7 shrink-0 mt-1">
                   <AvatarImage src={otherUser.avatar_url ?? undefined} />
                   <AvatarFallback className="bg-[#fdf2ec] text-[#e8621a] font-['DM_Sans'] text-xs font-bold">
-                    {otherUser.full_name?.[0]?.toUpperCase() ?? "?"}
+                    {otherUser.full_name?.[0]?.toUpperCase() ?? '?'}
                   </AvatarFallback>
                 </Avatar>
               )}
-              <div className={`max-w-[75%] flex flex-col gap-1 ${isMe ? "items-end" : "items-start"}`}>
-                <div className={`px-4 py-2.5 font-['DM_Sans'] text-[13px] leading-relaxed whitespace-pre-wrap ${
-                  isMe
-                    ? "bg-[#e8621a] text-white rounded-2xl rounded-tr-sm"
-                    : "bg-white border border-[#e0ddd8] text-[#1a1918] rounded-2xl rounded-tl-sm"
-                }`}>
+              <div
+                className={`max-w-[75%] flex flex-col gap-1 ${isMe ? 'items-end' : 'items-start'}`}
+              >
+                <div
+                  className={`px-4 py-2.5 font-['DM_Sans'] text-[13px] leading-relaxed whitespace-pre-wrap ${
+                    isMe
+                      ? 'bg-[#e8621a] text-white rounded-2xl rounded-tr-sm'
+                      : 'bg-white border border-[#e0ddd8] text-[#1a1918] rounded-2xl rounded-tl-sm'
+                  }`}
+                >
                   {msg.content}
                 </div>
-                <span className="font-['DM_Sans'] text-[10px] text-[#6b6762] px-1">{formatTime(msg.created_at)}</span>
+                <span className="font-['DM_Sans'] text-[10px] text-[#6b6762] px-1">
+                  {formatTime(msg.created_at)}
+                </span>
               </div>
             </div>
           )
@@ -154,7 +171,7 @@ export function ChatView({ conversationId, projectTitle, otherUser, initialMessa
       <div className="bg-white border-t border-[#e0ddd8] px-6 py-4 flex gap-3 items-end shrink-0">
         <textarea
           value={input}
-          onChange={e => setInput(e.target.value)}
+          onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Type a message… (Enter to send, Shift+Enter for newline)"
           className="flex-1 min-h-10 max-h-32 bg-white border-[1.5px] border-[#e0ddd8] focus:border-[#e8621a] rounded-full px-5 py-2.5 font-['DM_Sans'] text-[13px] text-[#1a1918] placeholder:text-[#bab7b2] outline-none transition-colors resize-none"
@@ -168,7 +185,6 @@ export function ChatView({ conversationId, projectTitle, otherUser, initialMessa
           <Send className="w-4 h-4" />
         </button>
       </div>
-
     </div>
   )
 }

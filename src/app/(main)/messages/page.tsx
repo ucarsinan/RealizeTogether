@@ -1,13 +1,13 @@
-import { redirect } from "next/navigation"
-import Link from "next/link"
-import { createClient } from "@/lib/supabase/server"
-import { getMyConversations } from "@/actions/conversation.actions"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { redirect } from 'next/navigation'
+import Link from 'next/link'
+import { createClient } from '@/lib/supabase/server'
+import { getMyConversations } from '@/actions/conversation.actions'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 function timeAgo(dateStr: string): string {
   const diff = Date.now() - new Date(dateStr).getTime()
   const mins = Math.floor(diff / 60000)
-  if (mins < 1) return "just now"
+  if (mins < 1) return 'just now'
   if (mins < 60) return `${mins}m ago`
   const hours = Math.floor(mins / 60)
   if (hours < 24) return `${hours}h ago`
@@ -16,8 +16,10 @@ function timeAgo(dateStr: string): string {
 
 export default async function MessagesPage() {
   const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) redirect("/login")
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) redirect('/login')
 
   const result = await getMyConversations()
   const conversations = result.success ? result.data : []
@@ -25,7 +27,6 @@ export default async function MessagesPage() {
   return (
     <div className="min-h-screen bg-[#f2f0ed]">
       <div className="max-w-270 mx-auto px-10 max-md:px-5 py-10">
-
         {/* Header */}
         <div className="mb-8">
           <p className="font-['Unbounded'] text-[10px] font-bold tracking-[.18em] uppercase text-[#e8621a] mb-3">
@@ -45,21 +46,20 @@ export default async function MessagesPage() {
           </div>
         ) : (
           <div className="space-y-2">
-            {conversations.map(conv => (
+            {conversations.map((conv) => (
               <Link key={conv.id} href={`/messages/${conv.id}`}>
                 <div className="bg-white border border-[#e0ddd8] hover:border-[#e8621a] rounded-2xl p-5 transition-colors flex items-center gap-4 group shadow-[0_2px_12px_rgba(0,0,0,0.04)]">
-
                   {/* Avatar + unread badge */}
                   <div className="relative shrink-0">
                     <Avatar className="w-11 h-11 ring-2 ring-[#e0ddd8] group-hover:ring-[#e8621a] transition-colors">
                       <AvatarImage src={conv.other_user.avatar_url ?? undefined} />
                       <AvatarFallback className="bg-[#fdf2ec] text-[#e8621a] font-['DM_Sans'] font-bold text-sm">
-                        {conv.other_user.full_name?.[0]?.toUpperCase() ?? "?"}
+                        {conv.other_user.full_name?.[0]?.toUpperCase() ?? '?'}
                       </AvatarFallback>
                     </Avatar>
                     {conv.unread_count > 0 && (
                       <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-[#e8621a] rounded-full text-white text-[10px] flex items-center justify-center font-['DM_Sans'] font-bold">
-                        {conv.unread_count > 9 ? "9+" : conv.unread_count}
+                        {conv.unread_count > 9 ? '9+' : conv.unread_count}
                       </span>
                     )}
                   </div>
@@ -67,7 +67,9 @@ export default async function MessagesPage() {
                   {/* Content */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-2">
-                      <span className={`font-['DM_Sans'] text-[14px] truncate ${conv.unread_count > 0 ? "font-bold text-[#1a1918]" : "font-medium text-[#1a1918]"}`}>
+                      <span
+                        className={`font-['DM_Sans'] text-[14px] truncate ${conv.unread_count > 0 ? 'font-bold text-[#1a1918]' : 'font-medium text-[#1a1918]'}`}
+                      >
                         {conv.other_user.full_name}
                       </span>
                       {conv.last_message && (
@@ -80,22 +82,24 @@ export default async function MessagesPage() {
                       {conv.project_title}
                     </p>
                     {conv.last_message && (
-                      <p className={`font-['DM_Sans'] text-[12px] truncate mt-0.5 ${conv.unread_count > 0 ? "font-medium text-[#1a1918]" : "text-[#6b6762]"}`}>
-                        {conv.last_message.is_mine ? "You: " : ""}
+                      <p
+                        className={`font-['DM_Sans'] text-[12px] truncate mt-0.5 ${conv.unread_count > 0 ? 'font-medium text-[#1a1918]' : 'text-[#6b6762]'}`}
+                      >
+                        {conv.last_message.is_mine ? 'You: ' : ''}
                         {conv.last_message.content}
                       </p>
                     )}
                   </div>
 
                   {/* Active indicator */}
-                  <div className={`w-1 self-stretch rounded-full transition-colors ${conv.unread_count > 0 ? "bg-[#e8621a]" : "bg-transparent"}`} />
-
+                  <div
+                    className={`w-1 self-stretch rounded-full transition-colors ${conv.unread_count > 0 ? 'bg-[#e8621a]' : 'bg-transparent'}`}
+                  />
                 </div>
               </Link>
             ))}
           </div>
         )}
-
       </div>
     </div>
   )

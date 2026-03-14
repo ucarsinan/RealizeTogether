@@ -1,10 +1,10 @@
-"use client"
+'use client'
 
-import { useState, useTransition } from "react"
-import { submitNdaConsent } from "@/actions/nda.actions"
-import { Button } from "@/components/ui/button"
-import { Loader2, Lock, ShieldCheck, AlertCircle } from "lucide-react"
-import { cn } from "@/lib/utils"
+import { useState, useTransition } from 'react'
+import { submitNdaConsent } from '@/actions/nda.actions'
+import { Button } from '@/components/ui/button'
+import { Loader2, Lock, ShieldCheck, AlertCircle } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 interface NDAModalProps {
   projectId: string
@@ -77,15 +77,31 @@ export function NDAModal({ projectId, projectTitle, onConsented }: NDAModalProps
 
         <div className="px-6 py-5 space-y-4 max-h-64 overflow-y-auto text-sm text-zinc-600 leading-relaxed">
           <p>
-            By accessing the synopsis, pitch deck, or any protected materials for this project,
-            you agree to the following non-disclosure terms:
+            By accessing the synopsis, pitch deck, or any protected materials for this project, you
+            agree to the following non-disclosure terms:
           </p>
           <ol className="space-y-3 list-decimal list-inside">
-            <li><strong className="text-zinc-800">Confidentiality:</strong> All materials are strictly confidential and may not be shared without explicit written consent from the project creator.</li>
-            <li><strong className="text-zinc-800">Purpose:</strong> You may only use the materials to evaluate your interest in collaborating on this specific project.</li>
-            <li><strong className="text-zinc-800">Intellectual Property:</strong> All creative content remains the exclusive property of the project creator.</li>
-            <li><strong className="text-zinc-800">No Obligation:</strong> This NDA does not obligate either party to enter into a collaboration agreement.</li>
-            <li><strong className="text-zinc-800">Logging:</strong> Your consent is recorded with a timestamp for legal documentation purposes.</li>
+            <li>
+              <strong className="text-zinc-800">Confidentiality:</strong> All materials are strictly
+              confidential and may not be shared without explicit written consent from the project
+              creator.
+            </li>
+            <li>
+              <strong className="text-zinc-800">Purpose:</strong> You may only use the materials to
+              evaluate your interest in collaborating on this specific project.
+            </li>
+            <li>
+              <strong className="text-zinc-800">Intellectual Property:</strong> All creative content
+              remains the exclusive property of the project creator.
+            </li>
+            <li>
+              <strong className="text-zinc-800">No Obligation:</strong> This NDA does not obligate
+              either party to enter into a collaboration agreement.
+            </li>
+            <li>
+              <strong className="text-zinc-800">Logging:</strong> Your consent is recorded with a
+              timestamp for legal documentation purposes.
+            </li>
           </ol>
           <p className="text-xs text-zinc-400 pt-1">
             Your digital acceptance constitutes a legally binding agreement.
@@ -105,16 +121,26 @@ export function NDAModal({ projectId, projectTitle, onConsented }: NDAModalProps
               <input
                 type="checkbox"
                 checked={checked}
-                onChange={e => setChecked(e.target.checked)}
+                onChange={(e) => setChecked(e.target.checked)}
                 className="sr-only"
               />
-              <div className={cn(
-                "w-5 h-5 rounded-md border-2 transition-all flex items-center justify-center",
-                checked ? "bg-zinc-900 border-zinc-900" : "border-zinc-300 group-hover:border-zinc-500"
-              )}>
+              <div
+                className={cn(
+                  'w-5 h-5 rounded-md border-2 transition-all flex items-center justify-center',
+                  checked
+                    ? 'bg-zinc-900 border-zinc-900'
+                    : 'border-zinc-300 group-hover:border-zinc-500'
+                )}
+              >
                 {checked && (
                   <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 12 12">
-                    <path d="M2 6l3 3 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    <path
+                      d="M2 6l3 3 5-5"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
                   </svg>
                 )}
               </div>
@@ -126,7 +152,12 @@ export function NDAModal({ projectId, projectTitle, onConsented }: NDAModalProps
         </div>
 
         <div className="px-6 pb-6 pt-3 flex gap-3">
-          <Button variant="outline" className="flex-1" onClick={() => setIsOpen(false)} disabled={isPending}>
+          <Button
+            variant="outline"
+            className="flex-1"
+            onClick={() => setIsOpen(false)}
+            disabled={isPending}
+          >
             Cancel
           </Button>
           <Button
@@ -134,10 +165,15 @@ export function NDAModal({ projectId, projectTitle, onConsented }: NDAModalProps
             onClick={handleConsent}
             disabled={!checked || isPending}
           >
-            {isPending
-              ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Signing...</>
-              : <><ShieldCheck className="w-4 h-4 mr-2" /> Sign &amp; Access</>
-            }
+            {isPending ? (
+              <>
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" /> Signing...
+              </>
+            ) : (
+              <>
+                <ShieldCheck className="w-4 h-4 mr-2" /> Sign &amp; Access
+              </>
+            )}
           </Button>
         </div>
       </div>
