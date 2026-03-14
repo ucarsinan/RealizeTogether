@@ -4,8 +4,8 @@ test.describe('Project Creation & Application Flow', () => {
 
   test.beforeEach(async ({ page }) => {
     await page.goto('/login')
-    await page.getByPlaceholder(/Email/i).fill(process.env.TEST_USER_A_EMAIL!)
-    await page.getByPlaceholder(/Password/i).fill(process.env.TEST_USER_A_PASSWORD!)
+    await page.locator('input[type="email"]').fill(process.env.TEST_USER_A_EMAIL!)
+    await page.locator('input[type="password"]').fill(process.env.TEST_USER_A_PASSWORD!)
     await page.getByRole('button', { name: /Log in/i }).click()
     await page.waitForURL('**/dashboard', { timeout: 10000 })
   })

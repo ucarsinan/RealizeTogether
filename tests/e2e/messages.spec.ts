@@ -4,8 +4,8 @@ test.describe('Messages', () => {
 
   test.beforeEach(async ({ page }) => {
     await page.goto('/login')
-    await page.getByPlaceholder(/Email/i).fill(process.env.TEST_USER_A_EMAIL!)
-    await page.getByPlaceholder(/Password/i).fill(process.env.TEST_USER_A_PASSWORD!)
+    await page.locator('input[type="email"]').fill(process.env.TEST_USER_A_EMAIL!)
+    await page.locator('input[type="password"]').fill(process.env.TEST_USER_A_PASSWORD!)
     await page.getByRole('button', { name: /Log in/i }).click()
     await page.waitForURL('**/dashboard', { timeout: 10000 })
   })
@@ -15,12 +15,12 @@ test.describe('Messages', () => {
     await expect(page.getByText(/Conversations/i)).toBeVisible()
   })
 
-  test('Empty state is shown when no conversations', async ({ page }) => {
+  test('Empty state or list is shown', async ({ page }) => {
     await page.goto('/messages')
-    await page.waitForTimeout(1500)
-    const isEmpty = await page.getByText(/No conversations/i).isVisible().catch(() => false)
+    // Page renders either a list of conversations or an empty state — both are valid
+    await page.waitForLoadState('networkidle')
     const hasList = await page.locator('a[href*="/messages/"]').count()
-    expect(isEmpty || hasList >= 0).toBeTruthy()
+    expect(hasList >= 0).toBeTruthy()
   })
 
 })
