@@ -26,9 +26,9 @@ export function ProjectCard({ project }: { project: ProjectWithRoles }) {
             {/* Badges */}
             <div className="flex items-center gap-2 mb-3 flex-wrap">
               <span
-                className={`font-['DM_Sans'] text-[10px] font-medium px-2.5 py-1 rounded-full border ${STAGE_COLORS[project.stage] ?? STAGE_COLORS.idea}`}
+                className={`font-['DM_Sans'] text-[10px] font-medium px-2.5 py-1 rounded-full border ${STAGE_COLORS[project.stage ?? 'idea'] ?? STAGE_COLORS.idea}`}
               >
-                {STAGE_LABELS[project.stage]}
+                {STAGE_LABELS[project.stage ?? 'idea']}
               </span>
               <span className="font-['DM_Sans'] text-[10px] font-medium px-2.5 py-1 rounded-full bg-[#f2f0ed] text-[#6b6762]">
                 {COMMITMENT_LABELS[project.commitment_type]}
@@ -76,7 +76,7 @@ export function ProjectCard({ project }: { project: ProjectWithRoles }) {
                 key={role.id}
                 className="font-['DM_Sans'] text-[10px] font-medium px-2.5 py-1 rounded-full bg-[#f2f0ed] text-[#6b6762] border border-[#e0ddd8]"
               >
-                {role.quantity > 1 ? `${role.quantity}× ` : ''}
+                {(role.quantity ?? 0) > 1 ? `${role.quantity}× ` : ''}
                 {role.role_name}
               </span>
             ))}

@@ -51,9 +51,9 @@ export default async function ProjectDetailPage({ params }: { params: Params }) 
           {/* Badges */}
           <div className="flex flex-wrap items-center gap-2">
             <span
-              className={`font-['DM_Sans'] text-[11px] font-medium px-3 py-1 rounded-full border ${STAGE_COLORS[project.stage] ?? STAGE_COLORS.idea}`}
+              className={`font-['DM_Sans'] text-[11px] font-medium px-3 py-1 rounded-full border ${STAGE_COLORS[project.stage ?? 'idea'] ?? STAGE_COLORS.idea}`}
             >
-              {STAGE_LABELS[project.stage]}
+              {STAGE_LABELS[project.stage ?? 'idea']}
             </span>
             <span className="font-['DM_Sans'] text-[11px] font-medium px-3 py-1 rounded-full bg-[#f2f0ed] text-[#6b6762]">
               {COMMITMENT_LABELS[project.commitment_type]}
@@ -149,7 +149,7 @@ export default async function ProjectDetailPage({ params }: { params: Params }) 
                       <span className="font-['DM_Sans'] text-[13px] font-medium text-[#1a1918]">
                         {role.role_name}
                       </span>
-                      {role.quantity > 1 && (
+                      {(role.quantity ?? 0) > 1 && (
                         <span className="font-['DM_Sans'] text-[11px] px-2 py-0.5 rounded-full bg-white border border-[#e0ddd8] text-[#6b6762]">
                           ×{role.quantity}
                         </span>
@@ -189,7 +189,7 @@ export default async function ProjectDetailPage({ params }: { params: Params }) 
             <SynopsisViewer
               projectId={project.id}
               projectTitle={project.title}
-              requiresNda={project.requires_nda}
+              requiresNda={project.requires_nda ?? false}
               hasSynopsis={!!project.synopsis_url}
               initialHasConsented={initialHasConsented}
               isOwner={isOwner}

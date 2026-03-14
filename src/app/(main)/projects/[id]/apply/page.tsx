@@ -22,7 +22,7 @@ export default async function ApplyPage({ params }: { params: Params }) {
   if (creator?.id === user.id) redirect(`/projects/${project.id}`)
   if (project.status !== 'open') redirect(`/projects/${project.id}`)
 
-  const isEarlyStage = ['idea', 'concept'].includes(project.stage)
+  const isEarlyStage = ['idea', 'concept'].includes(project.stage ?? '')
 
   return (
     <div className="min-h-screen bg-[#f2f0ed]">

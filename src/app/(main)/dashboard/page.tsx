@@ -94,7 +94,7 @@ export default async function DashboardPage() {
                       </div>
                       <div className="flex items-center gap-1.5 mt-1">
                         <span className="font-['DM_Sans'] text-[11px] text-[#6b6762]">
-                          {STAGE_LABELS[project.stage]}
+                          {STAGE_LABELS[project.stage ?? 'idea']}
                         </span>
                         <span className="text-[#e0ddd8]">·</span>
                         <span className="font-['DM_Sans'] text-[11px] text-[#6b6762]">
