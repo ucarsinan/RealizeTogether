@@ -9,6 +9,7 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: 1,
+  globalSetup: './tests/global-setup.ts',
   reporter: [['html', { outputFolder: 'tests/reports/playwright' }], ['list']],
   use: {
     baseURL: process.env.TEST_BASE_URL || 'http://localhost:3000',
@@ -18,8 +19,24 @@ export default defineConfig({
   },
   projects: [
     {
-      name: 'chromium',
+      // Unauthenticated tests only (public pages, auth flows)
+      name: 'chromium-anon',
+      testMatch: ['**/auth.spec.ts'],
       use: { ...devices['Desktop Chrome'] },
+    },
+    {
+      // Authenticated tests — session loaded from storageState (global-setup.ts)
+      name: 'chromium-auth',
+      testMatch: [
+        '**/explore.spec.ts',
+        '**/messages.spec.ts',
+        '**/project-flow.spec.ts',
+        '**/security.spec.ts',
+      ],
+      use: {
+        ...devices['Desktop Chrome'],
+        storageState: 'tests/.auth/user-a.json',
+      },
     },
   ],
 })
