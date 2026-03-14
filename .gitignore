@@ -45,3 +45,4 @@ claude-sync.md
 tests/reports/
 test-results/
 playwright-report/
+.env*.local
