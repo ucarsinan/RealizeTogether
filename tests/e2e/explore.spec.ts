@@ -4,8 +4,8 @@ test.describe('Explore', () => {
 
   test.beforeEach(async ({ page }) => {
     await page.goto('/login')
-    await page.getByPlaceholder(/Email/i).fill(process.env.TEST_USER_A_EMAIL!)
-    await page.getByPlaceholder(/Password/i).fill(process.env.TEST_USER_A_PASSWORD!)
+    await page.locator('input[type="email"]').fill(process.env.TEST_USER_A_EMAIL!)
+    await page.locator('input[type="password"]').fill(process.env.TEST_USER_A_PASSWORD!)
     await page.getByRole('button', { name: /Log in/i }).click()
     await page.waitForURL('**/dashboard', { timeout: 10000 })
   })
@@ -13,13 +13,14 @@ test.describe('Explore', () => {
   test('Explore page loads with filter controls', async ({ page }) => {
     await page.goto('/explore')
     await expect(page.getByText(/Find your next project/i)).toBeVisible()
-    await expect(page.getByText(/All Stages/i)).toBeVisible()
-    await expect(page.getByText(/Any/i)).toBeVisible()
+    // SegmentedControl labels — scoped to the filter section
+    await expect(page.getByText('All Stages')).toBeVisible()
+    await expect(page.getByRole('button', { name: 'Any' })).toBeVisible()
   })
 
   test('Stage filter changes URL params', async ({ page }) => {
     await page.goto('/explore')
-    await page.getByText('Idea').click()
+    await page.getByRole('button', { name: 'Idea' }).click()
     await expect(page).toHaveURL(/stage=idea/)
   })
 
