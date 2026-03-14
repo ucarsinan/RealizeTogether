@@ -12,21 +12,21 @@ test.describe('Authentication', () => {
 
   test('Register page loads and shows form', async ({ page }) => {
     await page.goto('/register')
-    await expect(page.getByPlaceholder(/Full name/i)).toBeVisible()
-    await expect(page.getByPlaceholder(/Email/i)).toBeVisible()
-    await expect(page.getByPlaceholder(/Password/i)).toBeVisible()
+    await expect(page.locator('#fullName')).toBeVisible()
+    await expect(page.locator('input[type="email"]')).toBeVisible()
+    await expect(page.locator('input[type="password"]')).toBeVisible()
   })
 
   test('Login page loads and shows form', async ({ page }) => {
     await page.goto('/login')
-    await expect(page.getByPlaceholder(/Email/i)).toBeVisible()
-    await expect(page.getByPlaceholder(/Password/i)).toBeVisible()
+    await expect(page.locator('input[type="email"]')).toBeVisible()
+    await expect(page.locator('input[type="password"]')).toBeVisible()
   })
 
   test('Login with valid credentials redirects to dashboard', async ({ page }) => {
     await page.goto('/login')
-    await page.getByPlaceholder(/Email/i).fill(process.env.TEST_USER_A_EMAIL!)
-    await page.getByPlaceholder(/Password/i).fill(process.env.TEST_USER_A_PASSWORD!)
+    await page.locator('input[type="email"]').fill(process.env.TEST_USER_A_EMAIL!)
+    await page.locator('input[type="password"]').fill(process.env.TEST_USER_A_PASSWORD!)
     await page.getByRole('button', { name: /Log in/i }).click()
     await page.waitForURL('**/dashboard', { timeout: 10000 })
     await expect(page).toHaveURL(/dashboard/)
@@ -34,8 +34,8 @@ test.describe('Authentication', () => {
 
   test('Login with invalid credentials shows error', async ({ page }) => {
     await page.goto('/login')
-    await page.getByPlaceholder(/Email/i).fill('wrong@example.com')
-    await page.getByPlaceholder(/Password/i).fill('wrongpassword')
+    await page.locator('input[type="email"]').fill('wrong@example.com')
+    await page.locator('input[type="password"]').fill('wrongpassword')
     await page.getByRole('button', { name: /Log in/i }).click()
     await page.waitForTimeout(2000)
     await expect(page).not.toHaveURL(/dashboard/)
