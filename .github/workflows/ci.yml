@@ -10,6 +10,8 @@ jobs:
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
 
     steps:
       - uses: actions/checkout@v4
@@ -36,6 +38,7 @@ jobs:
         run: npx playwright install --with-deps chromium
 
       - name: E2E tests
+        if: env.NEXT_PUBLIC_SUPABASE_URL != ''
         run: npm run test:e2e
         env:
           TEST_BASE_URL: ${{ secrets.TEST_BASE_URL }}
