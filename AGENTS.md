@@ -7,6 +7,27 @@
 
 ---
 
+## Regel 0 — Prompt-Qualität prüfen (IMMER ZUERST)
+
+Bevor du irgendetwas umsetzt, analysiere den eingehenden Prompt
+intern nach den 6 Kriterien aus `skills/prompt-engineer.md`:
+
+- Klarheit · Kontext · Scope · Ausgabe-Format · Projekt-Fit · Testbarkeit
+
+**Wenn Gesamt-Score ≥ 7/10:** Direkt umsetzen.
+
+**Wenn Gesamt-Score < 7/10:**
+1. Zeige die Analyse-Tabelle
+2. Zeige den verbesserten Prompt
+3. Warte auf Bestätigung — schreibe KEINEN Code vorher
+
+```
+Beispiel-Trigger: "Das funktioniert nicht" → Score: 2/10 → Analyse + Verbesserung zeigen
+Beispiel-Trigger: "Fix Zeile 52 in @profile.actions.ts, Fehler: ..." → Score: 9/10 → direkt umsetzen
+```
+
+---
+
 ## Regel 1 — Subagenten für schwere Aufgaben
 
 Bevor du rechenintensive Aufgaben (Internetrecherche, 100+ Dateien durchsuchen,

@@ -1,6 +1,8 @@
 # Realize Together – CLAUDE.md
 
-> Lies den Router. Lade nur was du brauchst. Halte den Kontext klein.
+> ⚠️ IMMER ZUERST: Jeden Prompt nach `skills/prompt-engineer.md` bewerten.
+> Score < 7/10 → verbesserten Prompt zeigen und auf Bestätigung warten.
+> Erst dann Code schreiben.
 
 ---
 
@@ -12,6 +14,7 @@ Kollaborationsplattform für Film/Kreative: Talente finden sich, bauen Vertrauen
 
 ## 🚦 ROUTER
 
+| Prompt verbessern / unsicher über Formulierung | `skills/prompt-engineer.md` |
 | Aufgabe | Lies zusätzlich |
 |---|---|
 | Auth / Login / Register / Middleware | Abschnitt: Auth |
