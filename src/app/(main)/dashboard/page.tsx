@@ -44,10 +44,10 @@ export default async function DashboardPage() {
       <div className="max-w-[1080px] mx-auto px-10 max-md:px-5 py-10">
         {/* Header */}
         <div className="mb-10">
-          <p className="font-['Unbounded'] text-[10px] font-bold tracking-[.18em] uppercase text-[#e8621a] mb-3">
+          <p className="font-unbounded text-[10px] font-bold tracking-[.18em] uppercase text-[#e8621a] mb-3">
             YOUR DASHBOARD
           </p>
-          <h1 className="font-['Unbounded'] font-black text-[clamp(28px,3.5vw,52px)] tracking-[-0.04em] leading-[.95] text-[#1a1918]">
+          <h1 className="font-unbounded font-black text-[clamp(28px,3.5vw,52px)] tracking-[-0.04em] leading-[.95] text-[#1a1918]">
             Welcome back, {firstName}.
           </h1>
         </div>
@@ -57,12 +57,12 @@ export default async function DashboardPage() {
           {/* Your Projects */}
           <div className="bg-white border border-[#e0ddd8] rounded-2xl p-6 shadow-[0_4px_32px_rgba(0,0,0,0.07)] flex flex-col gap-4">
             <div className="flex items-center justify-between">
-              <h3 className="font-['Unbounded'] font-bold text-[14px] tracking-[-0.01em] text-[#1a1918]">
+              <h3 className="font-unbounded font-bold text-[14px] tracking-[-0.01em] text-[#1a1918]">
                 Your Projects
               </h3>
               <Link
                 href="/projects/new"
-                className="flex items-center gap-1.5 bg-[#e8621a] hover:bg-[#c9521a] text-white font-bold text-[11px] px-3 py-1.5 rounded-full transition-colors duration-150 font-['DM_Sans']"
+                className="flex items-center gap-1.5 bg-[#e8621a] hover:bg-[#c9521a] text-white font-bold text-[11px] px-3 py-1.5 rounded-full transition-colors duration-150 font-sans"
               >
                 <Plus className="w-3 h-3" />
                 New
@@ -71,10 +71,10 @@ export default async function DashboardPage() {
 
             {projects.length === 0 ? (
               <div className="flex-1 flex flex-col items-center justify-center text-center py-6 gap-3">
-                <p className="font-['DM_Sans'] text-[13px] text-[#6b6762]">No projects yet.</p>
+                <p className="font-sans text-[13px] text-[#6b6762]">No projects yet.</p>
                 <Link
                   href="/projects/new"
-                  className="bg-[#e8621a] hover:bg-[#c9521a] text-white font-bold text-[12px] px-4 py-2 rounded-full transition-colors duration-150 font-['DM_Sans']"
+                  className="bg-[#e8621a] hover:bg-[#c9521a] text-white font-bold text-[12px] px-4 py-2 rounded-full transition-colors duration-150 font-sans"
                 >
                   Create first project
                 </Link>
@@ -85,19 +85,19 @@ export default async function DashboardPage() {
                   <Link key={project.id} href={`/projects/${project.id}`}>
                     <div className="border border-[#e0ddd8] hover:border-[#e8621a] rounded-xl p-3 transition-colors group">
                       <div className="flex items-start justify-between gap-2">
-                        <h4 className="font-['DM_Sans'] text-[13px] font-medium text-[#1a1918] leading-snug group-hover:text-[#e8621a] transition-colors truncate">
+                        <h4 className="font-sans text-[13px] font-medium text-[#1a1918] leading-snug group-hover:text-[#e8621a] transition-colors truncate">
                           {project.title}
                         </h4>
-                        <span className="font-['DM_Sans'] text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#f2f0ed] text-[#6b6762] shrink-0 capitalize">
+                        <span className="font-sans text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#f2f0ed] text-[#6b6762] shrink-0 capitalize">
                           {project.status}
                         </span>
                       </div>
                       <div className="flex items-center gap-1.5 mt-1">
-                        <span className="font-['DM_Sans'] text-[11px] text-[#6b6762]">
+                        <span className="font-sans text-[11px] text-[#6b6762]">
                           {STAGE_LABELS[project.stage ?? 'idea']}
                         </span>
                         <span className="text-[#e0ddd8]">·</span>
-                        <span className="font-['DM_Sans'] text-[11px] text-[#6b6762]">
+                        <span className="font-sans text-[11px] text-[#6b6762]">
                           {COMMITMENT_LABELS[project.commitment_type]}
                         </span>
                       </div>
@@ -109,7 +109,7 @@ export default async function DashboardPage() {
 
             <Link
               href="/explore"
-              className="text-center border border-[#e0ddd8] hover:border-[#1a1918] text-[#6b6762] hover:text-[#1a1918] text-[12px] px-4 py-2 rounded-full transition-colors duration-200 font-['DM_Sans'] mt-auto"
+              className="text-center border border-[#e0ddd8] hover:border-[#1a1918] text-[#6b6762] hover:text-[#1a1918] text-[12px] px-4 py-2 rounded-full transition-colors duration-200 font-sans mt-auto"
             >
               Explore projects
             </Link>
@@ -117,13 +117,13 @@ export default async function DashboardPage() {
 
           {/* Your Applications */}
           <div className="bg-white border border-[#e0ddd8] rounded-2xl p-6 shadow-[0_4px_32px_rgba(0,0,0,0.07)] flex flex-col gap-4">
-            <h3 className="font-['Unbounded'] font-bold text-[14px] tracking-[-0.01em] text-[#1a1918]">
+            <h3 className="font-unbounded font-bold text-[14px] tracking-[-0.01em] text-[#1a1918]">
               Your Applications
             </h3>
 
             {applications.length === 0 ? (
               <div className="flex-1 flex flex-col items-center justify-center text-center py-6">
-                <p className="font-['DM_Sans'] text-[13px] text-[#6b6762]">No applications yet.</p>
+                <p className="font-sans text-[13px] text-[#6b6762]">No applications yet.</p>
               </div>
             ) : (
               <div className="space-y-2 flex-1">
@@ -133,21 +133,21 @@ export default async function DashboardPage() {
                     <div key={app.id} className="border border-[#e0ddd8] rounded-xl p-3 space-y-2">
                       <div className="flex items-start justify-between gap-2">
                         <Link href={`/projects/${app.project_id}`} className="flex-1 min-w-0">
-                          <h4 className="font-['DM_Sans'] text-[13px] font-medium text-[#1a1918] leading-snug hover:text-[#e8621a] transition-colors truncate">
+                          <h4 className="font-sans text-[13px] font-medium text-[#1a1918] leading-snug hover:text-[#e8621a] transition-colors truncate">
                             {app.projects?.title ?? 'Project'}
                           </h4>
                         </Link>
                         <StatusBadge status={app.status} />
                       </div>
                       {app.project_roles?.role_name && (
-                        <p className="font-['DM_Sans'] text-[11px] text-[#6b6762]">
+                        <p className="font-sans text-[11px] text-[#6b6762]">
                           Role: {app.project_roles.role_name}
                         </p>
                       )}
                       {convId && (
                         <Link
                           href={`/messages/${convId}`}
-                          className="inline-flex items-center gap-1.5 border border-[#e0ddd8] hover:border-[#e8621a] text-[#6b6762] hover:text-[#e8621a] text-[11px] px-3 py-1 rounded-full transition-colors font-['DM_Sans']"
+                          className="inline-flex items-center gap-1.5 border border-[#e0ddd8] hover:border-[#e8621a] text-[#6b6762] hover:text-[#e8621a] text-[11px] px-3 py-1 rounded-full transition-colors font-sans"
                         >
                           <MessageCircle className="w-3 h-3" /> Open Chat
                         </Link>
@@ -161,20 +161,20 @@ export default async function DashboardPage() {
 
           {/* Messages */}
           <div className="bg-white border border-[#e0ddd8] rounded-2xl p-6 shadow-[0_4px_32px_rgba(0,0,0,0.07)] flex flex-col gap-4">
-            <h3 className="font-['Unbounded'] font-bold text-[14px] tracking-[-0.01em] text-[#1a1918]">
+            <h3 className="font-unbounded font-bold text-[14px] tracking-[-0.01em] text-[#1a1918]">
               Messages
             </h3>
 
             <div className="flex-1 flex flex-col items-center justify-center text-center py-6 gap-3">
               <MessageCircle className="w-8 h-8 text-[#e0ddd8]" />
-              <p className="font-['DM_Sans'] text-[13px] text-[#6b6762]">
+              <p className="font-sans text-[13px] text-[#6b6762]">
                 Conversations appear once an application is accepted.
               </p>
             </div>
 
             <Link
               href="/messages"
-              className="text-center border border-[#e0ddd8] hover:border-[#1a1918] text-[#6b6762] hover:text-[#1a1918] text-[12px] px-4 py-2 rounded-full transition-colors duration-200 font-['DM_Sans'] mt-auto"
+              className="text-center border border-[#e0ddd8] hover:border-[#1a1918] text-[#6b6762] hover:text-[#1a1918] text-[12px] px-4 py-2 rounded-full transition-colors duration-200 font-sans mt-auto"
             >
               View all messages
             </Link>
@@ -185,7 +185,7 @@ export default async function DashboardPage() {
         <div className="mt-6 flex flex-wrap gap-3">
           <Link
             href="/dashboard/profile"
-            className="border border-[#e0ddd8] hover:border-[#1a1918] text-[#6b6762] hover:text-[#1a1918] text-[13px] px-5 py-2 rounded-full transition-colors duration-200 font-['DM_Sans']"
+            className="border border-[#e0ddd8] hover:border-[#1a1918] text-[#6b6762] hover:text-[#1a1918] text-[13px] px-5 py-2 rounded-full transition-colors duration-200 font-sans"
           >
             Edit profile
           </Link>
@@ -210,7 +210,7 @@ function StatusBadge({ status }: { status: string }) {
   }
   return (
     <span
-      className={`font-['DM_Sans'] text-[10px] font-medium px-2 py-0.5 rounded-full shrink-0 ${styles[status] ?? styles.pending}`}
+      className={`font-sans text-[10px] font-medium px-2 py-0.5 rounded-full shrink-0 ${styles[status] ?? styles.pending}`}
     >
       {labels[status] ?? status}
     </span>

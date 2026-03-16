@@ -12,7 +12,7 @@ export function SegmentedControl({ options, value, onChange }: SegmentedControlP
           key={option.value}
           onClick={() => onChange(option.value)}
           className={`
-            px-4 py-1.5 rounded-full text-[12px] font-['DM_Sans'] font-medium
+            px-4 py-1.5 rounded-full text-[12px] font-sans font-medium
             transition-all duration-200 whitespace-nowrap
             ${
               value === option.value

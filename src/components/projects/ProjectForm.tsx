@@ -41,10 +41,10 @@ const COLLABS: { value: CollabType }[] = [
 ]
 
 const inputClass =
-  "w-full bg-white border-[1.5px] border-[#e0ddd8] focus:border-[#e8621a] rounded-full px-5 py-2.5 text-[13px] text-[#1a1918] placeholder:text-[#bab7b2] outline-none transition-colors font-['DM_Sans']"
+  'w-full bg-white border-[1.5px] border-[#e0ddd8] focus:border-[#e8621a] rounded-full px-5 py-2.5 text-[13px] text-[#1a1918] placeholder:text-[#bab7b2] outline-none transition-colors font-sans'
 const textareaClass =
-  "w-full bg-white border-[1.5px] border-[#e0ddd8] focus:border-[#e8621a] rounded-xl px-5 py-3 text-[13px] text-[#1a1918] placeholder:text-[#bab7b2] outline-none transition-colors font-['DM_Sans'] resize-none"
-const labelClass = "block font-['DM_Sans'] text-[12px] font-medium text-[#6b6762] mb-1.5"
+  'w-full bg-white border-[1.5px] border-[#e0ddd8] focus:border-[#e8621a] rounded-xl px-5 py-3 text-[13px] text-[#1a1918] placeholder:text-[#bab7b2] outline-none transition-colors font-sans resize-none'
+const labelClass = 'block font-sans text-[12px] font-medium text-[#6b6762] mb-1.5'
 
 function SectionHeader({
   icon: Icon,
@@ -61,10 +61,10 @@ function SectionHeader({
         <Icon className="w-4 h-4 text-[#e8621a]" />
       </div>
       <div>
-        <h3 className="font-['Unbounded'] font-bold text-[13px] tracking-[-0.01em] text-[#1a1918]">
+        <h3 className="font-unbounded font-bold text-[13px] tracking-[-0.01em] text-[#1a1918]">
           {title}
         </h3>
-        <p className="font-['DM_Sans'] text-[12px] text-[#6b6762] mt-0.5">{description}</p>
+        <p className="font-sans text-[12px] text-[#6b6762] mt-0.5">{description}</p>
       </div>
     </div>
   )
@@ -74,7 +74,7 @@ function StatusMessage({ type, message }: { type: 'success' | 'error'; message: 
   return (
     <div
       className={cn(
-        "flex items-center gap-2 font-['DM_Sans'] text-[12px] px-4 py-2.5 rounded-xl",
+        'flex items-center gap-2 font-sans text-[12px] px-4 py-2.5 rounded-xl',
         type === 'success' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-600'
       )}
     >
@@ -115,7 +115,7 @@ function RolesSection({
     <div className="space-y-4">
       <div
         className={cn(
-          "flex items-start gap-2 font-['DM_Sans'] text-[12px] p-3 rounded-xl",
+          'flex items-start gap-2 font-sans text-[12px] p-3 rounded-xl',
           isEarlyStage ? 'bg-amber-50 text-amber-700' : 'bg-[#fdf2ec] text-[#e8621a]'
         )}
       >
@@ -126,17 +126,13 @@ function RolesSection({
       </div>
 
       {roles.length === 0 && (
-        <p className="font-['DM_Sans'] text-[13px] text-[#6b6762] text-center py-4">
-          No roles added yet.
-        </p>
+        <p className="font-sans text-[13px] text-[#6b6762] text-center py-4">No roles added yet.</p>
       )}
 
       {roles.map((role, i) => (
         <div key={i} className="bg-[#f2f0ed] rounded-xl p-4 space-y-3 border border-[#e0ddd8]">
           <div className="flex items-center justify-between">
-            <span className="font-['DM_Sans'] text-[11px] font-medium text-[#6b6762]">
-              Role #{i + 1}
-            </span>
+            <span className="font-sans text-[11px] font-medium text-[#6b6762]">Role #{i + 1}</span>
             <button
               type="button"
               onClick={() => removeRole(i)}
@@ -185,7 +181,7 @@ function RolesSection({
       <button
         type="button"
         onClick={addRole}
-        className="w-full border border-dashed border-[#e0ddd8] hover:border-[#e8621a] text-[#6b6762] hover:text-[#e8621a] font-['DM_Sans'] text-[12px] font-medium py-2.5 rounded-full transition-colors flex items-center justify-center gap-1.5"
+        className="w-full border border-dashed border-[#e0ddd8] hover:border-[#e8621a] text-[#6b6762] hover:text-[#e8621a] font-sans text-[12px] font-medium py-2.5 rounded-full transition-colors flex items-center justify-center gap-1.5"
       >
         <Plus className="w-3.5 h-3.5" /> Add Role
       </button>
@@ -223,10 +219,10 @@ function SynopsisUpload({ projectId }: { projectId: string }) {
         ) : (
           <Upload className="w-6 h-6 text-[#e0ddd8]" />
         )}
-        <span className="font-['DM_Sans'] text-[13px] text-[#6b6762]">
+        <span className="font-sans text-[13px] text-[#6b6762]">
           {isPending ? 'Uploading...' : 'Upload Synopsis or Pitch Deck (PDF)'}
         </span>
-        <span className="font-['DM_Sans'] text-[11px] text-[#6b6762]">
+        <span className="font-sans text-[11px] text-[#6b6762]">
           Max 20MB · Automatically NDA-protected
         </span>
       </label>
@@ -286,10 +282,10 @@ export function ProjectForm() {
       <div className="space-y-6 pb-12">
         <div className="bg-green-50 border border-green-200 rounded-2xl p-6 text-center space-y-2">
           <CheckCircle className="w-10 h-10 text-green-500 mx-auto" />
-          <h2 className="font-['Unbounded'] font-bold text-[16px] tracking-[-0.02em] text-green-800">
+          <h2 className="font-unbounded font-bold text-[16px] tracking-[-0.02em] text-green-800">
             Project created!
           </h2>
-          <p className="font-['DM_Sans'] text-[13px] text-green-700">
+          <p className="font-sans text-[13px] text-green-700">
             Optionally upload your synopsis — it will be NDA-protected.
           </p>
         </div>
@@ -306,13 +302,13 @@ export function ProjectForm() {
         <div className="flex gap-3">
           <button
             onClick={() => router.push(`/projects/${createdProjectId}`)}
-            className="flex-1 border border-[#e0ddd8] hover:border-[#1a1918] text-[#6b6762] hover:text-[#1a1918] font-['DM_Sans'] text-[13px] px-5 py-2.5 rounded-full transition-colors"
+            className="flex-1 border border-[#e0ddd8] hover:border-[#1a1918] text-[#6b6762] hover:text-[#1a1918] font-sans text-[13px] px-5 py-2.5 rounded-full transition-colors"
           >
             View Project
           </button>
           <button
             onClick={() => router.push('/dashboard')}
-            className="flex-1 bg-[#e8621a] hover:bg-[#c9521a] text-white font-bold font-['DM_Sans'] text-[13px] px-5 py-2.5 rounded-full transition-colors"
+            className="flex-1 bg-[#e8621a] hover:bg-[#c9521a] text-white font-bold font-sans text-[13px] px-5 py-2.5 rounded-full transition-colors"
           >
             Go to Dashboard
           </button>
@@ -349,7 +345,7 @@ export function ProjectForm() {
             placeholder="1–2 sentences. Like Se7en meets Inception."
             className={inputClass}
           />
-          <p className="font-['DM_Sans'] text-[11px] text-[#6b6762] mt-1">
+          <p className="font-sans text-[11px] text-[#6b6762] mt-1">
             This is always public — make it intriguing
           </p>
         </div>
@@ -365,7 +361,7 @@ export function ProjectForm() {
             rows={5}
             className={textareaClass}
           />
-          <p className="font-['DM_Sans'] text-[11px] text-[#6b6762] mt-1">
+          <p className="font-sans text-[11px] text-[#6b6762] mt-1">
             {formData.description.length} characters (min. 20)
           </p>
         </div>
@@ -388,7 +384,7 @@ export function ProjectForm() {
                 type="button"
                 onClick={() => handleChange('stage', s.value)}
                 className={cn(
-                  "text-left px-4 py-3 rounded-xl border font-['DM_Sans'] text-[13px] transition-colors",
+                  'text-left px-4 py-3 rounded-xl border font-sans text-[13px] transition-colors',
                   formData.stage === s.value
                     ? 'border-[#e8621a] bg-[#fdf2ec] text-[#e8621a]'
                     : 'border-[#e0ddd8] hover:border-[#1a1918] text-[#1a1918]'
@@ -414,7 +410,7 @@ export function ProjectForm() {
                 type="button"
                 onClick={() => handleChange('commitment_type', c.value)}
                 className={cn(
-                  "text-left px-4 py-3 rounded-xl border font-['DM_Sans'] text-[13px] transition-colors",
+                  'text-left px-4 py-3 rounded-xl border font-sans text-[13px] transition-colors',
                   formData.commitment_type === c.value
                     ? 'border-[#e8621a] bg-[#fdf2ec] text-[#e8621a]'
                     : 'border-[#e0ddd8] hover:border-[#1a1918] text-[#1a1918]'
@@ -440,7 +436,7 @@ export function ProjectForm() {
                 type="button"
                 onClick={() => handleChange('collab_type', c.value)}
                 className={cn(
-                  "px-5 py-2 rounded-full border font-['DM_Sans'] text-[13px] transition-colors",
+                  'px-5 py-2 rounded-full border font-sans text-[13px] transition-colors',
                   formData.collab_type === c.value
                     ? 'border-[#e8621a] bg-[#fdf2ec] text-[#e8621a] font-medium'
                     : 'border-[#e0ddd8] hover:border-[#1a1918] text-[#6b6762]'
@@ -463,8 +459,8 @@ export function ProjectForm() {
       <div className="flex items-start gap-3 bg-white border border-[#e0ddd8] rounded-2xl p-5">
         <Lock className="w-4 h-4 text-[#e8621a] mt-0.5 shrink-0" />
         <div>
-          <p className="font-['DM_Sans'] text-[13px] font-medium text-[#1a1918]">Trust Funnel</p>
-          <p className="font-['DM_Sans'] text-[12px] text-[#6b6762] mt-1 leading-relaxed">
+          <p className="font-sans text-[13px] font-medium text-[#1a1918]">Trust Funnel</p>
+          <p className="font-sans text-[12px] text-[#6b6762] mt-1 leading-relaxed">
             Your logline and description are public. After creating, you can upload a synopsis —
             NDA-protected (Level 2). Full script stays private in chat (Level 3).
           </p>
@@ -478,13 +474,13 @@ export function ProjectForm() {
         <button
           onClick={handleSubmit}
           disabled={isPending || !isValid}
-          className="w-full bg-[#e8621a] hover:bg-[#c9521a] text-white font-bold font-['DM_Sans'] text-[13px] px-6 py-3 rounded-full transition-colors duration-150 disabled:opacity-50 flex items-center justify-center gap-2"
+          className="w-full bg-[#e8621a] hover:bg-[#c9521a] text-white font-bold font-sans text-[13px] px-6 py-3 rounded-full transition-colors duration-150 disabled:opacity-50 flex items-center justify-center gap-2"
         >
           {isPending && <Loader2 className="w-4 h-4 animate-spin" />}
           {isPending ? 'Creating...' : 'Create Project'}
         </button>
         {!isValid && (
-          <p className="font-['DM_Sans'] text-[11px] text-center text-[#6b6762] mt-2">
+          <p className="font-sans text-[11px] text-center text-[#6b6762] mt-2">
             Title (min. 3 chars) and description (min. 20 chars) required
           </p>
         )}

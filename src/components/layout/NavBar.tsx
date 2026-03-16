@@ -77,7 +77,7 @@ export function NavBar() {
   }
 
   const navLinkClass = (href: string) =>
-    `font-['DM_Sans'] text-[13px] transition-colors duration-150 ${
+    `font-sans text-[13px] transition-colors duration-150 ${
       isActive(href) ? 'text-[#1a1918] font-medium' : 'text-[#6b6762] hover:text-[#1a1918]'
     }`
 
@@ -90,7 +90,7 @@ export function NavBar() {
         {/* Logo + Brand */}
         <Link href="/dashboard" className="flex items-center gap-3 shrink-0">
           <LogoSVG />
-          <span className="font-['Unbounded'] font-bold text-[13px] tracking-[0.04em] text-[#1a1918] hidden sm:block">
+          <span className="font-unbounded font-bold text-[13px] tracking-[0.04em] text-[#1a1918] hidden sm:block">
             REALIZE TOGETHER
           </span>
         </Link>
@@ -113,7 +113,7 @@ export function NavBar() {
           <Link href="/dashboard/profile" className="shrink-0">
             <Avatar className="w-8 h-8 ring-2 ring-[#e0ddd8] hover:ring-[#e8621a] transition-all">
               <AvatarImage src={user?.avatar_url ?? undefined} />
-              <AvatarFallback className="bg-[#fdf2ec] text-[#e8621a] text-xs font-['DM_Sans'] font-bold">
+              <AvatarFallback className="bg-[#fdf2ec] text-[#e8621a] text-xs font-sans font-bold">
                 {user?.full_name?.[0]?.toUpperCase() ?? '?'}
               </AvatarFallback>
             </Avatar>
@@ -122,13 +122,13 @@ export function NavBar() {
           <div className="flex items-center gap-3 shrink-0">
             <Link
               href="/login"
-              className="border border-[#e0ddd8] hover:border-[#1a1918] text-[#6b6762] hover:text-[#1a1918] text-[13px] px-5 py-2 rounded-full transition-colors duration-200 font-['DM_Sans']"
+              className="border border-[#e0ddd8] hover:border-[#1a1918] text-[#6b6762] hover:text-[#1a1918] text-[13px] px-5 py-2 rounded-full transition-colors duration-200 font-sans"
             >
               Log in
             </Link>
             <Link
               href="/register"
-              className="bg-[#e8621a] hover:bg-[#c9521a] text-white font-bold text-[13px] px-6 py-2.5 rounded-full transition-colors duration-150 font-['DM_Sans']"
+              className="bg-[#e8621a] hover:bg-[#c9521a] text-white font-bold text-[13px] px-6 py-2.5 rounded-full transition-colors duration-150 font-sans"
             >
               Join free
             </Link>

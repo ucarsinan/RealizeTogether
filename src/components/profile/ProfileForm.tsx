@@ -29,10 +29,10 @@ interface ProfileFormProps {
 }
 
 const inputClass =
-  "w-full bg-white border-[1.5px] border-[#e0ddd8] focus:border-[#e8621a] rounded-full px-5 py-2.5 text-[13px] text-[#1a1918] placeholder:text-[#bab7b2] outline-none transition-colors font-['DM_Sans']"
+  'w-full bg-white border-[1.5px] border-[#e0ddd8] focus:border-[#e8621a] rounded-full px-5 py-2.5 text-[13px] text-[#1a1918] placeholder:text-[#bab7b2] outline-none transition-colors font-sans'
 const textareaClass =
-  "w-full bg-white border-[1.5px] border-[#e0ddd8] focus:border-[#e8621a] rounded-xl px-5 py-3 text-[13px] text-[#1a1918] placeholder:text-[#bab7b2] outline-none transition-colors font-['DM_Sans'] resize-none"
-const labelClass = "block font-['DM_Sans'] text-[12px] font-medium text-[#6b6762] mb-1.5"
+  'w-full bg-white border-[1.5px] border-[#e0ddd8] focus:border-[#e8621a] rounded-xl px-5 py-3 text-[13px] text-[#1a1918] placeholder:text-[#bab7b2] outline-none transition-colors font-sans resize-none'
+const labelClass = 'block font-sans text-[12px] font-medium text-[#6b6762] mb-1.5'
 
 function SectionHeader({
   icon: Icon,
@@ -49,10 +49,10 @@ function SectionHeader({
         <Icon className="w-4 h-4 text-[#e8621a]" />
       </div>
       <div>
-        <h3 className="font-['Unbounded'] font-bold text-[13px] tracking-[-0.01em] text-[#1a1918]">
+        <h3 className="font-unbounded font-bold text-[13px] tracking-[-0.01em] text-[#1a1918]">
           {title}
         </h3>
-        <p className="font-['DM_Sans'] text-[12px] text-[#6b6762] mt-0.5">{description}</p>
+        <p className="font-sans text-[12px] text-[#6b6762] mt-0.5">{description}</p>
       </div>
     </div>
   )
@@ -62,7 +62,7 @@ function StatusMessage({ type, message }: { type: 'success' | 'error'; message: 
   return (
     <div
       className={cn(
-        "flex items-center gap-2 font-['DM_Sans'] text-[12px] px-4 py-2.5 rounded-xl mt-3",
+        'flex items-center gap-2 font-sans text-[12px] px-4 py-2.5 rounded-xl mt-3',
         type === 'success' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-600'
       )}
     >
@@ -118,7 +118,7 @@ function AvatarUpload({ currentUrl }: { currentUrl: string | null }) {
           type="button"
           onClick={() => inputRef.current?.click()}
           disabled={isPending}
-          className="flex items-center gap-1.5 border border-[#e0ddd8] hover:border-[#1a1918] text-[#6b6762] hover:text-[#1a1918] font-['DM_Sans'] text-[12px] px-4 py-2 rounded-full transition-colors disabled:opacity-50"
+          className="flex items-center gap-1.5 border border-[#e0ddd8] hover:border-[#1a1918] text-[#6b6762] hover:text-[#1a1918] font-sans text-[12px] px-4 py-2 rounded-full transition-colors disabled:opacity-50"
         >
           {isPending ? (
             <Loader2 className="w-3 h-3 animate-spin" />
@@ -127,7 +127,7 @@ function AvatarUpload({ currentUrl }: { currentUrl: string | null }) {
           )}
           {isPending ? 'Uploading...' : 'Upload photo'}
         </button>
-        <p className="font-['DM_Sans'] text-[11px] text-[#6b6762] mt-1">Max 5MB · JPG, PNG, WebP</p>
+        <p className="font-sans text-[11px] text-[#6b6762] mt-1">Max 5MB · JPG, PNG, WebP</p>
       </div>
       <input
         ref={inputRef}
@@ -175,18 +175,14 @@ function VideoUpload({ currentUrl }: { currentUrl: string | null }) {
         {currentUrl ? (
           <div className="space-y-2">
             <CheckCircle className="w-8 h-8 text-green-500 mx-auto" />
-            <p className="font-['DM_Sans'] text-[13px] font-medium text-green-700">
-              Intro video uploaded
-            </p>
+            <p className="font-sans text-[13px] font-medium text-green-700">Intro video uploaded</p>
             <video src={currentUrl} className="max-h-32 mx-auto rounded-lg" controls />
           </div>
         ) : (
           <div className="space-y-2">
             <Video className="w-8 h-8 text-[#e0ddd8] mx-auto" />
-            <p className="font-['DM_Sans'] text-[13px] text-[#6b6762]">
-              Record a 60-second intro video
-            </p>
-            <p className="font-['DM_Sans'] text-[11px] text-[#6b6762]">
+            <p className="font-sans text-[13px] text-[#6b6762]">Record a 60-second intro video</p>
+            <p className="font-sans text-[11px] text-[#6b6762]">
               The most powerful way to build trust with collaborators
             </p>
           </div>
@@ -196,14 +192,12 @@ function VideoUpload({ currentUrl }: { currentUrl: string | null }) {
         type="button"
         onClick={() => inputRef.current?.click()}
         disabled={isPending}
-        className="w-full flex items-center justify-center gap-1.5 border border-[#e0ddd8] hover:border-[#1a1918] text-[#6b6762] hover:text-[#1a1918] font-['DM_Sans'] text-[12px] px-4 py-2.5 rounded-full transition-colors disabled:opacity-50"
+        className="w-full flex items-center justify-center gap-1.5 border border-[#e0ddd8] hover:border-[#1a1918] text-[#6b6762] hover:text-[#1a1918] font-sans text-[12px] px-4 py-2.5 rounded-full transition-colors disabled:opacity-50"
       >
         {isPending ? <Loader2 className="w-3 h-3 animate-spin" /> : <Upload className="w-3 h-3" />}
         {isPending ? 'Uploading...' : currentUrl ? 'Replace video' : 'Upload video'}
       </button>
-      <p className="font-['DM_Sans'] text-[11px] text-[#6b6762] text-center">
-        Max 50MB · MP4, MOV, WebM
-      </p>
+      <p className="font-sans text-[11px] text-[#6b6762] text-center">Max 50MB · MP4, MOV, WebM</p>
       <input
         ref={inputRef}
         type="file"
@@ -282,7 +276,7 @@ export function ProfileForm({ profile, isNew = false }: ProfileFormProps) {
       {profile.is_verified && (
         <div className="inline-flex items-center gap-1.5 bg-green-50 border border-green-200 px-3 py-1.5 rounded-full">
           <CheckCircle className="w-3.5 h-3.5 text-green-600" />
-          <span className="font-['DM_Sans'] text-[12px] font-medium text-green-700">Verified</span>
+          <span className="font-sans text-[12px] font-medium text-green-700">Verified</span>
         </div>
       )}
 
@@ -320,7 +314,7 @@ export function ProfileForm({ profile, isNew = false }: ProfileFormProps) {
             rows={4}
             className={textareaClass}
           />
-          <p className="font-['DM_Sans'] text-[11px] text-[#6b6762] mt-1">
+          <p className="font-sans text-[11px] text-[#6b6762] mt-1">
             {formData.bio.length}/500 characters
           </p>
         </div>
@@ -349,7 +343,7 @@ export function ProfileForm({ profile, isNew = false }: ProfileFormProps) {
               type="button"
               onClick={handleVerify}
               disabled={!hasPortfolioLink || isVerifying}
-              className="flex items-center gap-1.5 border border-[#e0ddd8] hover:border-[#e8621a] text-[#6b6762] hover:text-[#e8621a] font-['DM_Sans'] text-[12px] px-4 py-2 rounded-full transition-colors disabled:opacity-40 shrink-0 ml-4"
+              className="flex items-center gap-1.5 border border-[#e0ddd8] hover:border-[#e8621a] text-[#6b6762] hover:text-[#e8621a] font-sans text-[12px] px-4 py-2 rounded-full transition-colors disabled:opacity-40 shrink-0 ml-4"
             >
               {isVerifying ? (
                 <Loader2 className="w-3 h-3 animate-spin" />
@@ -395,7 +389,7 @@ export function ProfileForm({ profile, isNew = false }: ProfileFormProps) {
           <div key={field.id}>
             <label
               htmlFor={field.id}
-              className="flex items-center gap-2 font-['DM_Sans'] text-[12px] font-medium text-[#6b6762] mb-1.5"
+              className="flex items-center gap-2 font-sans text-[12px] font-medium text-[#6b6762] mb-1.5"
             >
               <field.icon className={`w-3.5 h-3.5 ${field.iconClass}`} />
               {field.label}
@@ -417,7 +411,7 @@ export function ProfileForm({ profile, isNew = false }: ProfileFormProps) {
         <button
           onClick={handleSave}
           disabled={isPending || !formData.full_name.trim()}
-          className="w-full bg-[#e8621a] hover:bg-[#c9521a] text-white font-bold text-[13px] px-6 py-3 rounded-full transition-colors duration-150 font-['DM_Sans'] disabled:opacity-50 flex items-center justify-center gap-2"
+          className="w-full bg-[#e8621a] hover:bg-[#c9521a] text-white font-bold text-[13px] px-6 py-3 rounded-full transition-colors duration-150 font-sans disabled:opacity-50 flex items-center justify-center gap-2"
         >
           {isPending && <Loader2 className="w-4 h-4 animate-spin" />}
           {isPending ? 'Saving...' : isNew ? 'Save & continue →' : 'Save changes'}

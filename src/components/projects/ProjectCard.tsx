@@ -26,15 +26,15 @@ export function ProjectCard({ project }: { project: ProjectWithRoles }) {
             {/* Badges */}
             <div className="flex items-center gap-2 mb-3 flex-wrap">
               <span
-                className={`font-['DM_Sans'] text-[10px] font-medium px-2.5 py-1 rounded-full border ${STAGE_COLORS[project.stage ?? 'idea'] ?? STAGE_COLORS.idea}`}
+                className={`font-sans text-[10px] font-medium px-2.5 py-1 rounded-full border ${STAGE_COLORS[project.stage ?? 'idea'] ?? STAGE_COLORS.idea}`}
               >
                 {STAGE_LABELS[project.stage ?? 'idea']}
               </span>
-              <span className="font-['DM_Sans'] text-[10px] font-medium px-2.5 py-1 rounded-full bg-[#f2f0ed] text-[#6b6762]">
+              <span className="font-sans text-[10px] font-medium px-2.5 py-1 rounded-full bg-[#f2f0ed] text-[#6b6762]">
                 {COMMITMENT_LABELS[project.commitment_type]}
               </span>
               {project.requires_nda && (
-                <span className="font-['DM_Sans'] text-[10px] text-[#6b6762] flex items-center gap-1">
+                <span className="font-sans text-[10px] text-[#6b6762] flex items-center gap-1">
                   <Lock className="w-2.5 h-2.5" />
                   NDA
                 </span>
@@ -42,13 +42,13 @@ export function ProjectCard({ project }: { project: ProjectWithRoles }) {
             </div>
 
             {/* Title */}
-            <h3 className="font-['Unbounded'] font-bold text-[14px] tracking-[-0.01em] text-[#1a1918] group-hover:text-[#e8621a] transition-colors truncate">
+            <h3 className="font-unbounded font-bold text-[14px] tracking-[-0.01em] text-[#1a1918] group-hover:text-[#e8621a] transition-colors truncate">
               {project.title}
             </h3>
 
             {/* Logline */}
             {project.logline && (
-              <p className="font-['DM_Sans'] text-[12px] text-[#6b6762] mt-1.5 line-clamp-2 leading-relaxed">
+              <p className="font-sans text-[12px] text-[#6b6762] mt-1.5 line-clamp-2 leading-relaxed">
                 {project.logline}
               </p>
             )}
@@ -59,7 +59,7 @@ export function ProjectCard({ project }: { project: ProjectWithRoles }) {
             <div className="shrink-0 flex flex-col items-center gap-1">
               <Avatar className="w-9 h-9 ring-2 ring-[#e0ddd8] group-hover:ring-[#e8621a] transition-colors">
                 <AvatarImage src={creator.avatar_url ?? undefined} />
-                <AvatarFallback className="font-['DM_Sans'] text-xs bg-[#fdf2ec] text-[#e8621a] font-bold">
+                <AvatarFallback className="font-sans text-xs bg-[#fdf2ec] text-[#e8621a] font-bold">
                   {creator.full_name?.[0]?.toUpperCase() ?? '?'}
                 </AvatarFallback>
               </Avatar>
@@ -74,14 +74,14 @@ export function ProjectCard({ project }: { project: ProjectWithRoles }) {
             {roles.slice(0, 4).map((role) => (
               <span
                 key={role.id}
-                className="font-['DM_Sans'] text-[10px] font-medium px-2.5 py-1 rounded-full bg-[#f2f0ed] text-[#6b6762] border border-[#e0ddd8]"
+                className="font-sans text-[10px] font-medium px-2.5 py-1 rounded-full bg-[#f2f0ed] text-[#6b6762] border border-[#e0ddd8]"
               >
                 {(role.quantity ?? 0) > 1 ? `${role.quantity}× ` : ''}
                 {role.role_name}
               </span>
             ))}
             {roles.length > 4 && (
-              <span className="font-['DM_Sans'] text-[10px] font-medium px-2.5 py-1 rounded-full bg-[#f2f0ed] text-[#6b6762]">
+              <span className="font-sans text-[10px] font-medium px-2.5 py-1 rounded-full bg-[#f2f0ed] text-[#6b6762]">
                 +{roles.length - 4} more
               </span>
             )}
@@ -89,7 +89,7 @@ export function ProjectCard({ project }: { project: ProjectWithRoles }) {
         )}
 
         {/* Bottom */}
-        <div className="mt-3 flex items-center justify-between font-['DM_Sans'] text-[11px] text-[#6b6762] border-t border-[#f2f0ed] pt-3">
+        <div className="mt-3 flex items-center justify-between font-sans text-[11px] text-[#6b6762] border-t border-[#f2f0ed] pt-3">
           <span>{creator?.full_name}</span>
           <span>{COLLAB_LABELS[project.collab_type]}</span>
         </div>

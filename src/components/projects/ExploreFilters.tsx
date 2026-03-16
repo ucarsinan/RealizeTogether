@@ -27,7 +27,7 @@ interface ExploreFiltersProps {
 }
 
 const sectionLabel =
-  "font-['Unbounded'] text-[9px] font-bold tracking-[.15em] uppercase text-[#6b6762] mb-2"
+  'font-unbounded text-[9px] font-bold tracking-[.15em] uppercase text-[#6b6762] mb-2'
 
 export function ExploreFilters({ currentStage, currentCommitment }: ExploreFiltersProps) {
   const router = useRouter()

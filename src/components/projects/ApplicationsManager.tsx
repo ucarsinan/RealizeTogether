@@ -68,7 +68,7 @@ function ApplicationCard({
           <div className="relative shrink-0">
             <Avatar className="w-12 h-12 ring-2 ring-[#e0ddd8]">
               <AvatarImage src={applicant.avatar_url ?? undefined} />
-              <AvatarFallback className="bg-[#fdf2ec] text-[#e8621a] font-['DM_Sans'] font-bold text-sm">
+              <AvatarFallback className="bg-[#fdf2ec] text-[#e8621a] font-sans font-bold text-sm">
                 {applicant.full_name?.[0]?.toUpperCase() ?? '?'}
               </AvatarFallback>
             </Avatar>
@@ -81,26 +81,26 @@ function ApplicationCard({
 
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="font-['DM_Sans'] font-medium text-[#1a1918] text-[13px]">
+              <span className="font-sans font-medium text-[#1a1918] text-[13px]">
                 {applicant.full_name}
               </span>
               {application.project_roles && (
-                <span className="font-['DM_Sans'] text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-[#f2f0ed] text-[#6b6762] border border-[#e0ddd8]">
+                <span className="font-sans text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-[#f2f0ed] text-[#6b6762] border border-[#e0ddd8]">
                   {application.project_roles.role_name}
                 </span>
               )}
               <span
-                className={`font-['DM_Sans'] text-[10px] font-medium px-2.5 py-0.5 rounded-full border ${statusConfig.className}`}
+                className={`font-sans text-[10px] font-medium px-2.5 py-0.5 rounded-full border ${statusConfig.className}`}
               >
                 {statusConfig.label}
               </span>
             </div>
-            <p className="font-['DM_Sans'] text-[12px] text-[#6b6762] mt-0.5 line-clamp-1">
+            <p className="font-sans text-[12px] text-[#6b6762] mt-0.5 line-clamp-1">
               {application.message}
             </p>
           </div>
 
-          <span className="font-['DM_Sans'] text-[#6b6762] text-[11px] shrink-0">
+          <span className="font-sans text-[#6b6762] text-[11px] shrink-0">
             {isExpanded ? '▲' : '▼'}
           </span>
         </div>
@@ -111,10 +111,10 @@ function ApplicationCard({
           <div className="border-t border-[#e0ddd8]" />
 
           <div>
-            <p className="font-['DM_Sans'] text-[11px] font-medium text-[#6b6762] uppercase tracking-widest mb-2">
+            <p className="font-sans text-[11px] font-medium text-[#6b6762] uppercase tracking-widest mb-2">
               Application message
             </p>
-            <p className="font-['DM_Sans'] text-[13px] text-[#1a1918] leading-relaxed whitespace-pre-line">
+            <p className="font-sans text-[13px] text-[#1a1918] leading-relaxed whitespace-pre-line">
               {application.message}
             </p>
           </div>
@@ -125,7 +125,7 @@ function ApplicationCard({
                 href={applicant.video_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1.5 font-['DM_Sans'] text-[11px] text-[#6b6762] border border-[#e0ddd8] px-3 py-1.5 rounded-full hover:border-[#e8621a] hover:text-[#e8621a] transition-colors"
+                className="flex items-center gap-1.5 font-sans text-[11px] text-[#6b6762] border border-[#e0ddd8] px-3 py-1.5 rounded-full hover:border-[#e8621a] hover:text-[#e8621a] transition-colors"
               >
                 <Play className="w-3 h-3" /> Intro Video
               </a>
@@ -135,7 +135,7 @@ function ApplicationCard({
                 href={applicant.imdb_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1.5 font-['DM_Sans'] text-[11px] text-[#6b6762] border border-[#e0ddd8] px-3 py-1.5 rounded-full hover:border-[#e8621a] hover:text-[#e8621a] transition-colors"
+                className="flex items-center gap-1.5 font-sans text-[11px] text-[#6b6762] border border-[#e0ddd8] px-3 py-1.5 rounded-full hover:border-[#e8621a] hover:text-[#e8621a] transition-colors"
               >
                 <Film className="w-3 h-3" /> IMDb
               </a>
@@ -145,7 +145,7 @@ function ApplicationCard({
                 href={applicant.vimeo_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1.5 font-['DM_Sans'] text-[11px] text-[#6b6762] border border-[#e0ddd8] px-3 py-1.5 rounded-full hover:border-[#e8621a] hover:text-[#e8621a] transition-colors"
+                className="flex items-center gap-1.5 font-sans text-[11px] text-[#6b6762] border border-[#e0ddd8] px-3 py-1.5 rounded-full hover:border-[#e8621a] hover:text-[#e8621a] transition-colors"
               >
                 <Play className="w-3 h-3" /> Vimeo
               </a>
@@ -155,7 +155,7 @@ function ApplicationCard({
                 href={applicant.linkedin_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1.5 font-['DM_Sans'] text-[11px] text-[#6b6762] border border-[#e0ddd8] px-3 py-1.5 rounded-full hover:border-[#e8621a] hover:text-[#e8621a] transition-colors"
+                className="flex items-center gap-1.5 font-sans text-[11px] text-[#6b6762] border border-[#e0ddd8] px-3 py-1.5 rounded-full hover:border-[#e8621a] hover:text-[#e8621a] transition-colors"
               >
                 <Linkedin className="w-3 h-3" /> LinkedIn
               </a>
@@ -165,7 +165,7 @@ function ApplicationCard({
                 href={applicant.portfolio_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1.5 font-['DM_Sans'] text-[11px] text-[#6b6762] border border-[#e0ddd8] px-3 py-1.5 rounded-full hover:border-[#e8621a] hover:text-[#e8621a] transition-colors"
+                className="flex items-center gap-1.5 font-sans text-[11px] text-[#6b6762] border border-[#e0ddd8] px-3 py-1.5 rounded-full hover:border-[#e8621a] hover:text-[#e8621a] transition-colors"
               >
                 <Globe className="w-3 h-3" /> Portfolio
               </a>
@@ -177,7 +177,7 @@ function ApplicationCard({
               <button
                 onClick={handleReject}
                 disabled={isPendingReject || isPendingAccept}
-                className="flex-1 flex items-center justify-center gap-1.5 border border-[#e0ddd8] hover:border-red-300 text-[#6b6762] hover:text-red-600 font-['DM_Sans'] text-[12px] font-medium px-4 py-2.5 rounded-full transition-colors disabled:opacity-50"
+                className="flex-1 flex items-center justify-center gap-1.5 border border-[#e0ddd8] hover:border-red-300 text-[#6b6762] hover:text-red-600 font-sans text-[12px] font-medium px-4 py-2.5 rounded-full transition-colors disabled:opacity-50"
               >
                 {isPendingReject ? (
                   <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -189,7 +189,7 @@ function ApplicationCard({
               <button
                 onClick={handleAccept}
                 disabled={isPendingAccept || isPendingReject}
-                className="flex-1 flex items-center justify-center gap-1.5 bg-[#e8621a] hover:bg-[#c9521a] text-white font-['DM_Sans'] text-[12px] font-bold px-4 py-2.5 rounded-full transition-colors disabled:opacity-50"
+                className="flex-1 flex items-center justify-center gap-1.5 bg-[#e8621a] hover:bg-[#c9521a] text-white font-sans text-[12px] font-bold px-4 py-2.5 rounded-full transition-colors disabled:opacity-50"
               >
                 {isPendingAccept ? (
                   <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -204,7 +204,7 @@ function ApplicationCard({
           {application.status === 'in_talks' && (
             <Link
               href="/messages"
-              className="flex items-center justify-center gap-1.5 border border-[#e0ddd8] hover:border-[#e8621a] text-[#6b6762] hover:text-[#e8621a] font-['DM_Sans'] text-[12px] font-medium px-4 py-2.5 rounded-full transition-colors w-full"
+              className="flex items-center justify-center gap-1.5 border border-[#e0ddd8] hover:border-[#e8621a] text-[#6b6762] hover:text-[#e8621a] font-sans text-[12px] font-medium px-4 py-2.5 rounded-full transition-colors w-full"
             >
               <MessageCircle className="w-3.5 h-3.5" />
               Open conversation
@@ -249,7 +249,7 @@ export function ApplicationsManager({
     <div className="space-y-8">
       <Link
         href={`/projects/${projectId}`}
-        className="inline-flex items-center gap-1.5 font-['DM_Sans'] text-[13px] text-[#6b6762] hover:text-[#1a1918] transition-colors"
+        className="inline-flex items-center gap-1.5 font-sans text-[13px] text-[#6b6762] hover:text-[#1a1918] transition-colors"
       >
         <ArrowLeft className="w-4 h-4" />
         Back to project
@@ -284,25 +284,23 @@ export function ApplicationsManager({
           },
         ].map((stat) => (
           <div key={stat.label} className={`${stat.bg} rounded-2xl border p-4 text-center`}>
-            <p
-              className={`font-['Unbounded'] font-bold text-[24px] tracking-[-0.03em] ${stat.color}`}
-            >
+            <p className={`font-unbounded font-bold text-[24px] tracking-[-0.03em] ${stat.color}`}>
               {stat.count}
             </p>
-            <p className="font-['DM_Sans'] text-[11px] text-[#6b6762] mt-0.5">{stat.label}</p>
+            <p className="font-sans text-[11px] text-[#6b6762] mt-0.5">{stat.label}</p>
           </div>
         ))}
       </div>
 
       {applications.length === 0 ? (
         <div className="text-center py-20 bg-white border border-[#e0ddd8] rounded-2xl">
-          <p className="font-['DM_Sans'] text-[13px] text-[#6b6762]">No applications yet.</p>
+          <p className="font-sans text-[13px] text-[#6b6762]">No applications yet.</p>
         </div>
       ) : (
         <div className="space-y-8">
           {pending.length > 0 && (
             <div className="space-y-3">
-              <h2 className="font-['DM_Sans'] text-[11px] font-medium text-[#1a1918] flex items-center gap-2 uppercase tracking-widest">
+              <h2 className="font-sans text-[11px] font-medium text-[#1a1918] flex items-center gap-2 uppercase tracking-widest">
                 <span className="w-2 h-2 rounded-full bg-[#e8621a] inline-block" />
                 New Applications ({pending.length})
               </h2>
@@ -319,7 +317,7 @@ export function ApplicationsManager({
 
           {inTalks.length > 0 && (
             <div className="space-y-3">
-              <h2 className="font-['DM_Sans'] text-[11px] font-medium text-[#1a1918] flex items-center gap-2 uppercase tracking-widest">
+              <h2 className="font-sans text-[11px] font-medium text-[#1a1918] flex items-center gap-2 uppercase tracking-widest">
                 <span className="w-2 h-2 rounded-full bg-blue-400 inline-block" />
                 In Conversation ({inTalks.length})
               </h2>
@@ -336,7 +334,7 @@ export function ApplicationsManager({
 
           {matched.length > 0 && (
             <div className="space-y-3">
-              <h2 className="font-['DM_Sans'] text-[11px] font-medium text-[#1a1918] flex items-center gap-2 uppercase tracking-widest">
+              <h2 className="font-sans text-[11px] font-medium text-[#1a1918] flex items-center gap-2 uppercase tracking-widest">
                 <span className="w-2 h-2 rounded-full bg-green-400 inline-block" />
                 Matched ({matched.length})
               </h2>
@@ -353,7 +351,7 @@ export function ApplicationsManager({
 
           {rejected.length > 0 && (
             <div className="space-y-3">
-              <h2 className="font-['DM_Sans'] text-[11px] font-medium text-[#6b6762] flex items-center gap-2 uppercase tracking-widest">
+              <h2 className="font-sans text-[11px] font-medium text-[#6b6762] flex items-center gap-2 uppercase tracking-widest">
                 <span className="w-2 h-2 rounded-full bg-[#e0ddd8] inline-block" />
                 Passed ({rejected.length})
               </h2>

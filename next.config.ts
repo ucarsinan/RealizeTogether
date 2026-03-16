@@ -16,10 +16,10 @@ const nextConfig: NextConfig = {
       "default-src 'self'",
       // Next.js requires unsafe-inline for its runtime scripts & styles
       "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
-      "style-src 'self' 'unsafe-inline'",
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       `img-src 'self' data: https://${supabaseHost}`,
       `connect-src 'self' https://${supabaseHost} wss://${supabaseHost}`,
-      "font-src 'self'",
+      "font-src 'self' https://fonts.gstatic.com",
       "frame-src 'none'",
       "frame-ancestors 'none'",
     ].join('; ')

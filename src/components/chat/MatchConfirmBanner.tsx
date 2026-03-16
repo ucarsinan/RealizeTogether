@@ -44,7 +44,7 @@ export function MatchConfirmBanner({
     return (
       <div className="bg-green-50 border-b border-green-100 px-6 py-3 flex items-center gap-2">
         <CheckCircle className="w-4 h-4 text-green-600 shrink-0" />
-        <p className="font-['DM_Sans'] text-[13px] font-medium text-green-800">
+        <p className="font-sans text-[13px] font-medium text-green-800">
           You&apos;re officially matched! Time to build something great.
         </p>
       </div>
@@ -55,7 +55,7 @@ export function MatchConfirmBanner({
     return (
       <div className="bg-[#fdf2ec] border-b border-[#e8621a]/20 px-6 py-3 flex items-center gap-2">
         <Clock className="w-4 h-4 text-[#e8621a] shrink-0" />
-        <p className="font-['DM_Sans'] text-[13px] text-[#e8621a]">
+        <p className="font-sans text-[13px] text-[#e8621a]">
           You confirmed — waiting for the other party to confirm the match.
         </p>
       </div>
@@ -64,13 +64,13 @@ export function MatchConfirmBanner({
 
   return (
     <div className="bg-[#1a1918] px-6 py-3 flex items-center justify-between gap-4">
-      <p className="font-['DM_Sans'] text-[13px] text-white/90">
+      <p className="font-sans text-[13px] text-white/90">
         Ready to officially collaborate on this project?
       </p>
       <button
         onClick={handleConfirm}
         disabled={isPending}
-        className="flex items-center gap-1.5 bg-[#e8621a] hover:bg-[#c9521a] text-white font-['DM_Sans'] text-[12px] font-bold px-5 py-2 rounded-full transition-colors disabled:opacity-60 shrink-0"
+        className="flex items-center gap-1.5 bg-[#e8621a] hover:bg-[#c9521a] text-white font-sans text-[12px] font-bold px-5 py-2 rounded-full transition-colors disabled:opacity-60 shrink-0"
       >
         {isPending ? (
           <>

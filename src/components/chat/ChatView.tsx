@@ -112,22 +112,22 @@ export function ChatView({
         </Link>
         <Avatar className="w-9 h-9 ring-2 ring-[#e0ddd8]">
           <AvatarImage src={otherUser.avatar_url ?? undefined} />
-          <AvatarFallback className="bg-[#fdf2ec] text-[#e8621a] font-['DM_Sans'] font-bold text-xs">
+          <AvatarFallback className="bg-[#fdf2ec] text-[#e8621a] font-sans font-bold text-xs">
             {otherUser.full_name?.[0]?.toUpperCase() ?? '?'}
           </AvatarFallback>
         </Avatar>
         <div className="flex-1 min-w-0">
-          <p className="font-['DM_Sans'] text-[13px] font-medium text-[#1a1918] truncate">
+          <p className="font-sans text-[13px] font-medium text-[#1a1918] truncate">
             {otherUser.full_name}
           </p>
-          <p className="font-['DM_Sans'] text-[11px] text-[#6b6762] truncate">{projectTitle}</p>
+          <p className="font-sans text-[11px] text-[#6b6762] truncate">{projectTitle}</p>
         </div>
       </div>
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto px-6 py-6 space-y-4 bg-[#f2f0ed]">
         {messages.length === 0 && (
-          <p className="text-center font-['DM_Sans'] text-[12px] text-[#6b6762] py-12">
+          <p className="text-center font-sans text-[12px] text-[#6b6762] py-12">
             No messages yet. Say hello!
           </p>
         )}
@@ -139,7 +139,7 @@ export function ChatView({
               {!isMe && (
                 <Avatar className="w-7 h-7 shrink-0 mt-1">
                   <AvatarImage src={otherUser.avatar_url ?? undefined} />
-                  <AvatarFallback className="bg-[#fdf2ec] text-[#e8621a] font-['DM_Sans'] text-xs font-bold">
+                  <AvatarFallback className="bg-[#fdf2ec] text-[#e8621a] font-sans text-xs font-bold">
                     {otherUser.full_name?.[0]?.toUpperCase() ?? '?'}
                   </AvatarFallback>
                 </Avatar>
@@ -148,7 +148,7 @@ export function ChatView({
                 className={`max-w-[75%] flex flex-col gap-1 ${isMe ? 'items-end' : 'items-start'}`}
               >
                 <div
-                  className={`px-4 py-2.5 font-['DM_Sans'] text-[13px] leading-relaxed whitespace-pre-wrap ${
+                  className={`px-4 py-2.5 font-sans text-[13px] leading-relaxed whitespace-pre-wrap ${
                     isMe
                       ? 'bg-[#e8621a] text-white rounded-2xl rounded-tr-sm'
                       : 'bg-white border border-[#e0ddd8] text-[#1a1918] rounded-2xl rounded-tl-sm'
@@ -156,7 +156,7 @@ export function ChatView({
                 >
                   {msg.content}
                 </div>
-                <span className="font-['DM_Sans'] text-[10px] text-[#6b6762] px-1">
+                <span className="font-sans text-[10px] text-[#6b6762] px-1">
                   {formatTime(msg.created_at)}
                 </span>
               </div>
@@ -174,7 +174,7 @@ export function ChatView({
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Type a message… (Enter to send, Shift+Enter for newline)"
-          className="flex-1 min-h-10 max-h-32 bg-white border-[1.5px] border-[#e0ddd8] focus:border-[#e8621a] rounded-full px-5 py-2.5 font-['DM_Sans'] text-[13px] text-[#1a1918] placeholder:text-[#bab7b2] outline-none transition-colors resize-none"
+          className="flex-1 min-h-10 max-h-32 bg-white border-[1.5px] border-[#e0ddd8] focus:border-[#e8621a] rounded-full px-5 py-2.5 font-sans text-[13px] text-[#1a1918] placeholder:text-[#bab7b2] outline-none transition-colors resize-none"
           rows={1}
         />
         <button

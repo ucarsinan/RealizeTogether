@@ -14,14 +14,12 @@ export function Breadcrumb({ items }: { items: BreadcrumbItem[] }) {
           {item.href && i < items.length - 1 ? (
             <Link
               href={item.href}
-              className="font-['DM_Sans'] text-[12px] text-[#6b6762] hover:text-[#e8621a] transition-colors"
+              className="font-sans text-[12px] text-[#6b6762] hover:text-[#e8621a] transition-colors"
             >
               {item.label}
             </Link>
           ) : (
-            <span className="font-['DM_Sans'] text-[12px] text-[#1a1918] font-medium">
-              {item.label}
-            </span>
+            <span className="font-sans text-[12px] text-[#1a1918] font-medium">{item.label}</span>
           )}
         </span>
       ))}
