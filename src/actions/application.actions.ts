@@ -1,8 +1,11 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { revalidatePath } from 'next/cache'
 import type { ActionResult } from '@/lib/types'
+import { sendEmail } from '@/lib/email/resend'
+import { newApplicationEmail, applicationAcceptedEmail } from '@/lib/email/templates'
 
 // ─────────────────────────────────────────────
 // TYPES
@@ -56,7 +59,7 @@ export async function submitApplication(input: {
 
   const { data: project } = await supabase
     .from('projects')
-    .select('creator_id, status')
+    .select('creator_id, status, title')
     .eq('id', input.project_id)
     .single()
 
@@ -86,6 +89,28 @@ export async function submitApplication(input: {
   }
 
   revalidatePath(`/projects/${input.project_id}`)
+
+  // Email: notify creator about new application (fire-and-forget)
+  void (async () => {
+    try {
+      const admin = createAdminClient()
+      const [{ data: creatorAuth }, { data: applicantProfile }] = await Promise.all([
+        admin.auth.admin.getUserById(project.creator_id),
+        supabase.from('profiles').select('full_name').eq('id', user.id).single(),
+      ])
+      const creatorEmail = creatorAuth?.user?.email
+      if (creatorEmail) {
+        const { subject, html } = newApplicationEmail({
+          projectTitle: project.title,
+          applicantName: applicantProfile?.full_name ?? 'Someone',
+          projectId: input.project_id,
+        })
+        await sendEmail({ to: creatorEmail, subject, html })
+      }
+    } catch (e) {
+      console.error('[email] newApplication error:', e)
+    }
+  })()
 
   return { success: true, data: { id: data.id } }
 }
@@ -152,7 +177,7 @@ export async function acceptApplication(
 
   const { data: application } = await supabase
     .from('project_applications')
-    .select('*, projects(creator_id)')
+    .select('*, projects(creator_id, title)')
     .eq('id', applicationId)
     .single()
 
@@ -193,6 +218,29 @@ export async function acceptApplication(
 
   revalidatePath(`/projects/${application.project_id}/applications`)
   revalidatePath('/messages')
+
+  // Email: notify applicant they were accepted (fire-and-forget)
+  void (async () => {
+    try {
+      const admin = createAdminClient()
+      const proj = application.projects as unknown as { creator_id: string; title: string }
+      const [{ data: applicantAuth }, { data: creatorProfile }] = await Promise.all([
+        admin.auth.admin.getUserById(application.applicant_id),
+        supabase.from('profiles').select('full_name').eq('id', proj.creator_id).single(),
+      ])
+      const applicantEmail = applicantAuth?.user?.email
+      if (applicantEmail) {
+        const { subject, html } = applicationAcceptedEmail({
+          projectTitle: proj.title,
+          creatorName: creatorProfile?.full_name ?? 'The creator',
+          conversationId: conversation.id,
+        })
+        await sendEmail({ to: applicantEmail, subject, html })
+      }
+    } catch (e) {
+      console.error('[email] applicationAccepted error:', e)
+    }
+  })()
 
   return { success: true, data: { conversationId: conversation.id } }
 }

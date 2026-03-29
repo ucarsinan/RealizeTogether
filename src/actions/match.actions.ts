@@ -1,8 +1,11 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { revalidatePath } from 'next/cache'
 import type { ActionResult } from '@/lib/types'
+import { sendEmail } from '@/lib/email/resend'
+import { matchCompleteEmail } from '@/lib/email/templates'
 
 export type MatchStatus = {
   creatorConfirmed: boolean
@@ -27,7 +30,7 @@ export async function confirmMatch(
   // Load application + project
   const { data: application } = await supabase
     .from('project_applications')
-    .select('id, project_id, applicant_id, role_id, status, projects(creator_id)')
+    .select('id, project_id, applicant_id, role_id, status, projects(creator_id, title)')
     .eq('id', applicationId)
     .single()
 
@@ -104,6 +107,55 @@ export async function confirmMatch(
 
     revalidatePath(`/projects/${application.project_id}`)
     revalidatePath('/dashboard')
+
+    // Email: notify both parties of completed match (fire-and-forget)
+    void (async () => {
+      try {
+        const admin = createAdminClient()
+        const proj = application.projects as unknown as { creator_id: string; title: string }
+        const [
+          { data: creatorAuth },
+          { data: applicantAuth },
+          { data: creatorProfile },
+          { data: applicantProfile },
+        ] = await Promise.all([
+          admin.auth.admin.getUserById(proj.creator_id),
+          admin.auth.admin.getUserById(application.applicant_id),
+          supabase.from('profiles').select('full_name').eq('id', proj.creator_id).single(),
+          supabase.from('profiles').select('full_name').eq('id', application.applicant_id).single(),
+        ])
+
+        const creatorEmail = creatorAuth?.user?.email
+        const applicantEmail = applicantAuth?.user?.email
+        const creatorName = creatorProfile?.full_name ?? 'The creator'
+        const applicantName = applicantProfile?.full_name ?? 'Your collaborator'
+
+        await Promise.all([
+          creatorEmail
+            ? sendEmail({
+                ...matchCompleteEmail({
+                  projectTitle: proj.title,
+                  otherPartyName: applicantName,
+                  projectId: application.project_id,
+                }),
+                to: creatorEmail,
+              })
+            : null,
+          applicantEmail
+            ? sendEmail({
+                ...matchCompleteEmail({
+                  projectTitle: proj.title,
+                  otherPartyName: creatorName,
+                  projectId: application.project_id,
+                }),
+                to: applicantEmail,
+              })
+            : null,
+        ])
+      } catch (e) {
+        console.error('[email] matchComplete error:', e)
+      }
+    })()
   }
 
   revalidatePath('/messages')

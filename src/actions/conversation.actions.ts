@@ -1,8 +1,11 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { revalidatePath } from 'next/cache'
 import type { ActionResult } from '@/lib/types'
+import { sendEmail } from '@/lib/email/resend'
+import { newMessageEmail } from '@/lib/email/templates'
 
 // ─────────────────────────────────────────────
 // TYPES
@@ -231,6 +234,57 @@ export async function sendMessage(
   if (error) return { success: false, error: error.message }
 
   revalidatePath(`/messages/${conversationId}`)
+
+  // Email: notify recipient of new message, rate-limited to once per hour per conversation (fire-and-forget)
+  void (async () => {
+    try {
+      // Load conversation to determine other party + project title
+      const { data: conv } = await supabase
+        .from('conversations')
+        .select('project_id, projects(title, creator_id), project_applications(applicant_id)')
+        .eq('id', conversationId)
+        .single()
+
+      if (!conv) return
+
+      const proj = conv.projects as unknown as { title: string; creator_id: string }
+      const app = conv.project_applications as unknown as { applicant_id: string }
+      const recipientId = user.id === proj.creator_id ? app.applicant_id : proj.creator_id
+
+      // Rate-limit: skip if sender already sent a message in this conversation within the last hour
+      const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString()
+      const { data: recentMsgs } = await supabase
+        .from('messages')
+        .select('id')
+        .eq('conversation_id', conversationId)
+        .eq('sender_id', user.id)
+        .gt('created_at', oneHourAgo)
+        .limit(2)
+
+      // If there's more than the message we just inserted, skip (already notified within the hour)
+      if ((recentMsgs?.length ?? 0) > 1) return
+
+      const admin = createAdminClient()
+      const [{ data: recipientAuth }, { data: senderProfile }] = await Promise.all([
+        admin.auth.admin.getUserById(recipientId),
+        supabase.from('profiles').select('full_name').eq('id', user.id).single(),
+      ])
+
+      const recipientEmail = recipientAuth?.user?.email
+      if (recipientEmail) {
+        const { subject, html } = newMessageEmail({
+          senderName: senderProfile?.full_name ?? 'Someone',
+          projectTitle: proj.title,
+          preview: trimmed,
+          conversationId,
+        })
+        await sendEmail({ to: recipientEmail, subject, html })
+      }
+    } catch (e) {
+      console.error('[email] newMessage error:', e)
+    }
+  })()
+
   return { success: true, data: undefined }
 }
 
