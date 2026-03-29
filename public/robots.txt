@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /explore
+Disallow: /messages
+Disallow: /projects
+Disallow: /profile
+Disallow: /auth/
+
+Sitemap: https://realizetogether.com/sitemap.xml
