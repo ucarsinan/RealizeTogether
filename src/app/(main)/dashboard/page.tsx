@@ -3,6 +3,9 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { getMyProjects } from '@/actions/project.actions'
 import { getMyApplications } from '@/actions/application.actions'
+import { getMyConversations } from '@/actions/conversation.actions'
+import type { ConversationPreview } from '@/actions/conversation.actions'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { STAGE_LABELS, COMMITMENT_LABELS } from '@/lib/utils'
 import { Plus, MessageCircle } from 'lucide-react'
 
@@ -13,13 +16,15 @@ export default async function DashboardPage() {
   } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
-  const [projectsResult, applicationsResult] = await Promise.all([
+  const [projectsResult, applicationsResult, conversationsResult] = await Promise.all([
     getMyProjects(),
     getMyApplications(),
+    getMyConversations(),
   ])
 
   const projects = projectsResult.success ? projectsResult.data : []
   const applications = applicationsResult.success ? applicationsResult.data : []
+  const conversations = conversationsResult.success ? conversationsResult.data : []
 
   const { data: profile } = await supabase
     .from('profiles')
@@ -165,12 +170,20 @@ export default async function DashboardPage() {
               Messages
             </h3>
 
-            <div className="flex-1 flex flex-col items-center justify-center text-center py-6 gap-3">
-              <MessageCircle className="w-8 h-8 text-[#e0ddd8]" />
-              <p className="font-sans text-[13px] text-[#6b6762]">
-                Conversations appear once an application is accepted.
-              </p>
-            </div>
+            {conversations.length === 0 ? (
+              <div className="flex-1 flex flex-col items-center justify-center text-center py-6 gap-3">
+                <MessageCircle className="w-8 h-8 text-[#e0ddd8]" />
+                <p className="font-sans text-[13px] text-[#6b6762]">
+                  Conversations appear once an application is accepted.
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-2 flex-1">
+                {conversations.slice(0, 5).map((conv) => (
+                  <ConversationRow key={conv.id} conv={conv} />
+                ))}
+              </div>
+            )}
 
             <Link
               href="/messages"
@@ -193,6 +206,55 @@ export default async function DashboardPage() {
       </div>
     </div>
   )
+}
+
+function ConversationRow({ conv }: { conv: ConversationPreview }) {
+  const lastMsg = conv.last_message
+  const preview = lastMsg
+    ? `${lastMsg.is_mine ? 'You: ' : ''}${lastMsg.content.slice(0, 40)}${lastMsg.content.length > 40 ? '…' : ''}`
+    : 'No messages yet'
+  return (
+    <Link href={`/messages/${conv.id}`}>
+      <div className="border border-[#e0ddd8] hover:border-[#e8621a] rounded-xl p-3 transition-colors group flex items-center gap-3">
+        <div className="relative shrink-0">
+          <Avatar className="w-8 h-8">
+            <AvatarImage src={conv.other_user.avatar_url ?? undefined} />
+            <AvatarFallback className="font-sans text-[10px] bg-[#fdf2ec] text-[#e8621a] font-bold">
+              {conv.other_user.full_name?.[0]?.toUpperCase() ?? '?'}
+            </AvatarFallback>
+          </Avatar>
+          {conv.unread_count > 0 && (
+            <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#e8621a] text-white font-sans text-[9px] font-bold flex items-center justify-center">
+              {conv.unread_count > 9 ? '9+' : conv.unread_count}
+            </span>
+          )}
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-baseline justify-between gap-1">
+            <span className="font-sans text-[12px] font-medium text-[#1a1918] group-hover:text-[#e8621a] transition-colors truncate">
+              {conv.other_user.full_name}
+            </span>
+            {lastMsg && (
+              <span className="font-sans text-[10px] text-[#6b6762] shrink-0">
+                {formatAgo(lastMsg.created_at)}
+              </span>
+            )}
+          </div>
+          <p className="font-sans text-[11px] text-[#6b6762] truncate">{preview}</p>
+        </div>
+      </div>
+    </Link>
+  )
+}
+
+function formatAgo(iso: string): string {
+  const diff = Date.now() - new Date(iso).getTime()
+  const m = Math.floor(diff / 60000)
+  if (m < 1) return 'now'
+  if (m < 60) return `${m}m`
+  const h = Math.floor(m / 60)
+  if (h < 24) return `${h}h`
+  return `${Math.floor(h / 24)}d`
 }
 
 function StatusBadge({ status }: { status: string }) {
