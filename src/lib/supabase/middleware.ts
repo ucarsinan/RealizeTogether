@@ -35,7 +35,8 @@ export async function updateSession(request: NextRequest) {
     pathname.startsWith('/login') ||
     pathname.startsWith('/register') ||
     pathname.startsWith('/explore') ||
-    /^\/projects\/[^/]+$/.test(pathname) // project detail only, not /apply or /applications
+    /^\/projects\/[^/]+$/.test(pathname) || // project detail only, not /apply or /applications
+    /^\/profile\/[^/]+$/.test(pathname) // public profile page
 
   if (!user && !isPublic) {
     const url = request.nextUrl.clone()

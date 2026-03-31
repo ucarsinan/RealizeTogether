@@ -10,20 +10,11 @@
 
 ### Was ist RealizeTogether?
 
-> **TODO (Owner):** Formuliere die Vision in 2–3 Sätzen. Was soll jemand nach 10 Sekunden auf der Landing Page verstehen?
-
-*Zwischenstand aus Codebase-Analyse:*
-RealizeTogether ist eine Kollaborationsplattform für die Filmbranche. Creators (Regisseure, Produzenten) stellen Projekte ein und suchen Talente (Schauspieler, DPs, Editoren, Komponisten). Talente bewerben sich — der Trust Funnel schützt sensible Projektinformationen und baut Vertrauen schrittweise auf.
+RealizeTogether is the platform where filmmakers find their perfect team safely. Our Trust Funnel allows you to pitch ideas securely without making scripts public.
 
 ### Das Problem
 
-> **TODO (Owner):** Warum existiert diese Plattform? Was funktioniert auf bestehenden Plattformen NICHT?
-
-*Hypothesen:*
-- LinkedIn ist zu generisch, nicht auf Film/Kreative ausgerichtet
-- Casting-Plattformen sind einseitig (nur Casting, kein Crew)
-- Creative-Projekte teilen sensible Infos (Drehbücher) zu früh oder gar nicht
-- Kein strukturiertes Vertrauensmodell für kreative Kollaborationen
+Filmmakers lack a secure space to build teams. Existing networks lead to spam or force creators to share sensitive IP (scripts) prematurely.
 
 ### Kern-Value Proposition
 
@@ -41,7 +32,7 @@ RealizeTogether ist eine Kollaborationsplattform für die Filmbranche. Creators 
 - Seriöse Hobby- bis Mid-Level-Professional (nicht Hollywood Studios)
 - Deutschsprachiger Raum (DE/AT/CH) als erster Markt
 
-> **TODO (Owner):** Ist der initiale Fokus deutschsprachig oder international-englisch?
+**Markt:** International. UI-Sprache strikt Englisch.
 
 ### Sekundär
 - Schauspieler, Kameraleute (DPs), Cutter/Editoren
@@ -144,8 +135,8 @@ pending → in_talks → matched
 | Messaging / Chat | ✅ Done | — | — |
 | Double Opt-in Match | ✅ Done | — | — |
 | Email-Notifications (Resend) | ✅ Done | — | — |
-| **Public Profile Page `/profile/[id]`** | 🔄 Geplant | Hoch | #1, #2, #3, #4, #5 (s. Abschnitt 7) |
-| User Skills (`user_skills`) | 📋 Backlog | Mittel | Welche Skills? Taxonomie? |
+| **Public Profile Page `/profile/[id]`** | ✅ Done | — | — |
+| **User Skills** | ✅ Done | — | KI-Extraktion aus Bio via FastAPI (OpenAI). `skills text[]` in `profiles`. Magic Wand Button im ProfileForm. |
 | Realtime Chat (Supabase Realtime) | 📋 Backlog | Mittel | Polling reicht? Push? |
 | KI-Matching / Empfehlungen | 📋 Backlog | Niedrig | FastAPI-Backend scope |
 | Projekt-Suche / Filter | 📋 Backlog | Mittel | Welche Filter-Dimensionen? |
@@ -196,9 +187,7 @@ shadow-[0_4px_32px_rgba(0,0,0,0.07)]
 
 ### Mobile-First vs. Desktop-First
 
-> **TODO (Owner):** Ist die primäre Nutzung mobil oder Desktop? Aktuell hat der Code `max-md:px-5` Anpassungen, aber keine echte Mobile-first-Struktur.
-> - Option A: Desktop-first (Kreative arbeiten am Rechner)
-> - Option B: Mobile-first (Discovery passiert überall)
+**Entschieden: Desktop-First.** Kern-Workflows (Drehbücher lesen, Projekte anlegen) finden primär am Rechner statt. Responsive für Mobile ist wichtig, aber Desktop hat Priorität.
 
 ---
 
@@ -219,71 +208,33 @@ shadow-[0_4px_32px_rgba(0,0,0,0.07)]
 
 ---
 
-### Offene Entscheidung #2 — Public Profile: Welche Inhalte?
+### Entscheidung #2 — Public Profile: Welche Inhalte? ✅ Option A
 
-**Frage:** Was zeigt die `/profile/[id]`-Seite?
-
-**Minimal:** Avatar, Name, Bio, Video, Portfolio-Links, Verified-Badge
-
-**Erweitert:** + Liste der Projekte des Users (Creator-Projekte die open/in_progress sind)
-
-**Optionen:**
-- A) Nur Profil-Info (Avatar, Bio, Links) — schneller zu bauen, fokussiert
-- B) Profil + Projekte des Creators — mehr Value, mehr Komplexität
+**Entschieden:** Nur Profil-Info (Avatar, Name, Bio, Video, Portfolio-Links, Verified-Badge). Keine Projekte — Projekte würden die Creator-Anonymität (Blind Audition) unterlaufen.
 
 ---
 
-### Offene Entscheidung #3 — CTA auf Profil-Seite
+### Entscheidung #3 — CTA auf Profil-Seite ✅ Option D
 
-**Frage:** Was soll ein Besucher auf dem Profil TUN können?
-
-**Optionen:**
-- A) Nur ansehen (rein informationally)
-- B) Button "Projekte ansehen" → Explore gefiltert auf diesen Creator
-- C) Button "Nachricht senden" (nur wenn eingeloggt und eine gemeinsame Konversation existiert)
-- D) Nichts — Profil ist Visitenkarte, Aktionen passieren über Projekte
+**Entschieden:** Kein CTA. Profil ist reine Visitenkarte. Kein "Nachricht senden"-Button — Kontakt entsteht ausschließlich über Projekt-Bewerbungen (Spam-Schutz).
 
 ---
 
-### Offene Entscheidung #4 — Profil-Links in der App
+### Entscheidung #4 — Profil-Links in der App ✅ Selektiv
 
-**Frage:** Wo in der App sollen Creator/Talent-Namen auf `/profile/[id]` verlinken?
-
-**Kandidaten:**
-- `ProjectCard` — Creator-Name/Avatar unten links
-- `ProjectDetailPage` — Creator-Block (Avatar + Name)
-- `ApplicationsManager` — Applicant-Name
-- `Dashboard` — Conversations-Liste (other_user)
-- `NavBar` — aktuell linkt auf `/dashboard/profile` (Edit), nicht auf View
-
-**Optionen:**
-- A) Alle sofort (vollständige Verlinkung)
-- B) Nur ProjectCard + ProjectDetail (die öffentlichsten Stellen)
-- C) Erst wenn Profil-Seite live ist, dann iterativ erweitern
+**Entschieden:** Links zu `/profile/[id]` nur in `ApplicationsManager` (Applicant-Name) und `Dashboard` (Conversations, other_user). Auf `ProjectCard` und `ProjectDetailPage` bleibt der Creator anonym (Blind Audition).
 
 ---
 
-### Offene Entscheidung #5 — Eigenes Profil besuchen
+### Entscheidung #5 — Eigenes Profil besuchen ✅ Option B
 
-**Frage:** Was passiert wenn ein eingeloggter User `/profile/[eigene-id]` aufruft?
-
-**Optionen:**
-- A) Redirect zu `/dashboard/profile` (Edit-Seite)
-- B) View-Ansicht rendern mit "Edit Profile"-Button oben
-- C) View-Ansicht rendern, ohne speziellen Edit-Hinweis
+**Entschieden:** View-Ansicht rendern mit "Edit Profile"-Button oben rechts → Link zu `/dashboard/profile`.
 
 ---
 
-### Offene Entscheidung #6 — Sprache der Plattform
+### Entscheidung #6 — Sprache der Plattform ✅ Option A
 
-**Frage:** Englisch oder Deutsch als primäre Sprache für UI-Texte?
-
-*Beobachtung aus Code:* Kommentare im Code sind Deutsch, UI-Labels Englisch (Explore, Dashboard, etc.), Email-Templates Englisch.
-
-**Optionen:**
-- A) Englisch (internationaler Markt von Anfang an)
-- B) Deutsch (DE/AT/CH-Fokus, später i18n)
-- C) Zweisprachig von Anfang an (i18n)
+**Entschieden:** Englisch. Internationaler Markt von Anfang an. UI-Sprache strikt Englisch; Code-Kommentare können Deutsch bleiben.
 
 ---
 

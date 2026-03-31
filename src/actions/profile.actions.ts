@@ -40,6 +40,7 @@ export type UpdateProfileInput = {
   imdb_url?: string
   vimeo_url?: string
   linkedin_url?: string
+  skills?: string[]
 }
 
 export async function updateProfile(input: UpdateProfileInput): Promise<ActionResult<Profile>> {
@@ -214,4 +215,35 @@ export async function verifyPortfolio(): Promise<ActionResult<void>> {
 
   revalidatePath('/dashboard')
   return { success: true, data: undefined }
+}
+
+// ─────────────────────────────────────────────
+// KI: SKILLS AUS BIO EXTRAHIEREN
+// ─────────────────────────────────────────────
+
+export async function extractSkillsFromBio(
+  bio: string
+): Promise<ActionResult<{ skills: string[] }>> {
+  const supabase = await createClient()
+
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser()
+  if (authError || !user) return { success: false, error: 'Not authenticated' }
+
+  try {
+    const res = await fetch(`${process.env.AI_BACKEND_URL}/api/extract-skills`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ bio }),
+    })
+
+    if (!res.ok) return { success: false, error: `AI service error: ${res.status}` }
+
+    const data = (await res.json()) as { skills: string[] }
+    return { success: true, data }
+  } catch {
+    return { success: false, error: 'Failed to reach AI service' }
+  }
 }

@@ -7,6 +7,7 @@ import {
   uploadAvatar,
   uploadVideo,
   verifyPortfolio,
+  extractSkillsFromBio,
 } from '@/actions/profile.actions'
 import type { Profile } from '@/lib/types'
 import { cn } from '@/lib/utils'
@@ -21,6 +22,8 @@ import {
   Globe,
   AlertCircle,
   Loader2,
+  Wand2,
+  X,
 } from 'lucide-react'
 
 interface ProfileFormProps {
@@ -214,11 +217,16 @@ export function ProfileForm({ profile, isNew = false }: ProfileFormProps) {
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
   const [isVerifying, startVerifying] = useTransition()
+  const [isExtracting, startExtracting] = useTransition()
   const [saveStatus, setSaveStatus] = useState<{
     type: 'success' | 'error'
     message: string
   } | null>(null)
   const [verifyStatus, setVerifyStatus] = useState<{
+    type: 'success' | 'error'
+    message: string
+  } | null>(null)
+  const [skillsStatus, setSkillsStatus] = useState<{
     type: 'success' | 'error'
     message: string
   } | null>(null)
@@ -232,14 +240,31 @@ export function ProfileForm({ profile, isNew = false }: ProfileFormProps) {
     linkedin_url: profile.linkedin_url ?? '',
   })
 
+  const [skills, setSkills] = useState<string[]>(
+    (profile as Profile & { skills?: string[] }).skills ?? []
+  )
+
   function handleChange(field: string, value: string) {
     setFormData((prev) => ({ ...prev, [field]: value }))
     setSaveStatus(null)
   }
 
+  function handleExtractSkills() {
+    if (!formData.bio.trim()) return
+    startExtracting(async () => {
+      const result = await extractSkillsFromBio(formData.bio)
+      if (!result.success) {
+        setSkillsStatus({ type: 'error', message: result.error })
+        return
+      }
+      setSkills(result.data.skills)
+      setSkillsStatus(null)
+    })
+  }
+
   function handleSave() {
     startTransition(async () => {
-      const result = await updateProfile(formData)
+      const result = await updateProfile({ ...formData, skills })
       if (!result.success) {
         setSaveStatus({ type: 'error', message: result.error })
         return
@@ -314,9 +339,46 @@ export function ProfileForm({ profile, isNew = false }: ProfileFormProps) {
             rows={4}
             className={textareaClass}
           />
-          <p className="font-sans text-[11px] text-[#6b6762] mt-1">
-            {formData.bio.length}/500 characters
-          </p>
+          <div className="flex items-center justify-between mt-2">
+            <p className="font-sans text-[11px] text-[#6b6762]">
+              {formData.bio.length}/500 characters
+            </p>
+            <button
+              type="button"
+              onClick={handleExtractSkills}
+              disabled={isExtracting || !formData.bio.trim()}
+              className="flex items-center gap-1.5 border border-[#e0ddd8] hover:border-[#e8621a] text-[#6b6762] hover:text-[#e8621a] font-sans text-[11px] px-3 py-1.5 rounded-full transition-colors disabled:opacity-40"
+            >
+              {isExtracting ? (
+                <Loader2 className="w-3 h-3 animate-spin" />
+              ) : (
+                <Wand2 className="w-3 h-3" />
+              )}
+              {isExtracting ? 'Analysing...' : 'Suggest skills from bio'}
+            </button>
+          </div>
+          {skills.length > 0 && (
+            <div className="flex flex-wrap gap-1.5 mt-2">
+              {skills.map((skill) => (
+                <span
+                  key={skill}
+                  className="inline-flex items-center gap-1 font-sans text-[11px] font-medium bg-[#fdf2ec] text-[#e8621a] border border-[#e8621a]/20 px-3 py-1 rounded-full"
+                >
+                  {skill}
+                  <button
+                    type="button"
+                    onClick={() => setSkills((prev) => prev.filter((s) => s !== skill))}
+                    className="hover:text-[#c9521a] transition-colors"
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                </span>
+              ))}
+            </div>
+          )}
+          {skillsStatus && (
+            <StatusMessage type={skillsStatus.type} message={skillsStatus.message} />
+          )}
         </div>
       </div>
 
