@@ -165,12 +165,29 @@ export async function uploadSynopsis(
 // PROJEKTE LADEN
 // ─────────────────────────────────────────────
 
+function maskCreator(
+  profiles: ProjectWithRoles['profiles'],
+  isOwner: boolean
+): ProjectWithRoles['profiles'] {
+  if (isOwner) return profiles
+  return {
+    ...profiles,
+    full_name: profiles.is_verified ? 'Verified Creator' : 'Anonymous Creator',
+    avatar_url: null,
+    video_url: null,
+  }
+}
+
 export async function getProjects(filters?: {
   stage?: Project['stage']
   commitment_type?: Project['commitment_type']
   category?: string
 }): Promise<ActionResult<ProjectWithRoles[]>> {
   const supabase = await createClient()
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
 
   let query = supabase
     .from('projects')
@@ -191,11 +208,21 @@ export async function getProjects(filters?: {
   const { data, error } = await query
 
   if (error) return { success: false, error: error.message }
-  return { success: true, data: data as ProjectWithRoles[] }
+
+  const masked = (data as ProjectWithRoles[]).map((project) => ({
+    ...project,
+    profiles: maskCreator(project.profiles, user?.id === project.creator_id),
+  }))
+
+  return { success: true, data: masked }
 }
 
 export async function getProject(id: string): Promise<ActionResult<ProjectWithRoles>> {
   const supabase = await createClient()
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
 
   const { data, error } = await supabase
     .from('projects')
@@ -210,7 +237,15 @@ export async function getProject(id: string): Promise<ActionResult<ProjectWithRo
     .single()
 
   if (error) return { success: false, error: error.message }
-  return { success: true, data: data as ProjectWithRoles }
+
+  const project = data as ProjectWithRoles
+  return {
+    success: true,
+    data: {
+      ...project,
+      profiles: maskCreator(project.profiles, user?.id === project.creator_id),
+    },
+  }
 }
 
 export async function getMyProjects(): Promise<ActionResult<ProjectWithRoles[]>> {

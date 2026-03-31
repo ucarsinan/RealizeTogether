@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Lock, CheckCircle } from 'lucide-react'
+import { Lock, CheckCircle, UserCircle } from 'lucide-react'
 import type { ProjectWithRoles } from '@/lib/types'
 import { COMMITMENT_LABELS, STAGE_LABELS, COLLAB_LABELS } from '@/lib/utils'
 
@@ -60,7 +60,11 @@ export function ProjectCard({ project }: { project: ProjectWithRoles }) {
               <Avatar className="w-9 h-9 ring-2 ring-[#e0ddd8] group-hover:ring-[#e8621a] transition-colors">
                 <AvatarImage src={creator.avatar_url ?? undefined} />
                 <AvatarFallback className="font-sans text-xs bg-[#fdf2ec] text-[#e8621a] font-bold">
-                  {creator.full_name?.[0]?.toUpperCase() ?? '?'}
+                  {creator.avatar_url ? (
+                    (creator.full_name?.[0]?.toUpperCase() ?? '?')
+                  ) : (
+                    <UserCircle className="w-5 h-5" />
+                  )}
                 </AvatarFallback>
               </Avatar>
               {creator.is_verified && <CheckCircle className="w-3 h-3 text-green-500" />}

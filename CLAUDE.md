@@ -10,6 +10,8 @@
 
 Kollaborationsplattform für Film/Kreative: Talente finden sich, bauen Vertrauen auf (Trust Funnel), arbeiten zusammen.
 
+> **Produkt-Entscheidungen, Vision, UX-Prinzipien, Feature-Map, offene Fragen:** → [`PRODUCT.md`](./PRODUCT.md)
+
 ---
 
 ## 🚦 ROUTER
@@ -28,6 +30,7 @@ Kollaborationsplattform für Film/Kreative: Talente finden sich, bauen Vertrauen
 | KI / FastAPI | `skills/ai-backend.md` |
 | UI-Komponente ohne DB | Nur: Coding Standards unten |
 | Neues Feature (unklar) | `AGENTS.md` lesen + alle relevanten Skills |
+| Produkt-Entscheidung / Feature-Scope | `PRODUCT.md` → Abschnitt 7 (Offene Entscheidungen) |
 
 ---
 

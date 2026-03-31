@@ -29,12 +29,15 @@ export async function updateSession(request: NextRequest) {
   } = await supabase.auth.getUser()
 
   // Redirect unauthenticated users away from protected routes
-  if (
-    !user &&
-    !request.nextUrl.pathname.startsWith('/login') &&
-    !request.nextUrl.pathname.startsWith('/register') &&
-    request.nextUrl.pathname !== '/'
-  ) {
+  const pathname = request.nextUrl.pathname
+  const isPublic =
+    pathname === '/' ||
+    pathname.startsWith('/login') ||
+    pathname.startsWith('/register') ||
+    pathname.startsWith('/explore') ||
+    /^\/projects\/[^/]+$/.test(pathname) // project detail only, not /apply or /applications
+
+  if (!user && !isPublic) {
     const url = request.nextUrl.clone()
     url.pathname = '/login'
     return NextResponse.redirect(url)

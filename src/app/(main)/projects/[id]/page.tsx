@@ -5,7 +5,7 @@ import { getProject } from '@/actions/project.actions'
 import { checkNdaConsent } from '@/actions/nda.actions'
 import { SynopsisViewer } from '@/components/trust-funnel/SynopsisViewer'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { CheckCircle, Lock, Users, Play } from 'lucide-react'
+import { CheckCircle, Lock, Users, Play, UserCircle } from 'lucide-react'
 import { COMMITMENT_LABELS, STAGE_LABELS, COLLAB_LABELS } from '@/lib/utils'
 import { Breadcrumb } from '@/components/layout/Breadcrumb'
 
@@ -92,7 +92,11 @@ export default async function ProjectDetailPage({ params }: { params: Params }) 
             <Avatar className="w-10 h-10 ring-2 ring-[#e0ddd8]">
               <AvatarImage src={creator?.avatar_url ?? undefined} />
               <AvatarFallback className="bg-[#fdf2ec] text-[#e8621a] text-sm font-sans font-bold">
-                {creator?.full_name?.[0]?.toUpperCase() ?? '?'}
+                {creator?.avatar_url ? (
+                  (creator.full_name?.[0]?.toUpperCase() ?? '?')
+                ) : (
+                  <UserCircle className="w-6 h-6" />
+                )}
               </AvatarFallback>
             </Avatar>
             <div>
@@ -186,14 +190,26 @@ export default async function ProjectDetailPage({ params }: { params: Params }) 
                 <Lock className="w-3 h-3" /> Trust Funnel Level 2
               </span>
             </div>
-            <SynopsisViewer
-              projectId={project.id}
-              projectTitle={project.title}
-              requiresNda={project.requires_nda ?? false}
-              hasSynopsis={!!project.synopsis_url}
-              initialHasConsented={initialHasConsented}
-              isOwner={isOwner}
-            />
+            {!user ? (
+              <p className="font-sans text-[13px] text-[#6b6762]">
+                <Link
+                  href={`/login?redirectTo=/projects/${project.id}`}
+                  className="text-[#e8621a] hover:underline font-medium"
+                >
+                  Log in or register
+                </Link>{' '}
+                to sign the NDA and read the synopsis.
+              </p>
+            ) : (
+              <SynopsisViewer
+                projectId={project.id}
+                projectTitle={project.title}
+                requiresNda={project.requires_nda ?? false}
+                hasSynopsis={!!project.synopsis_url}
+                initialHasConsented={initialHasConsented}
+                isOwner={isOwner}
+              />
+            )}
           </div>
         )}
 
@@ -216,12 +232,17 @@ export default async function ProjectDetailPage({ params }: { params: Params }) 
               Read the synopsis first (if available), then apply.
             </p>
             {!user ? (
-              <Link
-                href={`/login?redirectTo=/projects/${project.id}`}
-                className="inline-block bg-[#e8621a] hover:bg-[#c9521a] text-white font-bold text-[13px] px-6 py-2.5 rounded-full transition-colors duration-150 font-sans"
-              >
-                Sign in to apply
-              </Link>
+              <div className="space-y-3">
+                <p className="font-sans text-[13px] text-[#6b6762]">
+                  Log in or register to sign the NDA and apply for this project.
+                </p>
+                <Link
+                  href={`/login?redirectTo=/projects/${project.id}`}
+                  className="inline-block bg-[#e8621a] hover:bg-[#c9521a] text-white font-bold text-[13px] px-6 py-2.5 rounded-full transition-colors duration-150 font-sans"
+                >
+                  Sign in to apply
+                </Link>
+              </div>
             ) : (
               <Link
                 href={`/projects/${project.id}/apply`}
