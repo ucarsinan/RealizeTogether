@@ -74,179 +74,75 @@ function LoginForm() {
     router.refresh()
   }
 
-  const unbounded = { fontFamily: '"Unbounded", sans-serif' }
-  const dmSans = { fontFamily: '"DM Sans", sans-serif' }
-
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', background: '#f2f0ed' }}>
-      {/* ── Left panel ── */}
-      <div
-        style={{
-          position: 'relative',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          padding: '64px 56px',
-          width: '50%',
-          overflow: 'hidden',
-          flexShrink: 0,
-        }}
-      >
-        {/* Decorative large background logo */}
-        <div
-          style={{
-            position: 'absolute',
-            right: -60,
-            top: '50%',
-            transform: 'translateY(-50%)',
-            opacity: 0.06,
-            pointerEvents: 'none',
-            userSelect: 'none',
-          }}
-        >
+    <div className="min-h-screen flex flex-col md:flex-row bg-[#f2f0ed]">
+      {/* ── Left panel (Marketing) — hidden on mobile ── */}
+      <div className="hidden md:flex relative flex-col justify-center px-14 py-16 w-1/2 overflow-hidden shrink-0">
+        {/* Decorative background logo */}
+        <div className="absolute right-[-60px] top-1/2 -translate-y-1/2 opacity-[0.06] pointer-events-none select-none">
           <LogoSVG size={500} />
         </div>
 
-        <div style={{ position: 'relative', zIndex: 1, maxWidth: 480 }}>
+        <div className="relative z-10 max-w-120">
           {/* Wordmark */}
-          <Link
-            href="/"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 8,
-              marginBottom: 64,
-              textDecoration: 'none',
-            }}
-          >
+          <Link href="/" className="inline-flex items-center gap-2 mb-16 no-underline">
             <LogoSVG size={26} />
-            <span
-              style={{
-                ...unbounded,
-                fontSize: 11,
-                fontWeight: 700,
-                letterSpacing: '0.12em',
-                textTransform: 'uppercase',
-                color: '#1a1918',
-              }}
-            >
+            <span className="font-unbounded text-[11px] font-bold tracking-[0.12em] uppercase text-[#1a1918]">
               Realize Together
             </span>
           </Link>
 
           {/* Kicker */}
-          <p
-            style={{
-              ...dmSans,
-              display: 'flex',
-              alignItems: 'center',
-              gap: 12,
-              fontSize: 11,
-              fontWeight: 700,
-              letterSpacing: '0.18em',
-              textTransform: 'uppercase',
-              color: '#e8621a',
-              marginBottom: 20,
-            }}
-          >
-            <span
-              style={{
-                display: 'inline-block',
-                width: 20,
-                height: 2,
-                borderRadius: 2,
-                background: '#e8621a',
-              }}
-            />
+          <p className="font-sans flex items-center gap-3 text-[11px] font-bold tracking-[0.18em] uppercase text-[#e8621a] mb-5">
+            <span className="inline-block w-5 h-0.5 rounded-sm bg-[#e8621a]" />
             Welcome back
           </p>
 
           {/* Headline */}
-          <h1
-            style={{
-              ...unbounded,
-              fontWeight: 900,
-              fontSize: 'clamp(38px, 4.5vw, 66px)',
-              lineHeight: 0.92,
-              letterSpacing: '-0.04em',
-              color: '#1a1918',
-              marginBottom: 24,
-            }}
-          >
+          <h1 className="font-unbounded font-black text-[clamp(38px,4.5vw,66px)] leading-[0.92] tracking-[-0.04em] text-[#1a1918] mb-6">
             Log in to
             <br />
-            <span style={{ color: '#e8621a' }}>your</span> account.
+            <span className="text-[#e8621a]">your</span> account.
           </h1>
 
           {/* Subtext */}
-          <p
-            style={{
-              ...dmSans,
-              fontSize: 15,
-              fontWeight: 300,
-              lineHeight: 1.8,
-              color: '#6b6762',
-              maxWidth: 380,
-            }}
-          >
+          <p className="font-sans text-[15px] font-light leading-[1.8] text-[#6b6762] max-w-95">
             Your film team is waiting. Pick up where you left off and keep creating together.
           </p>
 
           {/* Bottom link */}
-          <p style={{ ...dmSans, fontSize: 13, color: '#6b6762', marginTop: 48 }}>
+          <p className="font-sans text-[13px] text-[#6b6762] mt-12">
             No account yet?{' '}
-            <Link
-              href="/register"
-              style={{ color: '#e8621a', fontWeight: 500, textDecoration: 'none' }}
-            >
+            <Link href="/register" className="text-[#e8621a] font-medium no-underline">
               Join free →
             </Link>
           </p>
         </div>
       </div>
 
-      {/* ── Right panel ── */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          background: '#fff',
-          borderLeft: '1px solid #e0ddd8',
-          padding: '48px 40px',
-          width: '50%',
-          flexShrink: 0,
-        }}
-      >
-        <div style={{ width: '100%', maxWidth: 400 }}>
-          <h2
-            style={{
-              ...unbounded,
-              fontWeight: 700,
-              fontSize: 22,
-              letterSpacing: '-0.03em',
-              color: '#1a1918',
-              marginBottom: 28,
-            }}
-          >
+      {/* ── Right panel (Form) ── */}
+      <div className="flex flex-col items-center justify-center bg-white border-l border-[#e0ddd8] px-6 py-12 md:px-10 md:py-16 w-full md:w-1/2 shrink-0 min-h-screen md:min-h-0">
+        <div className="w-full max-w-100">
+          {/* Mobile-only logo */}
+          <div className="flex flex-col items-center mb-10 md:hidden">
+            <Link href="/" className="inline-flex items-center gap-2 mb-3">
+              <LogoSVG size={32} />
+              <span className="font-unbounded text-[11px] font-bold tracking-[0.12em] uppercase text-[#1a1918]">
+                Realize Together
+              </span>
+            </Link>
+            <p className="font-sans text-[13px] text-[#6b6762]">Welcome back</p>
+          </div>
+
+          <h2 className="font-unbounded font-bold text-[22px] tracking-[-0.03em] text-[#1a1918] mb-7">
             Sign in
           </h2>
 
-          <form
-            onSubmit={handleSubmit}
-            style={{ display: 'flex', flexDirection: 'column', gap: 16 }}
-          >
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div>
               <label
                 htmlFor="email"
-                style={{
-                  ...dmSans,
-                  display: 'block',
-                  fontSize: 12,
-                  fontWeight: 500,
-                  color: '#6b6762',
-                  marginBottom: 6,
-                }}
+                className="block font-sans text-[12px] font-medium text-[#6b6762] mb-1.5"
               >
                 Email
               </label>
@@ -258,39 +154,14 @@ function LoginForm() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 autoComplete="email"
-                style={{
-                  ...dmSans,
-                  width: '100%',
-                  background: '#fff',
-                  border: '1.5px solid #e0ddd8',
-                  borderRadius: 100,
-                  padding: '12px 20px',
-                  fontSize: 13,
-                  color: '#1a1918',
-                  outline: 'none',
-                  boxSizing: 'border-box',
-                  transition: 'border-color 0.2s',
-                }}
-                onFocus={(e) => {
-                  e.target.style.borderColor = '#e8621a'
-                }}
-                onBlur={(e) => {
-                  e.target.style.borderColor = '#e0ddd8'
-                }}
+                className="font-sans w-full bg-white border-[1.5px] border-[#e0ddd8] focus:border-[#e8621a] rounded-full px-5 py-3 text-[13px] text-[#1a1918] outline-none transition-colors duration-200"
               />
             </div>
 
             <div>
               <label
                 htmlFor="password"
-                style={{
-                  ...dmSans,
-                  display: 'block',
-                  fontSize: 12,
-                  fontWeight: 500,
-                  color: '#6b6762',
-                  marginBottom: 6,
-                }}
+                className="block font-sans text-[12px] font-medium text-[#6b6762] mb-1.5"
               >
                 Password
               </label>
@@ -302,39 +173,12 @@ function LoginForm() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 autoComplete="current-password"
-                style={{
-                  ...dmSans,
-                  width: '100%',
-                  background: '#fff',
-                  border: '1.5px solid #e0ddd8',
-                  borderRadius: 100,
-                  padding: '12px 20px',
-                  fontSize: 13,
-                  color: '#1a1918',
-                  outline: 'none',
-                  boxSizing: 'border-box',
-                  transition: 'border-color 0.2s',
-                }}
-                onFocus={(e) => {
-                  e.target.style.borderColor = '#e8621a'
-                }}
-                onBlur={(e) => {
-                  e.target.style.borderColor = '#e0ddd8'
-                }}
+                className="font-sans w-full bg-white border-[1.5px] border-[#e0ddd8] focus:border-[#e8621a] rounded-full px-5 py-3 text-[13px] text-[#1a1918] outline-none transition-colors duration-200"
               />
             </div>
 
             {error && (
-              <p
-                style={{
-                  ...dmSans,
-                  fontSize: 12,
-                  color: '#dc2626',
-                  background: '#fef2f2',
-                  padding: '10px 16px',
-                  borderRadius: 100,
-                }}
-              >
+              <p className="font-sans text-[12px] text-red-600 bg-red-50 px-4 py-2.5 rounded-full">
                 {error}
               </p>
             )}
@@ -342,31 +186,7 @@ function LoginForm() {
             <button
               type="submit"
               disabled={loading}
-              style={{
-                ...dmSans,
-                width: '100%',
-                background: loading ? '#c9521a' : '#e8621a',
-                color: '#fff',
-                fontWeight: 700,
-                fontSize: 13,
-                padding: '13px 24px',
-                borderRadius: 100,
-                border: 'none',
-                cursor: loading ? 'not-allowed' : 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: 8,
-                marginTop: 8,
-                opacity: loading ? 0.7 : 1,
-                transition: 'background 0.15s',
-              }}
-              onMouseEnter={(e) => {
-                if (!loading) (e.target as HTMLButtonElement).style.background = '#c9521a'
-              }}
-              onMouseLeave={(e) => {
-                if (!loading) (e.target as HTMLButtonElement).style.background = '#e8621a'
-              }}
+              className="font-sans w-full bg-[#e8621a] hover:bg-[#c9521a] disabled:opacity-70 disabled:cursor-not-allowed text-white font-bold text-[13px] px-6 py-3.5 rounded-full flex items-center justify-center gap-2 mt-2 transition-colors duration-150"
             >
               {loading ? (
                 'Signing in…'
@@ -389,6 +209,14 @@ function LoginForm() {
               )}
             </button>
           </form>
+
+          {/* Mobile-only register link */}
+          <p className="font-sans text-[13px] text-[#6b6762] text-center mt-8 md:hidden">
+            No account yet?{' '}
+            <Link href="/register" className="text-[#e8621a] font-medium">
+              Join free →
+            </Link>
+          </p>
         </div>
       </div>
     </div>

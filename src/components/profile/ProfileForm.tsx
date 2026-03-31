@@ -469,7 +469,7 @@ export function ProfileForm({ profile, isNew = false }: ProfileFormProps) {
       </div>
 
       {/* Save button */}
-      <div className="sticky bottom-0 bg-white/90 backdrop-blur-sm border-t border-[#e0ddd8] -mx-8 px-8 py-4">
+      <div className="sticky bottom-0 bg-white/90 backdrop-blur-sm border-t border-[#e0ddd8] -mx-5 px-5 py-4 md:-mx-8 md:px-8">
         <button
           onClick={handleSave}
           disabled={isPending || !formData.full_name.trim()}

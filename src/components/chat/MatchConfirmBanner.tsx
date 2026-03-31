@@ -63,7 +63,7 @@ export function MatchConfirmBanner({
   }
 
   return (
-    <div className="bg-[#1a1918] px-6 py-3 flex items-center justify-between gap-4">
+    <div className="bg-[#1a1918] px-6 py-3 flex items-center justify-between gap-4 flex-wrap">
       <p className="font-sans text-[13px] text-white/90">
         Ready to officially collaborate on this project?
       </p>

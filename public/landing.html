@@ -927,6 +927,75 @@
           grid-template-columns: 1fr 1fr 1fr;
         }
       }
+
+      /* ══════════════════════════════
+         MOBILE: Horizontal → Vertical
+      ══════════════════════════════ */
+      @media (max-width: 767px) {
+        .n-logo-text {
+          font-size: 10px;
+          letter-spacing: 0.05em;
+        }
+        .n-login {
+          font-size: 12px;
+          padding: 6px 12px;
+        }
+        .n-signup {
+          font-size: 12px;
+          padding: 6px 14px;
+        }
+        .n-r {
+          gap: 8px;
+        }
+        body {
+          overflow-y: auto;
+          overflow-x: hidden;
+        }
+        #scroll-wrap {
+          position: static;
+          overflow: visible;
+          height: auto;
+        }
+        #canvas {
+          flex-direction: column;
+          width: 100%;
+          height: auto;
+          transition: none !important;
+          transform: none !important;
+        }
+        .panel {
+          width: 100%;
+          height: auto;
+          min-height: 0;
+          overflow: visible;
+          display: block;
+          flex-shrink: unset;
+        }
+        #p0.panel {
+          min-height: 100svh;
+        }
+        .p0-inner {
+          max-height: none;
+          overflow-y: visible;
+          padding-bottom: 48px;
+        }
+        #p1, #p2, #p3, #p4 {
+          padding-top: 24px;
+          padding-bottom: 24px;
+        }
+        #dots {
+          display: none;
+        }
+        .p1-top-sub,
+        .p2-meta,
+        .p4-sub {
+          text-align: left;
+          max-width: none;
+        }
+        .p3-inner {
+          padding: 28px 20px;
+        }
+      }
     </style>
   </head>
   <body>
@@ -1006,7 +1075,7 @@
             fill="none"
           />
         </svg>
-        Realize Together
+        <span class="n-logo-text">Realize Together</span>
       </a>
       <div class="n-r">
         <a href="/login" class="n-login">Log in</a>
@@ -1437,8 +1506,10 @@
       let cur = 0,
         busy = false;
 
+      const isMobile = () => window.innerWidth < 768;
+
       function goTo(i) {
-        if (i < 0 || i >= TOTAL || busy) return;
+        if (isMobile() || i < 0 || i >= TOTAL || busy) return;
         busy = true;
         cur = i;
         canvas.style.transform = `translateX(${-i * 100}vw)`;
@@ -1453,6 +1524,7 @@
       window.addEventListener(
         "wheel",
         (e) => {
+          if (isMobile()) return;
           e.preventDefault();
           wa += e.deltaY;
           clearTimeout(wt);
@@ -1468,6 +1540,7 @@
       );
 
       window.addEventListener("keydown", (e) => {
+        if (isMobile()) return;
         if (e.key === "ArrowRight" || e.key === "ArrowDown") goTo(cur + 1);
         if (e.key === "ArrowLeft" || e.key === "ArrowUp") goTo(cur - 1);
       });
@@ -1493,7 +1566,7 @@
       window.addEventListener(
         "touchmove",
         (e) => {
-          if (!drag) return;
+          if (!drag || isMobile()) return;
           const dx = e.touches[0].clientX - tx,
             dy = e.touches[0].clientY - ty;
           if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 10)
@@ -1504,7 +1577,7 @@
       window.addEventListener(
         "touchend",
         (e) => {
-          if (!drag) return;
+          if (!drag || isMobile()) return;
           drag = false;
           const dx = e.changedTouches[0].clientX - tx,
             dy = e.changedTouches[0].clientY - ty;

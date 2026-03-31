@@ -95,8 +95,8 @@ export function NavBar() {
           </span>
         </Link>
 
-        {/* Nav Links */}
-        <div className="flex items-center gap-7">
+        {/* Nav Links — hidden on mobile (BottomNav takes over) */}
+        <div className="hidden md:flex items-center gap-7">
           <Link href="/explore" className={navLinkClass('/explore')}>
             Explore
           </Link>
@@ -110,7 +110,7 @@ export function NavBar() {
 
         {/* Right: User or Auth Buttons */}
         {user ? (
-          <Link href="/dashboard/profile" className="shrink-0">
+          <Link href="/dashboard/profile" className="hidden md:block shrink-0">
             <Avatar className="w-8 h-8 ring-2 ring-[#e0ddd8] hover:ring-[#e8621a] transition-all">
               <AvatarImage src={user?.avatar_url ?? undefined} />
               <AvatarFallback className="bg-[#fdf2ec] text-[#e8621a] text-xs font-sans font-bold">
@@ -119,16 +119,16 @@ export function NavBar() {
             </Avatar>
           </Link>
         ) : (
-          <div className="flex items-center gap-3 shrink-0">
+          <div className="flex items-center gap-2 md:gap-3 shrink-0">
             <Link
               href="/login"
-              className="border border-[#e0ddd8] hover:border-[#1a1918] text-[#6b6762] hover:text-[#1a1918] text-[13px] px-5 py-2 rounded-full transition-colors duration-200 font-sans"
+              className="border border-[#e0ddd8] hover:border-[#1a1918] text-[#6b6762] hover:text-[#1a1918] text-[12px] md:text-[13px] px-3.5 py-1.5 md:px-5 md:py-2 rounded-full transition-colors duration-200 font-sans"
             >
               Log in
             </Link>
             <Link
               href="/register"
-              className="bg-[#e8621a] hover:bg-[#c9521a] text-white font-bold text-[13px] px-6 py-2.5 rounded-full transition-colors duration-150 font-sans"
+              className="bg-[#e8621a] hover:bg-[#c9521a] text-white font-bold text-[12px] md:text-[13px] px-4 py-1.5 md:px-6 md:py-2.5 rounded-full transition-colors duration-150 font-sans"
             >
               Join free
             </Link>

@@ -17,7 +17,7 @@ export function ProfileView({ profile, isOwner }: { profile: Profile; isOwner: b
     <div className="space-y-6">
       {/* Header card */}
       <div className="bg-white border border-[#e0ddd8] rounded-2xl p-8 shadow-[0_4px_32px_rgba(0,0,0,0.07)]">
-        <div className="flex items-start justify-between gap-6">
+        <div className="flex items-start justify-between gap-6 flex-wrap">
           {/* Avatar + Name */}
           <div className="flex items-center gap-6">
             <Avatar className="w-20 h-20 shrink-0 ring-2 ring-[#e0ddd8]">

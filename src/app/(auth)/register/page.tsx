@@ -59,9 +59,6 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false)
   const [done, setDone] = useState(false)
 
-  const unbounded = { fontFamily: '"Unbounded", sans-serif' }
-  const dmSans = { fontFamily: '"DM Sans", sans-serif' }
-
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setError(null)
@@ -82,57 +79,21 @@ export default function RegisterPage() {
 
   if (done) {
     return (
-      <div
-        style={{
-          minHeight: '100vh',
-          background: '#f2f0ed',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '16px',
-        }}
-      >
-        <div style={{ width: '100%', maxWidth: 440, textAlign: 'center' }}>
-          <div
-            style={{
-              background: '#fff',
-              border: '1px solid #e0ddd8',
-              borderRadius: 20,
-              padding: '40px 32px',
-              boxShadow: '0 4px 32px rgba(0,0,0,0.07)',
-            }}
-          >
-            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 16 }}>
+      <div className="min-h-screen bg-[#f2f0ed] flex items-center justify-center px-4 py-16">
+        <div className="w-full max-w-110 text-center">
+          <div className="bg-white border border-[#e0ddd8] rounded-[20px] px-8 py-10 shadow-[0_4px_32px_rgba(0,0,0,0.07)]">
+            <div className="flex justify-center mb-4">
               <LogoSVG size={36} />
             </div>
-            <h2
-              style={{
-                ...unbounded,
-                fontWeight: 700,
-                fontSize: 18,
-                letterSpacing: '-0.02em',
-                color: '#1a1918',
-                marginBottom: 12,
-              }}
-            >
+            <h2 className="font-unbounded font-bold text-[18px] tracking-[-0.02em] text-[#1a1918] mb-3">
               Check your email
             </h2>
-            <p style={{ ...dmSans, fontSize: 13, color: '#6b6762', lineHeight: 1.7 }}>
-              We sent a confirmation link to <strong style={{ color: '#1a1918' }}>{email}</strong>.
+            <p className="font-sans text-[13px] text-[#6b6762] leading-[1.7]">
+              We sent a confirmation link to <strong className="text-[#1a1918]">{email}</strong>.
               Click it and you&apos;ll be taken straight to your profile setup.
             </p>
           </div>
-          <Link
-            href="/login"
-            style={{
-              ...dmSans,
-              fontSize: 13,
-              color: '#6b6762',
-              marginTop: 20,
-              display: 'inline-block',
-              textDecoration: 'none',
-            }}
-          >
+          <Link href="/login" className="font-sans text-[13px] text-[#6b6762] mt-5 inline-block">
             ← Back to log in
           </Link>
         </div>
@@ -141,178 +102,76 @@ export default function RegisterPage() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', background: '#f2f0ed' }}>
-      {/* ── Left panel ── */}
-      <div
-        style={{
-          position: 'relative',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          padding: '64px 56px',
-          width: '50%',
-          overflow: 'hidden',
-          flexShrink: 0,
-        }}
-      >
+    <div className="min-h-screen flex flex-col md:flex-row bg-[#f2f0ed]">
+      {/* ── Left panel (Marketing) — hidden on mobile ── */}
+      <div className="hidden md:flex relative flex-col justify-center px-14 py-16 w-1/2 overflow-hidden shrink-0">
         {/* Decorative background logo */}
-        <div
-          style={{
-            position: 'absolute',
-            right: -60,
-            top: '50%',
-            transform: 'translateY(-50%)',
-            opacity: 0.06,
-            pointerEvents: 'none',
-            userSelect: 'none',
-          }}
-        >
+        <div className="absolute -right-15 top-1/2 -translate-y-1/2 opacity-[0.06] pointer-events-none select-none">
           <LogoSVG size={500} />
         </div>
 
-        <div style={{ position: 'relative', zIndex: 1, maxWidth: 480 }}>
+        <div className="relative z-10 max-w-120">
           {/* Wordmark */}
-          <Link
-            href="/"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 8,
-              marginBottom: 64,
-              textDecoration: 'none',
-            }}
-          >
+          <Link href="/" className="inline-flex items-center gap-2 mb-16 no-underline">
             <LogoSVG size={26} />
-            <span
-              style={{
-                ...unbounded,
-                fontSize: 11,
-                fontWeight: 700,
-                letterSpacing: '0.12em',
-                textTransform: 'uppercase',
-                color: '#1a1918',
-              }}
-            >
+            <span className="font-unbounded text-[11px] font-bold tracking-[0.12em] uppercase text-[#1a1918]">
               Realize Together
             </span>
           </Link>
 
           {/* Kicker */}
-          <p
-            style={{
-              ...dmSans,
-              display: 'flex',
-              alignItems: 'center',
-              gap: 12,
-              fontSize: 11,
-              fontWeight: 700,
-              letterSpacing: '0.18em',
-              textTransform: 'uppercase',
-              color: '#e8621a',
-              marginBottom: 20,
-            }}
-          >
-            <span
-              style={{
-                display: 'inline-block',
-                width: 20,
-                height: 2,
-                borderRadius: 2,
-                background: '#e8621a',
-              }}
-            />
+          <p className="font-sans flex items-center gap-3 text-[11px] font-bold tracking-[0.18em] uppercase text-[#e8621a] mb-5">
+            <span className="inline-block w-5 h-0.5 rounded-sm bg-[#e8621a]" />
             Join the community
           </p>
 
           {/* Headline */}
-          <h1
-            style={{
-              ...unbounded,
-              fontWeight: 900,
-              fontSize: 'clamp(38px, 4.5vw, 66px)',
-              lineHeight: 0.92,
-              letterSpacing: '-0.04em',
-              color: '#1a1918',
-              marginBottom: 24,
-            }}
-          >
+          <h1 className="font-unbounded font-black text-[clamp(38px,4.5vw,66px)] leading-[0.92] tracking-[-0.04em] text-[#1a1918] mb-6">
             Find your
             <br />
-            <span style={{ color: '#e8621a' }}>film</span> team.
+            <span className="text-[#e8621a]">film</span> team.
           </h1>
 
           {/* Subtext */}
-          <p
-            style={{
-              ...dmSans,
-              fontSize: 15,
-              fontWeight: 300,
-              lineHeight: 1.8,
-              color: '#6b6762',
-              maxWidth: 380,
-            }}
-          >
+          <p className="font-sans text-[15px] font-light leading-[1.8] text-[#6b6762] max-w-95">
             Connect with directors, writers, DPs and producers. Build trust and create something
             real.
           </p>
 
           {/* Bottom link */}
-          <p style={{ ...dmSans, fontSize: 13, color: '#6b6762', marginTop: 48 }}>
+          <p className="font-sans text-[13px] text-[#6b6762] mt-12">
             Already a member?{' '}
-            <Link
-              href="/login"
-              style={{ color: '#e8621a', fontWeight: 500, textDecoration: 'none' }}
-            >
+            <Link href="/login" className="text-[#e8621a] font-medium no-underline">
               Log in →
             </Link>
           </p>
         </div>
       </div>
 
-      {/* ── Right panel ── */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          background: '#fff',
-          borderLeft: '1px solid #e0ddd8',
-          padding: '48px 40px',
-          width: '50%',
-          flexShrink: 0,
-          overflowY: 'auto',
-        }}
-      >
-        <div style={{ width: '100%', maxWidth: 400 }}>
-          <h2
-            style={{
-              ...unbounded,
-              fontWeight: 700,
-              fontSize: 22,
-              letterSpacing: '-0.03em',
-              color: '#1a1918',
-              marginBottom: 28,
-            }}
-          >
+      {/* ── Right panel (Form) ── */}
+      <div className="flex flex-col items-center justify-center bg-white border-l border-[#e0ddd8] px-6 py-12 md:px-10 md:py-16 w-full md:w-1/2 shrink-0 overflow-y-auto">
+        <div className="w-full max-w-100">
+          {/* Mobile-only logo */}
+          <div className="flex flex-col items-center mb-10 md:hidden">
+            <Link href="/" className="inline-flex items-center gap-2 mb-3">
+              <LogoSVG size={32} />
+              <span className="font-unbounded text-[11px] font-bold tracking-[0.12em] uppercase text-[#1a1918]">
+                Realize Together
+              </span>
+            </Link>
+            <p className="font-sans text-[13px] text-[#6b6762]">Join the community</p>
+          </div>
+
+          <h2 className="font-unbounded font-bold text-[22px] tracking-[-0.03em] text-[#1a1918] mb-7">
             Create your profile
           </h2>
 
-          <form
-            onSubmit={handleSubmit}
-            style={{ display: 'flex', flexDirection: 'column', gap: 16 }}
-          >
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             {/* Full name */}
             <div>
               <label
                 htmlFor="fullName"
-                style={{
-                  ...dmSans,
-                  display: 'block',
-                  fontSize: 12,
-                  fontWeight: 500,
-                  color: '#6b6762',
-                  marginBottom: 6,
-                }}
+                className="block font-sans text-[12px] font-medium text-[#6b6762] mb-1.5"
               >
                 Full name
               </label>
@@ -324,24 +183,7 @@ export default function RegisterPage() {
                 onChange={(e) => setFullName(e.target.value)}
                 required
                 autoComplete="name"
-                style={{
-                  ...dmSans,
-                  width: '100%',
-                  background: '#fff',
-                  border: '1.5px solid #e0ddd8',
-                  borderRadius: 100,
-                  padding: '12px 20px',
-                  fontSize: 13,
-                  color: '#1a1918',
-                  outline: 'none',
-                  boxSizing: 'border-box',
-                }}
-                onFocus={(e) => {
-                  e.target.style.borderColor = '#e8621a'
-                }}
-                onBlur={(e) => {
-                  e.target.style.borderColor = '#e0ddd8'
-                }}
+                className="font-sans w-full bg-white border-[1.5px] border-[#e0ddd8] focus:border-[#e8621a] rounded-full px-5 py-3 text-[13px] text-[#1a1918] outline-none transition-colors duration-200"
               />
             </div>
 
@@ -349,14 +191,7 @@ export default function RegisterPage() {
             <div>
               <label
                 htmlFor="email"
-                style={{
-                  ...dmSans,
-                  display: 'block',
-                  fontSize: 12,
-                  fontWeight: 500,
-                  color: '#6b6762',
-                  marginBottom: 6,
-                }}
+                className="block font-sans text-[12px] font-medium text-[#6b6762] mb-1.5"
               >
                 Email
               </label>
@@ -368,24 +203,7 @@ export default function RegisterPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 autoComplete="email"
-                style={{
-                  ...dmSans,
-                  width: '100%',
-                  background: '#fff',
-                  border: '1.5px solid #e0ddd8',
-                  borderRadius: 100,
-                  padding: '12px 20px',
-                  fontSize: 13,
-                  color: '#1a1918',
-                  outline: 'none',
-                  boxSizing: 'border-box',
-                }}
-                onFocus={(e) => {
-                  e.target.style.borderColor = '#e8621a'
-                }}
-                onBlur={(e) => {
-                  e.target.style.borderColor = '#e0ddd8'
-                }}
+                className="font-sans w-full bg-white border-[1.5px] border-[#e0ddd8] focus:border-[#e8621a] rounded-full px-5 py-3 text-[13px] text-[#1a1918] outline-none transition-colors duration-200"
               />
             </div>
 
@@ -393,14 +211,7 @@ export default function RegisterPage() {
             <div>
               <label
                 htmlFor="password"
-                style={{
-                  ...dmSans,
-                  display: 'block',
-                  fontSize: 12,
-                  fontWeight: 500,
-                  color: '#6b6762',
-                  marginBottom: 6,
-                }}
+                className="block font-sans text-[12px] font-medium text-[#6b6762] mb-1.5"
               >
                 Password
               </label>
@@ -413,59 +224,26 @@ export default function RegisterPage() {
                 required
                 minLength={8}
                 autoComplete="new-password"
-                style={{
-                  ...dmSans,
-                  width: '100%',
-                  background: '#fff',
-                  border: '1.5px solid #e0ddd8',
-                  borderRadius: 100,
-                  padding: '12px 20px',
-                  fontSize: 13,
-                  color: '#1a1918',
-                  outline: 'none',
-                  boxSizing: 'border-box',
-                }}
-                onFocus={(e) => {
-                  e.target.style.borderColor = '#e8621a'
-                }}
-                onBlur={(e) => {
-                  e.target.style.borderColor = '#e0ddd8'
-                }}
+                className="font-sans w-full bg-white border-[1.5px] border-[#e0ddd8] focus:border-[#e8621a] rounded-full px-5 py-3 text-[13px] text-[#1a1918] outline-none transition-colors duration-200"
               />
             </div>
 
             {/* Role selection */}
             <div>
-              <p
-                style={{
-                  ...dmSans,
-                  fontSize: 12,
-                  fontWeight: 500,
-                  color: '#6b6762',
-                  marginBottom: 8,
-                }}
-              >
-                Your role <span style={{ color: '#bab7b2', fontWeight: 400 }}>(optional)</span>
+              <p className="font-sans text-[12px] font-medium text-[#6b6762] mb-2">
+                Your role <span className="text-[#bab7b2] font-normal">(optional)</span>
               </p>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8 }}>
+              <div className="grid grid-cols-3 gap-2">
                 {ROLES.map((role) => (
                   <button
                     key={role}
                     type="button"
                     onClick={() => setSelectedRole(selectedRole === role ? null : role)}
-                    style={{
-                      ...dmSans,
-                      fontSize: 12,
-                      padding: '9px 6px',
-                      borderRadius: 100,
-                      border: '1.5px solid',
-                      cursor: 'pointer',
-                      transition: 'all 0.15s',
-                      background: selectedRole === role ? '#e8621a' : '#fff',
-                      borderColor: selectedRole === role ? '#e8621a' : '#e0ddd8',
-                      color: selectedRole === role ? '#fff' : '#6b6762',
-                      fontWeight: selectedRole === role ? 700 : 400,
-                    }}
+                    className={`font-sans text-[12px] py-2.5 px-1.5 rounded-full border-[1.5px] cursor-pointer transition-all duration-150 ${
+                      selectedRole === role
+                        ? 'bg-[#e8621a] border-[#e8621a] text-white font-bold'
+                        : 'bg-white border-[#e0ddd8] text-[#6b6762] hover:border-[#1a1918]'
+                    }`}
                   >
                     {role}
                   </button>
@@ -474,16 +252,7 @@ export default function RegisterPage() {
             </div>
 
             {error && (
-              <p
-                style={{
-                  ...dmSans,
-                  fontSize: 12,
-                  color: '#dc2626',
-                  background: '#fef2f2',
-                  padding: '10px 16px',
-                  borderRadius: 100,
-                }}
-              >
+              <p className="font-sans text-[12px] text-red-600 bg-red-50 px-4 py-2.5 rounded-full">
                 {error}
               </p>
             )}
@@ -491,24 +260,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={loading}
-              style={{
-                ...dmSans,
-                width: '100%',
-                background: '#e8621a',
-                color: '#fff',
-                fontWeight: 700,
-                fontSize: 13,
-                padding: '13px 24px',
-                borderRadius: 100,
-                border: 'none',
-                cursor: loading ? 'not-allowed' : 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: 8,
-                marginTop: 8,
-                opacity: loading ? 0.7 : 1,
-              }}
+              className="font-sans w-full bg-[#e8621a] hover:bg-[#c9521a] disabled:opacity-70 disabled:cursor-not-allowed text-white font-bold text-[13px] px-6 py-3.5 rounded-full flex items-center justify-center gap-2 mt-2 transition-colors duration-150"
             >
               {loading ? (
                 'Creating account…'
@@ -531,6 +283,14 @@ export default function RegisterPage() {
               )}
             </button>
           </form>
+
+          {/* Mobile-only login link */}
+          <p className="font-sans text-[13px] text-[#6b6762] text-center mt-8 md:hidden">
+            Already a member?{' '}
+            <Link href="/login" className="text-[#e8621a] font-medium">
+              Log in →
+            </Link>
+          </p>
         </div>
       </div>
     </div>
