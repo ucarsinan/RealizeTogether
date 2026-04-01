@@ -125,13 +125,12 @@ function LoginForm() {
         <div className="w-full max-w-100">
           {/* Mobile-only logo */}
           <div className="flex flex-col items-center mb-10 md:hidden">
-            <Link href="/" className="inline-flex items-center gap-2 mb-3">
-              <LogoSVG size={32} />
-              <span className="font-unbounded text-[11px] font-bold tracking-[0.12em] uppercase text-[#1a1918]">
+            <Link href="/" className="flex flex-col items-center gap-3 mb-2">
+              <LogoSVG size={64} />
+              <span className="font-unbounded text-[13px] font-bold tracking-[0.12em] uppercase text-[#1a1918]">
                 Realize Together
               </span>
             </Link>
-            <p className="font-sans text-[13px] text-[#6b6762]">Welcome back</p>
           </div>
 
           <h2 className="font-unbounded font-bold text-[22px] tracking-[-0.03em] text-[#1a1918] mb-7">
