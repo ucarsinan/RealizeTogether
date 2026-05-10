@@ -206,3 +206,7 @@ Stack:        Next.js 16 · TypeScript · Tailwind · Supabase
 Tests:        18 Unit ✅ · 14+ E2E ✅
 CI:           GitHub Actions (tsc → lint → vitest → playwright)
 ```
+## Aktions-Tracking
+Nach jeder Dateiänderung diese Zeile in ~/Development/personal-assistant/orchestration/current-state.md anhängen:
+`[HH:MM] <projektname> | <EDIT|BASH> <datei-oder-befehl>`
+Max. 15 Zeilen behalten (älteste löschen). So kann die nächste KI nahtlos übernehmen.
