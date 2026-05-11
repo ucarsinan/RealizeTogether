@@ -36,6 +36,8 @@ export default async function ProfileEditPage({ searchParams }: { searchParams: 
         verified_at: null,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
+        role: null,
+        skills: null,
       }
 
   return (

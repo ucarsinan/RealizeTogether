@@ -13,7 +13,10 @@ export type CommitmentType = Enums<'commitment_type'>
 export type CollabType = Enums<'collab_type'>
 
 // Row type aliases (generated from DB schema)
-export type Profile = Tables<'profiles'>
+export type Profile = Tables<'profiles'> & {
+  role: string | null
+  skills: string[] | null
+}
 export type Project = Tables<'projects'>
 export type ProjectRole = Tables<'project_roles'>
 
