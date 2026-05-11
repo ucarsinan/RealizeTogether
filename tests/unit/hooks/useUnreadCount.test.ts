@@ -34,6 +34,7 @@ describe('useUnreadCount', () => {
     vi.mocked(getTotalUnreadCount).mockResolvedValue(7)
     await act(async () => { vi.advanceTimersByTime(30_000) })
     expect(result.current).toBe(7)
+    expect(getTotalUnreadCount).toHaveBeenCalledTimes(2) // mount + 1 interval
   })
 
   it('clears the interval on unmount', async () => {

@@ -10,8 +10,12 @@ export function useUnreadCount(): number {
 
   useEffect(() => {
     const fetchCount = async () => {
-      const n = await getTotalUnreadCount()
-      setCount(n)
+      try {
+        const n = await getTotalUnreadCount()
+        setCount(n)
+      } catch {
+        // polling continues on next interval tick; count stays at last known value
+      }
     }
 
     fetchCount()
