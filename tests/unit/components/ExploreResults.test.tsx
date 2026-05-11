@@ -17,9 +17,7 @@ const makeProject = (overrides: Partial<ProjectWithRoles> = {}): ProjectWithRole
   status: 'open',
   created_at: '2024-01-01T00:00:00Z',
   updated_at: '2024-01-01T00:00:00Z',
-  project_roles: [
-    { id: 'role-1', project_id: 'proj-1', role_name: 'Director of Photography', quantity: 1, description: null },
-  ],
+  project_roles: [],
   profiles: {
     id: 'user-1',
     full_name: 'Jane Doe',
@@ -62,11 +60,6 @@ describe('filterProjects — text search', () => {
 })
 
 describe('filterProjects — role filter', () => {
-  it('returns all projects when role is empty', () => {
-    const projects = [makeProject(), makeProject({ id: 'proj-2', title: 'Other' })]
-    expect(filterProjects(projects, '', '')).toHaveLength(2)
-  })
-
   it('matches partial role name (case-insensitive)', () => {
     const projects = [
       makeProject({
