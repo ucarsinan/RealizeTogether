@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { createClient } from '@/lib/supabase/client'
+import { useUnreadCount } from '@/hooks/useUnreadCount'
 
 type NavUser = { full_name: string; avatar_url: string | null } | null
 
@@ -55,6 +56,7 @@ const LogoSVG = () => (
 export function NavBar() {
   const pathname = usePathname()
   const [user, setUser] = useState<NavUser>(null)
+  const unreadCount = useUnreadCount()
 
   useEffect(() => {
     const supabase = createClient()
@@ -103,8 +105,16 @@ export function NavBar() {
           <Link href="/dashboard" className={navLinkClass('/dashboard')}>
             Dashboard
           </Link>
-          <Link href="/messages" className={navLinkClass('/messages')}>
+          <Link
+            href="/messages"
+            className={`${navLinkClass('/messages')} relative inline-flex items-center gap-1.5`}
+          >
             Messages
+            {unreadCount > 0 && (
+              <span className="min-w-[16px] h-4 bg-[#e8621a] rounded-full text-white text-[9px] flex items-center justify-center font-sans font-bold px-1 leading-none">
+                {unreadCount > 9 ? '9+' : unreadCount}
+              </span>
+            )}
           </Link>
         </div>
 
