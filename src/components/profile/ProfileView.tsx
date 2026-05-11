@@ -100,6 +100,25 @@ export function ProfileView({ profile, isOwner }: { profile: Profile; isOwner: b
           </div>
         </div>
       )}
+
+      {/* Skills */}
+      {profile.skills && profile.skills.length > 0 && (
+        <div className="bg-white border border-[#e0ddd8] rounded-2xl p-8 shadow-[0_4px_32px_rgba(0,0,0,0.07)]">
+          <h2 className="font-sans text-[12px] font-medium text-[#6b6762] uppercase tracking-widest mb-4">
+            Skills
+          </h2>
+          <div className="flex flex-wrap gap-2">
+            {profile.skills.map((skill) => (
+              <span
+                key={skill}
+                className="border border-[#e0ddd8] rounded-full px-3 py-1 font-sans text-[13px] text-[#1a1918]"
+              >
+                {skill}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
