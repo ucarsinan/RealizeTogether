@@ -10,6 +10,13 @@ export async function GET(request: NextRequest) {
     const supabase = await createClient()
     const { error } = await supabase.auth.exchangeCodeForSession(code)
     if (!error) {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+      const role = user?.user_metadata?.role
+      if (user && role) {
+        await supabase.from('profiles').update({ role }).eq('id', user.id)
+      }
       return NextResponse.redirect(`${origin}/dashboard/profile?new=1`)
     }
   }
