@@ -111,7 +111,7 @@ export function ProfileView({ profile, isOwner }: { profile: Profile; isOwner: b
             {profile.skills.map((skill) => (
               <span
                 key={skill}
-                className="border border-[#e0ddd8] rounded-full px-3 py-1 font-sans text-[13px] text-[#1a1918]"
+                className="border border-[#e0ddd8] rounded-full px-3 py-1 font-sans text-sm text-[#1a1918]"
               >
                 {skill}
               </span>
