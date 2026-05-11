@@ -15,7 +15,13 @@ export async function GET(request: NextRequest) {
       } = await supabase.auth.getUser()
       const role = user?.user_metadata?.role
       if (user && role) {
-        await supabase.from('profiles').update({ role }).eq('id', user.id)
+        const { error: roleError } = await supabase
+          .from('profiles')
+          .update({ role })
+          .eq('id', user.id)
+        if (roleError) {
+          console.error('[auth/callback] profile role update failed:', roleError.message)
+        }
       }
       return NextResponse.redirect(`${origin}/dashboard/profile?new=1`)
     }

@@ -23,6 +23,12 @@ const baseProfile: Profile = {
 }
 
 describe('ProfileView — Skills card', () => {
+  it('does not render skills card when skills is undefined', () => {
+    const { skills: _skills, ...profileWithoutSkills } = baseProfile
+    render(<ProfileView profile={profileWithoutSkills as Profile} isOwner={false} />)
+    expect(screen.queryByText('Skills')).not.toBeInTheDocument()
+  })
+
   it('does not render skills card when skills is null', () => {
     render(<ProfileView profile={{ ...baseProfile, skills: null }} isOwner={false} />)
     expect(screen.queryByText('Skills')).not.toBeInTheDocument()
