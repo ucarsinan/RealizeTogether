@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+// type-only import — erased at runtime, safe above vi.mock
 import type { ConversationPreview } from '@/actions/conversation.actions'
 
 vi.mock('@/actions/conversation.actions', () => ({
@@ -22,6 +23,7 @@ function makeConv(unread_count: number): ConversationPreview {
 
 describe('getTotalUnreadCount', () => {
   beforeEach(() => {
+    // default: two conversations with unread messages (total = 5)
     vi.mocked(getMyConversations).mockResolvedValue({
       success: true,
       data: [makeConv(3), makeConv(2)],
