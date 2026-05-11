@@ -1,8 +1,10 @@
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
+import { Suspense } from 'react'
 import { createClient } from '@/lib/supabase/server'
 import { getMyConversations } from '@/actions/conversation.actions'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { MessagesPoller } from '@/components/chat/MessagesPoller'
 
 function timeAgo(dateStr: string): string {
   const diff = Date.now() - new Date(dateStr).getTime()
@@ -100,6 +102,10 @@ export default async function MessagesPage() {
             ))}
           </div>
         )}
+
+        <Suspense>
+          <MessagesPoller />
+        </Suspense>
       </div>
     </div>
   )
