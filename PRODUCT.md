@@ -68,10 +68,9 @@ Level 3 — Nur im privaten Chat nach Match
 
 **Blind Audition Prinzip:** Die Identität des Creators (Name, Avatar, Intro-Video) bleibt für alle anderen User bis zum Match verborgen. Nur der Verified-Status ist sichtbar. Eigene Projekte zeigt der Creator immer mit echten Daten.
 
-> **ENTSCHEIDUNG #1 — Sichtbarkeit ohne Account: ✅ Option B implementiert**
-> Level-1-Inhalte (`/explore`, `/projects/[id]`) sind öffentlich zugänglich ohne Login.
-> Level 2+ (NDA/Synopsis, Bewerben) bleiben hinter Login.
-> `/projects/[id]/apply` und `/projects/[id]/applications` sind weiterhin geschützt.
+> **ENTSCHEIDUNG #1 — Sichtbarkeit ohne Account: ✅ Option A implementiert**
+> Alles hinter Login. Nur `/`, `/login`, `/register` sind öffentlich.
+> Explore, Projektdetails und Profile erfordern einen Account — passt zum kuratierten Community-Ansatz.
 
 ### Status-Flow Projekte
 
@@ -213,18 +212,9 @@ shadow-[0_4px_32px_rgba(0,0,0,0.07)]
 
 ---
 
-### Offene Entscheidung #1 — Auth-Requirement für Profile/Projekte
+### Entscheidung #1 — Auth-Requirement für Profile/Projekte ✅ Option A
 
-**Kontext:** Middleware blockiert aktuell alles außer `/`, `/login`, `/register`.
-
-**Frage:** Sollen Projekte (Explore, Detail) und Profile ohne Login sichtbar sein?
-
-**Optionen:**
-- A) Alles hinter Login (Status quo) — Daten-Privacy, aber schlechte Discovery
-- B) Level-1-Inhalte öffentlich (Projekte + Profile), Level 2+ hinter Login
-- C) Projekte öffentlich, Profile nur für eingeloggte User
-
-**Implikation für `/profile/[id]`:** Wenn A → keine Middleware-Änderung. Wenn B/C → Exception in `src/lib/supabase/middleware.ts` nötig.
+**Entschieden:** Alles hinter Login. Nur `/`, `/login`, `/register` sind öffentlich. RealizeTogether ist eine kuratierte Community — wer Projekte sehen will, gehört dazu. Kein offener Browse-Modus.
 
 ---
 
