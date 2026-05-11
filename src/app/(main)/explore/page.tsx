@@ -1,7 +1,7 @@
 import { Suspense } from 'react'
 import { getProjects } from '@/actions/project.actions'
-import { ProjectCard } from '@/components/projects/ProjectCard'
 import { ExploreFilters } from '@/components/projects/ExploreFilters'
+import { ExploreResults } from '@/components/projects/ExploreResults'
 import { Breadcrumb } from '@/components/layout/Breadcrumb'
 import type { ProjectStage, CommitmentType } from '@/lib/types'
 
@@ -9,6 +9,8 @@ type SearchParams = Promise<{
   stage?: ProjectStage
   commitment?: CommitmentType
   category?: string
+  search?: string
+  role?: string
 }>
 
 export const metadata = {
@@ -29,7 +31,6 @@ export default async function ExplorePage({ searchParams }: { searchParams: Sear
   return (
     <div className="min-h-screen bg-[#f2f0ed]">
       <div className="max-w-270 mx-auto px-10 max-md:px-5 py-10">
-        {/* Header */}
         <div className="mb-8">
           <p className="font-unbounded text-[10px] font-bold tracking-[.18em] uppercase text-[#e8621a] mb-3">
             DISCOVER
@@ -40,26 +41,18 @@ export default async function ExplorePage({ searchParams }: { searchParams: Sear
           </h1>
         </div>
 
-        {/* Filters */}
         <Suspense>
-          <ExploreFilters currentStage={params.stage} currentCommitment={params.commitment} />
+          <ExploreFilters
+            currentStage={params.stage}
+            currentCommitment={params.commitment}
+            currentCategory={params.category}
+          />
         </Suspense>
 
-        {/* Project grid */}
         <div className="mt-8">
-          {projects.length === 0 ? (
-            <div className="text-center py-20 bg-white border border-[#e0ddd8] rounded-2xl">
-              <p className="font-sans text-[13px] text-[#6b6762]">
-                No projects found matching your filters.
-              </p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-              {projects.map((project) => (
-                <ProjectCard key={project.id} project={project} />
-              ))}
-            </div>
-          )}
+          <Suspense>
+            <ExploreResults projects={projects} />
+          </Suspense>
         </div>
       </div>
     </div>
