@@ -337,13 +337,3 @@ function sortDesc(msgs: RawMessage[]): RawMessage[] {
 function toLastMsg(msg: RawMessage, myId: string) {
   return { content: msg.content, created_at: msg.created_at, is_mine: msg.sender_id === myId }
 }
-
-// ─────────────────────────────────────────────
-// TOTAL UNREAD COUNT (for nav badge polling)
-// ─────────────────────────────────────────────
-
-export async function getTotalUnreadCount(): Promise<number> {
-  const result = await getMyConversations()
-  if (!result.success) return 0
-  return result.data.reduce((sum, c) => sum + c.unread_count, 0)
-}

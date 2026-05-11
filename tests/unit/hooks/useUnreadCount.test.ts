@@ -1,25 +1,14 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import type { ConversationPreview } from '@/actions/conversation.actions'
 
-// Mock the entire conversation.actions module so getTotalUnreadCount
-// can be tested without a real Supabase connection.
-vi.mock('@/actions/conversation.actions', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('@/actions/conversation.actions')>()
-  const mockGetMyConversations = vi.fn()
+vi.mock('@/actions/conversation.actions', () => ({
+  getMyConversations: vi.fn(),
+}))
 
-  return {
-    ...actual,
-    getMyConversations: mockGetMyConversations,
-    getTotalUnreadCount: async () => {
-      const result = await mockGetMyConversations()
-      if (!result.success) return 0
-      return result.data.reduce((sum: number, c: any) => sum + c.unread_count, 0)
-    },
-  }
-})
+import { getTotalUnreadCount } from '@/actions/unread.actions'
+import { getMyConversations } from '@/actions/conversation.actions'
 
-import { getTotalUnreadCount, getMyConversations } from '@/actions/conversation.actions'
-
-function makeConv(unread_count: number) {
+function makeConv(unread_count: number): ConversationPreview {
   return {
     id: crypto.randomUUID(),
     application_id: 'app-1',
