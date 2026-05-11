@@ -88,6 +88,7 @@ export function ExploreFilters({
       {/* Compact top row */}
       <div className="flex flex-col sm:flex-row gap-3">
         <input
+          key={searchParams.get('search') ?? ''}
           type="text"
           placeholder="Search projects…"
           defaultValue={searchParams.get('search') ?? ''}
@@ -95,7 +96,7 @@ export function ExploreFilters({
           className={inputClass + ' flex-[2]'}
         />
         <select
-          defaultValue={currentCategory ?? ''}
+          value={currentCategory ?? ''}
           onChange={(e) => updateFilter('category', e.target.value)}
           className={inputClass + ' flex-1'}
         >
@@ -106,6 +107,7 @@ export function ExploreFilters({
           ))}
         </select>
         <input
+          key={searchParams.get('role') ?? ''}
           type="text"
           placeholder="Role needed…"
           defaultValue={searchParams.get('role') ?? ''}
