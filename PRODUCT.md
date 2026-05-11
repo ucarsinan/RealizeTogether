@@ -139,7 +139,7 @@ pending → in_talks → matched
 | **User Skills** | ✅ Done | — | KI-Extraktion aus Bio via FastAPI (OpenAI). `skills text[]` in `profiles`. Magic Wand Button im ProfileForm. |
 | Realtime Chat (Supabase Realtime) | 📋 Backlog | Mittel | Polling reicht? Push? |
 | KI-Matching / Empfehlungen | 📋 Backlog | Niedrig | FastAPI-Backend scope |
-| Projekt-Suche / Filter | 📋 Backlog | Mittel | Welche Filter-Dimensionen? |
+| **Projekt-Suche / Filter** | ✅ Done | — | Textsuche (title+logline) + Category (server) + Rollen-Filter (client). ExploreResults Client Component. |
 | Creator Dashboard Analytics | 📋 Backlog | Niedrig | Was messen? |
 
 ---
@@ -192,6 +192,26 @@ shadow-[0_4px_32px_rgba(0,0,0,0.07)]
 ---
 
 ## 7. Offene Entscheidungen
+
+### Offene Entscheidung #0 — Realtime Chat: Passt das zum Konzept?
+
+**Kontext:** Der Chat (Conversations + Messaging) existiert und funktioniert via Polling. Supabase Realtime würde Live-Updates ohne Page-Refresh ermöglichen.
+
+**Bedenken:**
+
+- RealizeTogether ist kein Messenger — der Trust Funnel lebt von einem *langsamen, überlegten* Rhythmus. Realtime-Chat erzeugt Druck, sofort zu antworten.
+- Der Chat gehört zu Level 3 (nach Match). Die Plattform ist kein WhatsApp-Ersatz.
+- Realtime erhöht Komplexität (Supabase Channels, Connection-Management) ohne klaren User-Value für den Kernprozess.
+
+**Optionen:**
+
+- A) Kein Realtime — Polling bleibt, Seite muss manuell refreshed werden (Status quo)
+- B) Soft Realtime — Browser-Notification oder Unread-Badge via Polling (30s-Intervall), kein Live-Typing
+- C) Supabase Realtime — vollständiges Live-Chat-Erlebnis
+
+**Entschieden:** Option B — Unread-Badge via Polling (30s-Intervall). Kein Supabase Realtime, kein Live-Typing. Passt zum langsamen Trust-Funnel-Rhythmus.
+
+---
 
 ### Offene Entscheidung #1 — Auth-Requirement für Profile/Projekte
 
