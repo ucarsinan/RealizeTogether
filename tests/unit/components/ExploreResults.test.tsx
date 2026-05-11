@@ -11,7 +11,7 @@ const makeProject = (overrides: Partial<ProjectWithRoles> = {}): ProjectWithRole
   category: 'film',
   stage: 'concept',
   commitment_type: 'serious',
-  collab_type: 'revenue_share',
+  collab_type: 'paid',
   requires_nda: false,
   synopsis_url: null,
   status: 'open',
@@ -63,12 +63,12 @@ describe('filterProjects — role filter', () => {
   it('matches partial role name (case-insensitive)', () => {
     const projects = [
       makeProject({
-        project_roles: [{ id: 'r1', project_id: 'proj-1', role_name: 'Director of Photography', quantity: 1, description: null }],
+        project_roles: [{ id: 'r1', project_id: 'proj-1', role_name: 'Director of Photography', quantity: 1, description: null, created_at: null }],
       }),
       makeProject({
         id: 'proj-2',
         title: 'Other',
-        project_roles: [{ id: 'r2', project_id: 'proj-2', role_name: 'Sound Designer', quantity: 1, description: null }],
+        project_roles: [{ id: 'r2', project_id: 'proj-2', role_name: 'Sound Designer', quantity: 1, description: null, created_at: null }],
       }),
     ]
     expect(filterProjects(projects, '', 'photography')).toHaveLength(1)
@@ -79,8 +79,8 @@ describe('filterProjects — role filter', () => {
     const projects = [
       makeProject({
         project_roles: [
-          { id: 'r1', project_id: 'proj-1', role_name: 'Director', quantity: 1, description: null },
-          { id: 'r2', project_id: 'proj-1', role_name: 'Editor', quantity: 1, description: null },
+          { id: 'r1', project_id: 'proj-1', role_name: 'Director', quantity: 1, description: null, created_at: null },
+          { id: 'r2', project_id: 'proj-1', role_name: 'Editor', quantity: 1, description: null, created_at: null },
         ],
       }),
     ]
@@ -96,8 +96,8 @@ describe('filterProjects — role filter', () => {
 describe('filterProjects — combined', () => {
   it('applies both text and role filter simultaneously', () => {
     const projects = [
-      makeProject({ title: 'Dark Horizon', project_roles: [{ id: 'r1', project_id: 'proj-1', role_name: 'Editor', quantity: 1, description: null }] }),
-      makeProject({ id: 'proj-2', title: 'Dark Night', project_roles: [{ id: 'r2', project_id: 'proj-2', role_name: 'Director', quantity: 1, description: null }] }),
+      makeProject({ title: 'Dark Horizon', project_roles: [{ id: 'r1', project_id: 'proj-1', role_name: 'Editor', quantity: 1, description: null, created_at: null }] }),
+      makeProject({ id: 'proj-2', title: 'Dark Night', project_roles: [{ id: 'r2', project_id: 'proj-2', role_name: 'Director', quantity: 1, description: null, created_at: null }] }),
     ]
     // matches title 'dark' → both; then role 'editor' → only proj-1
     expect(filterProjects(projects, 'dark', 'editor')).toHaveLength(1)
