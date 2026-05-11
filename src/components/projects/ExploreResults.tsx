@@ -36,11 +36,14 @@ export function ExploreResults({ projects }: ExploreResultsProps) {
 
   if (filtered.length === 0) {
     return (
-      <div className="text-center py-20 bg-white border border-[#e0ddd8] rounded-2xl">
+      <section
+        aria-label="No projects found"
+        className="text-center py-20 bg-white border border-[#e0ddd8] rounded-2xl"
+      >
         <p className="font-sans text-[13px] text-[#6b6762]">
-          No projects match your search. Try adjusting the filters.
+          No projects match your filters. Try adjusting them.
         </p>
-      </div>
+      </section>
     )
   }
 

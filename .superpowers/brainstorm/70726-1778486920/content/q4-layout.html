@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, sans-serif; background: #f2f0ed; padding: 24px; color: #1a1918; }
+  h2 { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+  p { color: #6b6762; font-size: 13px; margin-bottom: 24px; }
+  .options { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .option { background: white; border: 2px solid #e0ddd8; border-radius: 16px; padding: 16px; cursor: pointer; transition: border-color 0.15s; }
+  .option:hover { border-color: #e8621a; }
+  .option.selected { border-color: #e8621a; background: #fff8f5; }
+  .option h3 { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .mock { background: #f2f0ed; border-radius: 10px; padding: 12px; }
+  .mock-search { background: white; border: 1px solid #e0ddd8; border-radius: 8px; padding: 8px 12px; font-size: 12px; color: #6b6762; margin-bottom: 8px; }
+  .mock-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { background: white; border: 1px solid #e0ddd8; border-radius: 20px; padding: 4px 10px; font-size: 11px; white-space: nowrap; }
+  .chip.active { background: #1a1918; color: white; border-color: #1a1918; }
+  .mock-row { display: flex; gap: 8px; margin-bottom: 8px; }
+  .mock-label { font-size: 10px; font-weight: 600; color: #6b6762; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 4px; }
+  .mock-input { background: white; border: 1px solid #e0ddd8; border-radius: 8px; padding: 6px 10px; font-size: 11px; color: #6b6762; flex: 1; }
+</style>
+</head>
+<body>
+<h2>Filter-Layout — welche Struktur?</h2>
+<p>Aktuelle Filter: Stage + Commitment als SegmentedControl. Neu dazu: Suche, Category, Rolle.</p>
+
+<div class="options">
+
+  <div class="option" data-value="A" onclick="select(this)">
+    <h3>A — Suchleiste oben, Filter darunter</h3>
+    <div class="mock">
+      <div class="mock-search">🔍  Search projects…</div>
+      <div class="mock-label">Stage</div>
+      <div class="mock-chips" style="margin-bottom:8px">
+        <span class="chip active">All</span><span class="chip">Idea</span><span class="chip">Concept</span><span class="chip">Dev</span>
+      </div>
+      <div class="mock-label">Commitment</div>
+      <div class="mock-chips" style="margin-bottom:8px">
+        <span class="chip active">Any</span><span class="chip">Hobby</span><span class="chip">Serious</span>
+      </div>
+      <div class="mock-row">
+        <div style="flex:1"><div class="mock-label">Category</div><div class="mock-input">All categories ▾</div></div>
+        <div style="flex:1"><div class="mock-label">Role needed</div><div class="mock-input">Any role…</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-value="B" onclick="select(this)">
+    <h3>B — Alles in einer Zeile (kompakt)</h3>
+    <div class="mock">
+      <div class="mock-row" style="margin-bottom:8px">
+        <div class="mock-input" style="flex:2">🔍  Search…</div>
+        <div class="mock-input">Category ▾</div>
+        <div class="mock-input">Role…</div>
+      </div>
+      <div class="mock-label">Stage</div>
+      <div class="mock-chips" style="margin-bottom:8px">
+        <span class="chip active">All</span><span class="chip">Idea</span><span class="chip">Concept</span><span class="chip">Dev</span><span class="chip">Ready</span>
+      </div>
+      <div class="mock-label">Commitment</div>
+      <div class="mock-chips">
+        <span class="chip active">Any</span><span class="chip">Hobby</span><span class="chip">Side</span><span class="chip">Serious</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function select(el) {
+    document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    window.__companion?.select(el.dataset.value, el.querySelector('h3').textContent);
+  }
+</script>
+</body>
+</html>

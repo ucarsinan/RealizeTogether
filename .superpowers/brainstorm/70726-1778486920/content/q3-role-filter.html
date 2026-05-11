@@ -1,0 +1,35 @@
+<h2>Rollen-Filter — wie funktioniert er?</h2>
+<p style="color:#6b6762;margin-bottom:24px">Projekte haben project_roles mit role_name (Freitext, z.B. "Director of Photography")</p>
+
+<div style="display:grid;gap:16px;max-width:640px">
+
+  <div class="option" data-value="A" style="border:2px solid #e0ddd8;border-radius:16px;padding:20px;cursor:pointer">
+    <div style="font-weight:700;margin-bottom:8px">A — Freitext-Suche (empfohlen)</div>
+    <div style="color:#6b6762;font-size:13px">Ein einzelnes Suchfeld. Clientseitig wird geprüft ob irgendeine Rolle des Projekts den Suchbegriff enthält. Kein Vokabular nötig, flexibel für alle Rollennamen.</div>
+  </div>
+
+  <div class="option" data-value="B" style="border:2px solid #e0ddd8;border-radius:16px;padding:20px;cursor:pointer">
+    <div style="font-weight:700;margin-bottom:8px">B — Dropdown aus häufigen Rollen</div>
+    <div style="color:#6b6762;font-size:13px">Vordefinierte Liste (Director, DP, Editor, Sound, …). Einfach zu bedienen, aber deckt nicht alle Freitext-Rollen ab die Creator eingegeben haben.</div>
+  </div>
+
+  <div class="option" data-value="C" style="border:2px solid #e0ddd8;border-radius:16px;padding:20px;cursor:pointer">
+    <div style="font-weight:700;margin-bottom:8px">C — Rollen-Filter weglassen</div>
+    <div style="color:#6b6762;font-size:13px">Nur Textsuche + Category. Rollen-Filter ist nice-to-have, die Textsuche deckt bereits Rolle-Keywords ab wenn der User danach tippt.</div>
+  </div>
+
+</div>
+
+<style>
+  .option:hover { border-color: #e8621a !important; }
+  .option.selected { border-color: #e8621a !important; background: #fff8f5; }
+</style>
+<script>
+  document.querySelectorAll('.option').forEach(el => {
+    el.addEventListener('click', () => {
+      document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+      el.classList.add('selected');
+      window.__companion?.select(el.dataset.value, el.querySelector('div').textContent);
+    });
+  });
+</script>

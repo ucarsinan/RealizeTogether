@@ -1,0 +1,35 @@
+<h2>Textsuche — wo passiert das Filtern?</h2>
+<p style="color:#6b6762;margin-bottom:24px">Durchsucht: Titel + Logline</p>
+
+<div style="display:grid;gap:16px;max-width:640px">
+
+  <div class="option" data-value="A" style="border:2px solid #e0ddd8;border-radius:16px;padding:20px;cursor:pointer">
+    <div style="font-weight:700;margin-bottom:8px">A — Clientseitig (empfohlen für MVP)</div>
+    <div style="color:#6b6762;font-size:13px">Alle Projekte werden geladen, Filterung passiert im Browser per <code>toLowerCase().includes()</code>. Keine DB-Änderung. Sofortige Reaktion beim Tippen. Limitierung: skaliert nicht bei 1000+ Projekten — aktuell kein Problem.</div>
+  </div>
+
+  <div class="option" data-value="B" style="border:2px solid #e0ddd8;border-radius:16px;padding:20px;cursor:pointer">
+    <div style="font-weight:700;margin-bottom:8px">B — Serverseitig via Supabase ilike</div>
+    <div style="color:#6b6762;font-size:13px">Suchanfrage geht per URL-Param an den Server, Supabase filtert mit <code>.ilike('title', '%query%')</code>. Skalierbar, aber ~300ms Latenz pro Keystroke (braucht Debounce). Kein Full-Text-Index nötig.</div>
+  </div>
+
+  <div class="option" data-value="C" style="border:2px solid #e0ddd8;border-radius:16px;padding:20px;cursor:pointer">
+    <div style="font-weight:700;margin-bottom:8px">C — Serverseitig via Postgres Full-Text Search</div>
+    <div style="color:#6b6762;font-size:13px">DB-Migration: <code>tsvector</code> Column + GIN-Index. Relevanz-Ranking möglich. Aufwändigste Option, macht erst Sinn ab hunderten Projekten.</div>
+  </div>
+
+</div>
+
+<style>
+  .option:hover { border-color: #e8621a !important; }
+  .option.selected { border-color: #e8621a !important; background: #fff8f5; }
+</style>
+<script>
+  document.querySelectorAll('.option').forEach(el => {
+    el.addEventListener('click', () => {
+      document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+      el.classList.add('selected');
+      window.__companion?.select(el.dataset.value, el.querySelector('div').textContent);
+    });
+  });
+</script>

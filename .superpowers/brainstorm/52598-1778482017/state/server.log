@@ -1,0 +1,4 @@
+{"type":"server-started","port":54720,"host":"127.0.0.1","url_host":"localhost","url":"http://localhost:54720","screen_dir":"/Users/sinanucar/Development/RealizeTogether/.superpowers/brainstorm/52598-1778482017/content","state_dir":"/Users/sinanucar/Development/RealizeTogether/.superpowers/brainstorm/52598-1778482017/state"}
+{"type":"screen-added","file":"/Users/sinanucar/Development/RealizeTogether/.superpowers/brainstorm/52598-1778482017/content/skills-layout.html"}
+{"type":"screen-added","file":"/Users/sinanucar/Development/RealizeTogether/.superpowers/brainstorm/52598-1778482017/content/waiting-1.html"}
+{"type":"server-stopped","reason":"idle timeout"}

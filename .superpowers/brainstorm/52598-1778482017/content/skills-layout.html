@@ -1,0 +1,100 @@
+<h2>Wo sollen Skills im Profil erscheinen?</h2>
+<p class="subtitle">Alle drei Optionen nutzen das bestehende Design-System (gleiche Karten, Farben, Schriften)</p>
+
+<div class="cards">
+
+  <!-- Option A -->
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 16px; background: #f2f0ed; border-radius: 8px; font-family: sans-serif;">
+      <!-- Header Card -->
+      <div style="background:white; border:1px solid #e0ddd8; border-radius:12px; padding:16px; margin-bottom:8px;">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div style="width:40px;height:40px;border-radius:50%;background:#fdf2ec;display:flex;align-items:center;justify-content:center;font-weight:bold;color:#e8621a;font-size:16px;">S</div>
+          <div>
+            <div style="font-weight:900;font-size:14px;color:#1a1918;">Sinan Ucar</div>
+            <div style="font-size:10px;color:#16a34a;">✓ Verified member</div>
+          </div>
+        </div>
+      </div>
+      <!-- Bio Card mit Skills drin -->
+      <div style="background:white; border:1px solid #e0ddd8; border-radius:12px; padding:16px;">
+        <div style="font-size:9px;font-weight:600;color:#6b6762;text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;">About</div>
+        <div style="font-size:11px;color:#1a1918;line-height:1.5;margin-bottom:10px;">Filmmaker & Director based in Berlin…</div>
+        <div style="display:flex;flex-wrap:wrap;gap:4px;padding-top:8px;border-top:1px solid #f0ede8;">
+          <span style="font-size:9px;border:1px solid #e0ddd8;border-radius:20px;padding:3px 8px;color:#1a1918;">Directing</span>
+          <span style="font-size:9px;border:1px solid #e0ddd8;border-radius:20px;padding:3px 8px;color:#1a1918;">Screenwriting</span>
+          <span style="font-size:9px;border:1px solid #e0ddd8;border-radius:20px;padding:3px 8px;color:#1a1918;">Final Cut Pro</span>
+          <span style="font-size:9px;border:1px solid #e0ddd8;border-radius:20px;padding:3px 8px;color:#1a1918;">Documentary</span>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — Skills in der Bio-Karte</h3>
+      <p>Skills erscheinen als Chips am unteren Rand der Bio-Karte, getrennt durch eine dünne Linie. Spart eine Karte, kompakter.</p>
+    </div>
+  </div>
+
+  <!-- Option B -->
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 16px; background: #f2f0ed; border-radius: 8px; font-family: sans-serif;">
+      <div style="background:white; border:1px solid #e0ddd8; border-radius:12px; padding:16px; margin-bottom:8px;">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div style="width:40px;height:40px;border-radius:50%;background:#fdf2ec;display:flex;align-items:center;justify-content:center;font-weight:bold;color:#e8621a;font-size:16px;">S</div>
+          <div>
+            <div style="font-weight:900;font-size:14px;color:#1a1918;">Sinan Ucar</div>
+            <div style="font-size:10px;color:#16a34a;">✓ Verified member</div>
+          </div>
+        </div>
+      </div>
+      <div style="background:white; border:1px solid #e0ddd8; border-radius:12px; padding:16px; margin-bottom:8px;">
+        <div style="font-size:9px;font-weight:600;color:#6b6762;text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;">About</div>
+        <div style="font-size:11px;color:#1a1918;line-height:1.5;">Filmmaker & Director based in Berlin…</div>
+      </div>
+      <!-- Eigene Skills-Karte -->
+      <div style="background:white; border:1px solid #e0ddd8; border-radius:12px; padding:16px;">
+        <div style="font-size:9px;font-weight:600;color:#6b6762;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;">Skills</div>
+        <div style="display:flex;flex-wrap:wrap;gap:4px;">
+          <span style="font-size:9px;border:1px solid #e0ddd8;border-radius:20px;padding:3px 8px;color:#1a1918;">Directing</span>
+          <span style="font-size:9px;border:1px solid #e0ddd8;border-radius:20px;padding:3px 8px;color:#1a1918;">Screenwriting</span>
+          <span style="font-size:9px;border:1px solid #e0ddd8;border-radius:20px;padding:3px 8px;color:#1a1918;">Final Cut Pro</span>
+          <span style="font-size:9px;border:1px solid #e0ddd8;border-radius:20px;padding:3px 8px;color:#1a1918;">Documentary</span>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Eigene Skills-Karte</h3>
+      <p>Skills bekommen eine eigene Karte (wie „Links"). Konsistent mit dem bestehenden Pattern, klar getrennt. Empfehlung.</p>
+    </div>
+  </div>
+
+  <!-- Option C -->
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 16px; background: #f2f0ed; border-radius: 8px; font-family: sans-serif;">
+      <!-- Header Card mit Skills drin -->
+      <div style="background:white; border:1px solid #e0ddd8; border-radius:12px; padding:16px; margin-bottom:8px;">
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:10px;">
+          <div style="width:40px;height:40px;border-radius:50%;background:#fdf2ec;display:flex;align-items:center;justify-content:center;font-weight:bold;color:#e8621a;font-size:16px;">S</div>
+          <div>
+            <div style="font-weight:900;font-size:14px;color:#1a1918;">Sinan Ucar</div>
+            <div style="font-size:10px;color:#16a34a;">✓ Verified member</div>
+          </div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:4px;padding-top:8px;border-top:1px solid #f0ede8;">
+          <span style="font-size:9px;background:#fdf2ec;border:1px solid #fbd9c4;border-radius:20px;padding:3px 8px;color:#e8621a;">Directing</span>
+          <span style="font-size:9px;background:#fdf2ec;border:1px solid #fbd9c4;border-radius:20px;padding:3px 8px;color:#e8621a;">Screenwriting</span>
+          <span style="font-size:9px;background:#fdf2ec;border:1px solid #fbd9c4;border-radius:20px;padding:3px 8px;color:#e8621a;">Final Cut Pro</span>
+          <span style="font-size:9px;background:#fdf2ec;border:1px solid #fbd9c4;border-radius:20px;padding:3px 8px;color:#e8621a;">Documentary</span>
+        </div>
+      </div>
+      <div style="background:white; border:1px solid #e0ddd8; border-radius:12px; padding:16px;">
+        <div style="font-size:9px;font-weight:600;color:#6b6762;text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;">About</div>
+        <div style="font-size:11px;color:#1a1918;line-height:1.5;">Filmmaker & Director based in Berlin…</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C — Skills im Header</h3>
+      <p>Skills direkt unter Name/Verified-Badge im Header, mit Akzentfarbe. Prominent, aber macht den Header voller.</p>
+    </div>
+  </div>
+
+</div>
