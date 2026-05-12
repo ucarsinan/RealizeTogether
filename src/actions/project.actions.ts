@@ -5,6 +5,25 @@ import { revalidatePath } from 'next/cache'
 import type { ActionResult, Project, ProjectWithRoles } from '@/lib/types'
 
 // ─────────────────────────────────────────────
+// KI: ROLE EMBEDDING GENERIEREN
+// ─────────────────────────────────────────────
+
+async function generateAndStoreRoleEmbedding(roleId: string, roleText: string): Promise<void> {
+  const res = await fetch(`${process.env.AI_BACKEND_URL}/ai/generate-embedding`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text: roleText, type: 'role' }),
+  })
+  if (!res.ok) return
+  const data = (await res.json()) as { embedding: number[] }
+  const supabase = await createClient()
+  await supabase
+    .from('project_roles')
+    .update({ role_embedding: data.embedding as unknown } as never)
+    .eq('id', roleId)
+}
+
+// ─────────────────────────────────────────────
 // TYPES
 // ─────────────────────────────────────────────
 
@@ -71,11 +90,21 @@ export async function createProject(
       }))
 
     if (rolesData.length > 0) {
-      const { error: rolesError } = await supabase.from('project_roles').insert(rolesData)
+      const { data: insertedRoles, error: rolesError } = await supabase
+        .from('project_roles')
+        .insert(rolesData)
+        .select('id, role_name, description')
 
       if (rolesError) {
         await supabase.from('projects').delete().eq('id', project.id)
         return { success: false, error: rolesError.message }
+      }
+
+      for (const role of insertedRoles ?? []) {
+        const roleText = [role.role_name, role.description].filter(Boolean).join(' — ')
+        void (async () => {
+          await generateAndStoreRoleEmbedding(role.id, roleText)
+        })()
       }
     }
   }

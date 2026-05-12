@@ -5,6 +5,26 @@ import { revalidatePath } from 'next/cache'
 import type { ActionResult, Profile } from '@/lib/types'
 
 // ─────────────────────────────────────────────
+// KI: SKILLS EMBEDDING GENERIEREN
+// ─────────────────────────────────────────────
+
+async function generateAndStoreSkillsEmbedding(userId: string, skills: string[]): Promise<void> {
+  const text = skills.join(', ')
+  const res = await fetch(`${process.env.AI_BACKEND_URL}/ai/generate-embedding`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text, type: 'skills' }),
+  })
+  if (!res.ok) return
+  const data = (await res.json()) as { embedding: number[] }
+  const supabase = await createClient()
+  await supabase
+    .from('profiles')
+    .update({ skills_embedding: data.embedding as unknown } as never)
+    .eq('id', userId)
+}
+
+// ─────────────────────────────────────────────
 // PROFIL LESEN
 // ─────────────────────────────────────────────
 
@@ -68,6 +88,12 @@ export async function updateProfile(input: UpdateProfileInput): Promise<ActionRe
 
   revalidatePath('/dashboard')
   revalidatePath(`/profile/${user.id}`)
+
+  if (input.skills && input.skills.length > 0) {
+    void (async () => {
+      await generateAndStoreSkillsEmbedding(user.id, input.skills!)
+    })()
+  }
 
   return { success: true, data }
 }
