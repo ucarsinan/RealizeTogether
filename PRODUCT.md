@@ -282,9 +282,21 @@ shadow-[0_4px_32px_rgba(0,0,0,0.07)]
 
 ### ADR-004: RLS in Supabase
 
-**Entscheidung:** Row-Level Security für alle sensitiven Tabellen.
+**Entscheidung:** Row-Level Security auf allen 9 Tabellen. Kein Row ist ohne passende Policy lesbar oder schreibbar.
 
-> **TODO:** RLS-Regeln dokumentieren — welche Tabellen, welche Policies?
+| Tabelle | SELECT | INSERT | UPDATE | DELETE |
+|---|---|---|---|---|
+| `profiles` | Alle Authenticated | Eigenes Profil | Eigenes Profil | — |
+| `user_skills` | Alle Authenticated | Eigene Skills | Eigene Skills | Eigene Skills |
+| `projects` | Alle Authenticated | Eigene Projekte | Eigene Projekte | Eigene Projekte |
+| `project_roles` | Alle Authenticated | Creator des Projekts | Creator des Projekts | — |
+| `nda_consents` | Eigene + Creator des Projekts | Eigener Consent | — | — |
+| `project_applications` | Applicant + Creator | Eigene Bewerbung | Creator (Statusänderung) | — |
+| `conversations` | Applicant + Creator (Teilnehmer) | Creator des Projekts | — | — |
+| `messages` | Teilnehmer der Conversation | Teilnehmer + Sender = auth.uid() | — | — |
+| `matches` | user_id + Creator | Creator des Projekts | user_id + Creator (Bestätigung) | — |
+
+**Prinzip:** Öffentliche Tabellen (`profiles`, `projects`, `project_roles`, `user_skills`) sind für alle eingeloggten User lesbar — kein Row-Filter. Sensitive Tabellen (`conversations`, `messages`, `matches`, `nda_consents`, `project_applications`) sind auf Teilnehmer beschränkt.
 
 ---
 
