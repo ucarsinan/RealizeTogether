@@ -97,7 +97,7 @@ function RecommendedProjectStrip({
         if (!project) return null
         return (
           <Link
-            key={match.role_id}
+            key={`${match.project_id}-${match.role_id}`}
             href={`/projects/${project.id}`}
             className="bg-white border border-[#e0ddd8] rounded-2xl px-6 py-4 flex flex-col gap-2 shadow-[0_4px_32px_rgba(0,0,0,0.07)] hover:border-[#e8621a] transition-colors min-w-[220px] max-w-[280px]"
           >
@@ -112,7 +112,7 @@ function RecommendedProjectStrip({
                 {STAGE_LABELS[project.stage ?? 'idea']}
               </span>
               <span className="font-sans text-[10px] text-[#6b6762] bg-[#f2f0ed] px-2 py-0.5 rounded-full">
-                {COMMITMENT_LABELS[project.commitment_type]}
+                {COMMITMENT_LABELS[project.commitment_type ?? 'hobby']}
               </span>
             </div>
           </Link>
