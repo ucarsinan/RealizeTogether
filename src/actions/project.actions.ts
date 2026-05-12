@@ -9,18 +9,24 @@ import type { ActionResult, Project, ProjectWithRoles } from '@/lib/types'
 // ─────────────────────────────────────────────
 
 async function generateAndStoreRoleEmbedding(roleId: string, roleText: string): Promise<void> {
+  if (!process.env.AI_BACKEND_URL) return
   const res = await fetch(`${process.env.AI_BACKEND_URL}/ai/generate-embedding`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ text: roleText, type: 'role' }),
   })
-  if (!res.ok) return
+  if (!res.ok) {
+    console.error(`[embedding] HTTP ${res.status} from AI service`)
+    return
+  }
   const data = (await res.json()) as { embedding: number[] }
   const supabase = await createClient()
-  await supabase
+  // cast required until supabase gen types includes the vector columns from migration 20260512000000
+  const { error } = await supabase
     .from('project_roles')
     .update({ role_embedding: data.embedding as unknown } as never)
     .eq('id', roleId)
+  if (error) console.error('[embedding] Failed to store role_embedding:', error.message)
 }
 
 // ─────────────────────────────────────────────
