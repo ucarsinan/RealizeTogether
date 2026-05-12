@@ -54,4 +54,18 @@ describe('getReceivedApplicationsCount', () => {
     const result = await getReceivedApplicationsCount()
     expect(result).toEqual({ success: false, error: 'Not authenticated' })
   })
+
+  it('returns error when projects query fails', async () => {
+    vi.mocked(createClient).mockResolvedValue({
+      auth: {
+        getUser: vi.fn().mockResolvedValue({ data: { user: { id: 'u1' } }, error: null }),
+      },
+      from: vi.fn(() => ({
+        select: vi.fn().mockReturnThis(),
+        eq: vi.fn().mockResolvedValue({ data: null, error: { message: 'DB error' } }),
+      })),
+    } as never)
+    const result = await getReceivedApplicationsCount()
+    expect(result).toEqual({ success: false, error: 'DB error' })
+  })
 })

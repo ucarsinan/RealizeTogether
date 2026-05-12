@@ -320,7 +320,6 @@ export async function getMyApplications(): Promise<ActionResult<ApplicationWithD
 // ─────────────────────────────────────────────
 
 export async function getReceivedApplicationsCount(): Promise<ActionResult<number>> {
-  'use server'
   const supabase = await createClient()
 
   const {
@@ -329,7 +328,12 @@ export async function getReceivedApplicationsCount(): Promise<ActionResult<numbe
   } = await supabase.auth.getUser()
   if (authError || !user) return { success: false, error: 'Not authenticated' }
 
-  const { data: projects } = await supabase.from('projects').select('id').eq('creator_id', user.id)
+  const { data: projects, error: projectsError } = await supabase
+    .from('projects')
+    .select('id')
+    .eq('creator_id', user.id)
+
+  if (projectsError) return { success: false, error: projectsError.message }
 
   const projectIds = (projects ?? []).map((p) => p.id)
   if (projectIds.length === 0) return { success: true, data: 0 }
