@@ -136,7 +136,7 @@ pending → in_talks → matched
 | Email-Notifications (Resend) | ✅ Done | — | — |
 | **Public Profile Page `/profile/[id]`** | ✅ Done | — | — |
 | **User Skills** | ✅ Done | — | KI-Extraktion aus Bio via FastAPI (OpenAI). `skills text[]` in `profiles`. Magic Wand Button im ProfileForm. |
-| Realtime Chat (Supabase Realtime) | 📋 Backlog | Mittel | Polling reicht? Push? |
+| **Soft Realtime (Unread Badge + Polling)** | ✅ Done | — | Entschieden: Option B. Kein Supabase Realtime. Unread Badge via 30s-Polling, MessagesPoller auf /messages. |
 | KI-Matching / Empfehlungen | 📋 Backlog | Niedrig | FastAPI-Backend scope |
 | **Projekt-Suche / Filter** | ✅ Done | — | Textsuche (title+logline) + Category (server) + Rollen-Filter (client). ExploreResults Client Component. |
 | Creator Dashboard Analytics | 📋 Backlog | Niedrig | Was messen? |
