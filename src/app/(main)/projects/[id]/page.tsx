@@ -1,8 +1,10 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
 import { getProject } from '@/actions/project.actions'
 import { checkNdaConsent } from '@/actions/nda.actions'
+import { getTalentMatches, type TalentMatch } from '@/actions/matching.actions'
 import { SynopsisViewer } from '@/components/trust-funnel/SynopsisViewer'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { CheckCircle, Lock, Users, Play, UserCircle } from 'lucide-react'
@@ -27,13 +29,14 @@ export default async function ProjectDetailPage({ params }: { params: Params }) 
     data: { user },
   } = await supabase.auth.getUser()
 
-  const result = await getProject(id)
+  const [result, talentMatchesResult] = await Promise.all([getProject(id), getTalentMatches(id)])
   if (!result.success) notFound()
 
   const project = result.data
   const creator = project.profiles
   const roles = project.project_roles ?? []
   const isOwner = user?.id === project.creator_id
+  const talentMatches = talentMatchesResult.success ? talentMatchesResult.data : []
 
   let initialHasConsented = false
   if (user && project.requires_nda) {
@@ -254,6 +257,16 @@ export default async function ProjectDetailPage({ params }: { params: Params }) 
           </div>
         )}
 
+        {/* Talent Matches — nur für Creator */}
+        {isOwner && talentMatches.length > 0 && (
+          <div className="bg-white border border-[#e0ddd8] rounded-2xl p-8 shadow-[0_4px_32px_rgba(0,0,0,0.07)]">
+            <p className="font-unbounded text-[10px] font-bold tracking-[.18em] uppercase text-[#e8621a] mb-6">
+              Passende Profile
+            </p>
+            <TalentMatchList matches={talentMatches} />
+          </div>
+        )}
+
         {/* Owner Actions */}
         {isOwner && (
           <div className="flex gap-3">
@@ -266,6 +279,47 @@ export default async function ProjectDetailPage({ params }: { params: Params }) 
           </div>
         )}
       </div>
+    </div>
+  )
+}
+
+function TalentMatchList({ matches }: { matches: TalentMatch[] }) {
+  return (
+    <div className="flex flex-col gap-4">
+      {matches.map((match) => {
+        if (!match.profile) return null
+        return (
+          <Link
+            key={match.user_id}
+            href={`/profile/${match.user_id}`}
+            className="flex items-center gap-4 group"
+          >
+            <div className="w-10 h-10 rounded-full bg-[#f2f0ed] border border-[#e0ddd8] overflow-hidden shrink-0">
+              {match.profile.avatar_url ? (
+                <Image
+                  src={match.profile.avatar_url}
+                  alt={match.profile.full_name ?? ''}
+                  width={40}
+                  height={40}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center">
+                  <UserCircle className="w-6 h-6 text-[#6b6762]" />
+                </div>
+              )}
+            </div>
+            <div className="flex flex-col">
+              <span className="font-sans font-medium text-[14px] text-[#1a1918] group-hover:text-[#e8621a] transition-colors">
+                {match.profile.full_name}
+              </span>
+              <span className="font-sans text-[11px] text-[#6b6762]">
+                Match: {match.matched_role}
+              </span>
+            </div>
+          </Link>
+        )
+      })}
     </div>
   )
 }
