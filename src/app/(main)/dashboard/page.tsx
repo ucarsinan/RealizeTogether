@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { getMyProjects } from '@/actions/project.actions'
-import { getMyApplications } from '@/actions/application.actions'
+import { getMyApplications, getReceivedApplicationsCount } from '@/actions/application.actions'
 import { getMyConversations } from '@/actions/conversation.actions'
 import type { ConversationPreview } from '@/actions/conversation.actions'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -16,15 +16,33 @@ export default async function DashboardPage() {
   } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
-  const [projectsResult, applicationsResult, conversationsResult] = await Promise.all([
-    getMyProjects(),
-    getMyApplications(),
-    getMyConversations(),
-  ])
+  const [projectsResult, applicationsResult, conversationsResult, receivedCountResult] =
+    await Promise.all([
+      getMyProjects(),
+      getMyApplications(),
+      getMyConversations(),
+      getReceivedApplicationsCount(),
+    ])
 
   const projects = projectsResult.success ? projectsResult.data : []
   const applications = applicationsResult.success ? applicationsResult.data : []
   const conversations = conversationsResult.success ? conversationsResult.data : []
+
+  const receivedApplicationsCount = receivedCountResult.success ? receivedCountResult.data : 0
+
+  const stats = [
+    { value: projects.filter((p) => p.status === 'open').length, label: 'Open Projects' },
+    { value: receivedApplicationsCount, label: 'Applications Received' },
+    { value: applications.length, label: 'Applied' },
+    { value: applications.filter((a) => a.status === 'matched').length, label: 'Matches' },
+    {
+      value: Math.min(
+        conversations.reduce((sum, c) => sum + c.unread_count, 0),
+        99
+      ),
+      label: 'Unread',
+    },
+  ]
 
   const { data: profile } = await supabase
     .from('profiles')
@@ -56,6 +74,9 @@ export default async function DashboardPage() {
             Welcome back, {firstName}.
           </h1>
         </div>
+
+        {/* Stats Strip */}
+        <StatsStrip stats={stats} />
 
         {/* 3-column grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -255,6 +276,28 @@ function formatAgo(iso: string): string {
   const h = Math.floor(m / 60)
   if (h < 24) return `${h}h`
   return `${Math.floor(h / 24)}d`
+}
+
+type StatItem = { value: number; label: string }
+
+function StatsStrip({ stats }: { stats: StatItem[] }) {
+  return (
+    <div className="flex flex-wrap gap-4 mb-8">
+      {stats.map((stat) => (
+        <div
+          key={stat.label}
+          className="bg-white border border-[#e0ddd8] rounded-2xl px-6 py-4 flex flex-col gap-1 shadow-[0_4px_32px_rgba(0,0,0,0.07)]"
+        >
+          <span className="font-unbounded font-black text-[28px] leading-none text-[#1a1918]">
+            {stat.value > 99 ? '99+' : stat.value}
+          </span>
+          <span className="font-sans text-[11px] uppercase tracking-widest text-[#6b6762]">
+            {stat.label}
+          </span>
+        </div>
+      ))}
+    </div>
+  )
 }
 
 function StatusBadge({ status }: { status: string }) {
