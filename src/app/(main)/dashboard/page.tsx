@@ -36,7 +36,10 @@ export default async function DashboardPage() {
     { value: applications.length, label: 'Applied' },
     { value: applications.filter((a) => a.status === 'matched').length, label: 'Matches' },
     {
-      value: conversations.reduce((sum, c) => sum + c.unread_count, 0),
+      value: Math.min(
+        conversations.reduce((sum, c) => sum + c.unread_count, 0),
+        99
+      ),
       label: 'Unread',
     },
   ]

@@ -68,4 +68,26 @@ describe('getReceivedApplicationsCount', () => {
     const result = await getReceivedApplicationsCount()
     expect(result).toEqual({ success: false, error: 'DB error' })
   })
+
+  it('returns error when applications count query fails', async () => {
+    vi.mocked(createClient).mockResolvedValue({
+      auth: {
+        getUser: vi.fn().mockResolvedValue({ data: { user: { id: 'u1' } }, error: null }),
+      },
+      from: vi.fn((table: string) => {
+        if (table === 'projects') {
+          return {
+            select: vi.fn().mockReturnThis(),
+            eq: vi.fn().mockResolvedValue({ data: [{ id: 'p1' }], error: null }),
+          }
+        }
+        return {
+          select: vi.fn().mockReturnThis(),
+          in: vi.fn().mockResolvedValue({ count: null, error: { message: 'count failed' } }),
+        }
+      }),
+    } as never)
+    const result = await getReceivedApplicationsCount()
+    expect(result).toEqual({ success: false, error: 'count failed' })
+  })
 })
