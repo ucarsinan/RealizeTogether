@@ -55,7 +55,6 @@ describe('getProjectMatches', () => {
   afterEach(() => vi.clearAllMocks())
 
   it('returns matches from FastAPI on success', async () => {
-    vi.mocked(createClient).mockResolvedValue(makeAuthSupabase('u1') as never)
     mockFetch.mockResolvedValue({
       ok: true,
       json: vi.fn().mockResolvedValue({
@@ -71,7 +70,6 @@ describe('getProjectMatches', () => {
   })
 
   it('returns empty array when FastAPI is unreachable', async () => {
-    vi.mocked(createClient).mockResolvedValue(makeAuthSupabase('u1') as never)
     mockFetch.mockRejectedValue(new Error('ECONNREFUSED'))
 
     const result = await getProjectMatches('u1')
@@ -79,7 +77,6 @@ describe('getProjectMatches', () => {
   })
 
   it('returns empty array when FastAPI returns non-ok', async () => {
-    vi.mocked(createClient).mockResolvedValue(makeAuthSupabase('u1') as never)
     mockFetch.mockResolvedValue({ ok: false, status: 500 })
 
     const result = await getProjectMatches('u1')
