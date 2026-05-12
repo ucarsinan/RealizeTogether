@@ -261,7 +261,7 @@ export default async function ProjectDetailPage({ params }: { params: Params }) 
         {isOwner && talentMatches.length > 0 && (
           <div className="bg-white border border-[#e0ddd8] rounded-2xl p-8 shadow-[0_4px_32px_rgba(0,0,0,0.07)]">
             <p className="font-unbounded text-[10px] font-bold tracking-[.18em] uppercase text-[#e8621a] mb-6">
-              Passende Profile
+              Matching Profiles
             </p>
             <TalentMatchList matches={talentMatches} />
           </div>
@@ -292,7 +292,7 @@ function TalentMatchList({ matches }: { matches: TalentMatch[] }) {
           <Link
             key={match.user_id}
             href={`/profile/${match.user_id}`}
-            className="flex items-center gap-4 group"
+            className="flex items-center gap-4 group border border-transparent hover:border-[#e8621a] rounded-xl px-3 py-2 -mx-3 transition-colors"
           >
             <div className="w-10 h-10 rounded-full bg-[#f2f0ed] border border-[#e0ddd8] overflow-hidden shrink-0">
               {match.profile.avatar_url ? (

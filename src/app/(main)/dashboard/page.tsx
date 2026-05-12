@@ -286,7 +286,7 @@ function StatsStrip({ stats }: { stats: StatItem[] }) {
       {stats.map((stat) => (
         <div
           key={stat.label}
-          className="bg-white border border-[#e0ddd8] rounded-2xl px-6 py-4 flex flex-col gap-1 shadow-[0_4px_32px_rgba(0,0,0,0.07)]"
+          className="bg-white border border-[#e0ddd8] rounded-2xl px-6 py-4 flex flex-col gap-1 shadow-[0_4px_32px_rgba(0,0,0,0.07)] min-w-35"
         >
           <span className="font-unbounded font-black text-[28px] leading-none text-[#1a1918]">
             {stat.value > 99 ? '99+' : stat.value}

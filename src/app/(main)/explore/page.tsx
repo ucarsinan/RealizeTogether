@@ -65,7 +65,7 @@ export default async function ExplorePage({ searchParams }: { searchParams: Sear
         {matches.length > 0 && (
           <div className="mt-8">
             <p className="font-unbounded text-[10px] font-bold tracking-[.18em] uppercase text-[#e8621a] mb-4">
-              Empfohlen für dich
+              Recommended for you
             </p>
             <RecommendedProjectStrip matches={matches} allProjects={projects} />
           </div>
@@ -99,7 +99,7 @@ function RecommendedProjectStrip({
           <Link
             key={`${match.project_id}-${match.role_id}`}
             href={`/projects/${project.id}`}
-            className="bg-white border border-[#e0ddd8] rounded-2xl px-6 py-4 flex flex-col gap-2 shadow-[0_4px_32px_rgba(0,0,0,0.07)] hover:border-[#e8621a] transition-colors min-w-[220px] max-w-[280px]"
+            className="bg-white border border-[#e0ddd8] rounded-2xl px-6 py-4 flex flex-col gap-2 shadow-[0_4px_32px_rgba(0,0,0,0.07)] hover:border-[#e8621a] transition-colors min-w-55 max-w-70"
           >
             <span className="font-unbounded font-black text-[15px] leading-tight text-[#1a1918] line-clamp-2">
               {project.title}

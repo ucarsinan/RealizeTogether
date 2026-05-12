@@ -2,6 +2,7 @@
 
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useCallback, useRef } from 'react'
+import { ChevronDown } from 'lucide-react'
 import { SegmentedControl } from '@/components/ui/SegmentedControl'
 
 const CATEGORY_OPTIONS = [
@@ -93,19 +94,22 @@ export function ExploreFilters({
           placeholder="Search projects…"
           defaultValue={searchParams.get('search') ?? ''}
           onChange={(e) => handleSearch(e.target.value)}
-          className={inputClass + ' flex-[2]'}
+          className={inputClass + ' flex-2'}
         />
-        <select
-          value={currentCategory ?? ''}
-          onChange={(e) => updateFilter('category', e.target.value)}
-          className={inputClass + ' flex-1'}
-        >
-          {CATEGORY_OPTIONS.map((opt) => (
-            <option key={opt.value} value={opt.value}>
-              {opt.label}
-            </option>
-          ))}
-        </select>
+        <div className="relative flex-1">
+          <select
+            value={currentCategory ?? ''}
+            onChange={(e) => updateFilter('category', e.target.value)}
+            className={inputClass + ' appearance-none pr-9 cursor-pointer'}
+          >
+            {CATEGORY_OPTIONS.map((opt) => (
+              <option key={opt.value} value={opt.value}>
+                {opt.label}
+              </option>
+            ))}
+          </select>
+          <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6b6762]" />
+        </div>
         <input
           key={searchParams.get('role') ?? ''}
           type="text"
