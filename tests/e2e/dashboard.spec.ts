@@ -42,20 +42,19 @@ test.describe('Dashboard', () => {
     await expect(page.getByText('Open Projects')).toBeVisible()
   })
 
-  // skipped: analytics feature not yet deployed to Vercel; re-enable after first push
-  test.skip('Dashboard shows CREATOR ANALYTICS section heading', async ({ page }) => {
+  test('Dashboard shows CREATOR ANALYTICS section heading', async ({ page }) => {
     await page.goto('/dashboard')
     await page.waitForLoadState('networkidle')
     await expect(page.getByText('CREATOR ANALYTICS')).toBeVisible()
   })
 
-  test.skip('Dashboard shows Total Applications analytics chip', async ({ page }) => {
+  test('Dashboard shows Total Applications analytics chip', async ({ page }) => {
     await page.goto('/dashboard')
     await page.waitForLoadState('networkidle')
     await expect(page.getByText('Total Applications')).toBeVisible()
   })
 
-  test.skip('Dashboard analytics project table links to project detail', async ({ page }) => {
+  test('Dashboard analytics project table links to project detail', async ({ page }) => {
     const projectId = process.env.TEST_PROJECT_ID!
     await page.goto('/dashboard')
     await page.waitForLoadState('networkidle')
