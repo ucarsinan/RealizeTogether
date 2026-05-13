@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { getProfile } from '@/actions/profile.actions'
 import { ProfileForm } from '@/components/profile/ProfileForm'
 import { Breadcrumb } from '@/components/layout/Breadcrumb'
+import { DeleteAccountButton } from '@/components/account/DeleteAccountButton'
 import type { Profile } from '@/lib/types'
 
 type SearchParams = Promise<{ new?: string }>
@@ -58,6 +59,19 @@ export default async function ProfileEditPage({ searchParams }: { searchParams: 
         <div className="bg-white border border-[#e0ddd8] rounded-2xl shadow-[0_4px_32px_rgba(0,0,0,0.07)] p-8 max-w-2xl">
           <ProfileForm profile={profile} isNew={isNew} />
         </div>
+
+        {!isNew && (
+          <div className="max-w-2xl mt-8 border border-red-100 rounded-2xl p-6 bg-white">
+            <p className="font-unbounded text-[10px] font-bold tracking-[.18em] uppercase text-red-500 mb-2">
+              DANGER ZONE
+            </p>
+            <p className="font-sans text-[13px] text-[#6b6762] mb-4 leading-relaxed">
+              Permanently delete your account, profile, projects, and all associated data. This
+              cannot be undone.
+            </p>
+            <DeleteAccountButton />
+          </div>
+        )}
       </div>
     </div>
   )
