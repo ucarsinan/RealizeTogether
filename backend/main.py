@@ -139,7 +139,7 @@ async def match_projects(user_id: str):
     apps_res = (
         supabase.table("project_applications")
         .select("projects(category, commitment_type, stage)")
-        .eq("user_id", user_id)
+        .eq("applicant_id", user_id)
         .execute()
     )
     categories: list[str] = []

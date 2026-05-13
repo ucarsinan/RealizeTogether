@@ -90,14 +90,22 @@ function RecommendedProjectStrip({
 }) {
   const projectMap = Object.fromEntries(allProjects.map((p) => [p.id, p]))
 
+  // Deduplicate: keep highest-scored match per project
+  const seen = new Set<string>()
+  const deduped = matches.filter((m) => {
+    if (seen.has(m.project_id)) return false
+    seen.add(m.project_id)
+    return true
+  })
+
   return (
     <div className="flex flex-wrap gap-4">
-      {matches.map((match) => {
+      {deduped.map((match) => {
         const project = projectMap[match.project_id]
         if (!project) return null
         return (
           <Link
-            key={`${match.project_id}-${match.role_id}`}
+            key={match.project_id}
             href={`/projects/${project.id}`}
             className="bg-white border border-[#e0ddd8] rounded-2xl px-6 py-4 flex flex-col gap-2 shadow-[0_4px_32px_rgba(0,0,0,0.07)] hover:border-[#e8621a] transition-colors min-w-55 max-w-70"
           >
