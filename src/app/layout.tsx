@@ -2,8 +2,27 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Realize Together',
-  description: 'Find your next creative collaborator',
+  title: {
+    default: 'Realize Together — Find Your Film Team & Crew',
+    template: '%s | Realize Together',
+  },
+  description:
+    'The platform where filmmakers, directors, DPs, writers and producers find each other. NDA-protected pitches, verified portfolios, double opt-in matching.',
+  openGraph: {
+    type: 'website',
+    siteName: 'Realize Together',
+    title: 'Realize Together — Find Your Film Team & Crew',
+    description:
+      'NDA-protected pitches. Verified portfolios. Double opt-in matching. The serious platform for filmmakers.',
+    url: 'https://realizetogether.com',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Realize Together — Find Your Film Team & Crew',
+    description:
+      'NDA-protected pitches. Verified portfolios. Double opt-in matching. The serious platform for filmmakers.',
+  },
+  metadataBase: new URL('https://realizetogether.com'),
 }
 
 export default function RootLayout({
