@@ -8,89 +8,61 @@
 
 ## Last Updated
 
-- **Date:** TODO: YYYY-MM-DD HH:MM
-- **Updated by:** TODO: Claude Code / Codex / Gemini / human
-- **Handoff to:** TODO: Claude Code / Codex / Gemini / human / unspecified
+- **Date:** 2026-05-13
+- **Updated by:** Claude Code (RealizeTogether session)
+- **Handoff to:** unspecified
 
 ---
 
 ## Short Summary
 
-TODO: 2–3 sentences. What is the state of the project right now? What happened this session?
-
-Example: "Implemented the login form UI and wired it to the Supabase Auth signIn method. The form works but the redirect after login is broken — it goes to `/` instead of the intended `/dashboard`. This needs to be fixed next."
+Active Next.js 16 + Supabase + FastAPI project. E2e test suite expanded from 32 to 58 passing Chromium tests across all pages. Two source fixes committed (`package.json` dynamic port, `ExploreFilters` role input key). All commits pushed to origin/main.
 
 ---
 
 ## Last Action
 
-TODO: what was the very last thing done before writing this handoff?
-
-Example: "Committed `src/components/LoginForm.tsx` and `src/app/login/page.tsx`. Tests not yet written."
-
----
-
-## Changed Files
-
-TODO: list all files modified, created, or deleted during this session.
-
-| File | Change type | Notes |
-|---|---|---|
-| TODO: path/to/file.ts | modified / created / deleted | brief reason |
+Expanded Playwright e2e suite: added `applications-management.spec.ts` (User A creator view), extended `explore`, `dashboard`, `project-detail`, `project-flow`, `apply-flow` specs. Fixed two pre-existing strict-mode locator bugs (`getByText` → `getByRole('heading')`, scoped `main` for navbar/breadcrumb ambiguity). 58/58 tests pass.
 
 ---
 
 ## Open Items
 
-TODO: what is incomplete, unverified, or intentionally left for the next session?
-
-- [ ] TODO: open item
-- [ ] TODO: open item
+- [ ] Decision: Realtime Chat — Supabase Realtime vs. current polling (Offene Entscheidung #0 in PRODUCT.md)
+- [ ] Next feature TBD by owner
 
 ---
 
 ## Risks / Attention
 
-TODO: what could break? What areas are fragile? What should the next agent be careful about?
-
-Examples:
-- The auth middleware has not been updated — it may block the new login route
-- No error handling for network failures in the form
-- TypeScript strict mode may flag the optional chaining in `session.ts`
+- E2e tests only cover Chromium; Firefox/Safari not covered
+- `package.json` dev script uses inline Node one-liner for dynamic port — verify on CI if needed
 
 ---
 
 ## Checks
 
-TODO: what was verified before ending the session?
-
 | Check | Status | Notes |
 |---|---|---|
-| `pnpm typecheck` | TODO: passed / failed / not run | TODO |
-| `pnpm test` | TODO: passed / failed / not run | TODO |
-| `pnpm lint` | TODO: passed / failed / not run | TODO |
-| Manual smoke test | TODO: done / not done | TODO |
+| `npx playwright test` | ✅ 58/58 passed | chromium-anon + chromium-auth + chromium-user-b |
+| `npm run lint` | not run this session | — |
+| `npx tsc --noEmit` | not run this session | — |
 
 ---
 
 ## Next Concrete Action
 
-TODO: one specific, actionable instruction for the next agent.
-
-Example: "Fix the redirect in `src/app/login/page.tsx` — after successful sign-in, redirect to `/dashboard` instead of `/`. Then run `pnpm typecheck` and `pnpm test`."
+Decide on Realtime Chat (PRODUCT.md §7 Offene Entscheidung #0) or pick next feature from backlog.
 
 ---
 
 ## Ideal Next Prompt
 
-TODO: copy-paste ready prompt for the next agent. Include context so they can start immediately.
-
 ```
-Read docs/ai/HANDOFF.md, docs/ai/CURRENT.md, and docs/ai/PROJECT.md first.
+Read docs/ai/HANDOFF.md and PRODUCT.md (§7 Offene Entscheidungen) first.
 
-Current situation: [paste Short Summary here]
+E2e suite is complete (58 tests, all green). Codebase is clean on main.
 
-Your task: [paste Next Concrete Action here]
-
-After completing the task, update docs/ai/CURRENT.md, docs/ai/TASKS.md, and docs/ai/HANDOFF.md.
+Your task: implement the next feature. Start by reading PRODUCT.md §5 (Feature Map)
+and §7 (Offene Entscheidungen), then propose what to tackle next.
 ```

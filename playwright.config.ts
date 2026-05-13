@@ -35,6 +35,7 @@ export default defineConfig({
         '**/security.spec.ts',
         '**/dashboard.spec.ts',
         '**/project-detail.spec.ts',
+        '**/applications-management.spec.ts',
       ],
       use: {
         ...devices['Desktop Chrome'],

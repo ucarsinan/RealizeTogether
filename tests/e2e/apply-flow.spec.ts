@@ -35,6 +35,26 @@ test.describe('Apply Flow (User B as Applicant)', () => {
   })
 })
 
+test.describe('Project Detail (User B perspective)', () => {
+  test('User B sees apply button on open project', async ({ page }) => {
+    const projectId = process.env.TEST_PROJECT_ID!
+    await page.goto(`/projects/${projectId}`)
+    await page.waitForLoadState('networkidle')
+    await expect(
+      page.locator(`a[href="/projects/${projectId}/apply"]`)
+    ).toBeVisible()
+  })
+
+  test('User B sees project title on detail page', async ({ page }) => {
+    const projectId = process.env.TEST_PROJECT_ID!
+    await page.goto(`/projects/${projectId}`)
+    await page.waitForLoadState('networkidle')
+    await expect(
+      page.getByRole('heading', { name: '[E2E Test] Playwright Test Project' })
+    ).toBeVisible()
+  })
+})
+
 test.describe('Applications Management (User B viewing — no access)', () => {
   test('User B is redirected away from applications page', async ({ page }) => {
     const projectId = process.env.TEST_PROJECT_ID!

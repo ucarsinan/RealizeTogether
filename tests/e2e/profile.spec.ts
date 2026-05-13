@@ -20,6 +20,7 @@ test.describe('Public Profile', () => {
   test('Breadcrumb navigation is visible', async ({ page }) => {
     const userId = process.env.TEST_USER_B_ID!
     await navigateToProfile(page, userId)
-    await expect(page.getByRole('link', { name: 'Explore' })).toBeVisible()
+    // Scope to main to avoid matching the navbar Explore link
+    await expect(page.locator('main').getByRole('link', { name: 'Explore' })).toBeVisible()
   })
 })

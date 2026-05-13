@@ -28,4 +28,17 @@ test.describe('Dashboard', () => {
     await nameInput.fill('E2E Test Name')
     await expect(nameInput).toHaveValue('E2E Test Name')
   })
+
+  test('Seed project appears in own projects list', async ({ page }) => {
+    const projectId = process.env.TEST_PROJECT_ID!
+    await page.goto('/dashboard')
+    await page.waitForLoadState('networkidle')
+    await expect(page.locator(`a[href="/projects/${projectId}"]`)).toBeVisible()
+  })
+
+  test('Dashboard shows Open Projects stat', async ({ page }) => {
+    await page.goto('/dashboard')
+    await page.waitForLoadState('networkidle')
+    await expect(page.getByText('Open Projects')).toBeVisible()
+  })
 })

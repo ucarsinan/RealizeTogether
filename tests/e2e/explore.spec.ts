@@ -45,4 +45,37 @@ test.describe('Explore', () => {
     await expect(page).not.toHaveURL(/stage=idea/)
   })
 
+  test('Any button resets commitment filter', async ({ page }) => {
+    await page.goto('/explore?commitment=hobby')
+    await page.getByRole('button', { name: 'Any' }).click()
+    await expect(page).not.toHaveURL(/commitment=hobby/)
+  })
+
+  test('Role filter input sets URL param after debounce', async ({ page }) => {
+    await page.goto('/explore')
+    const roleInput = page.getByPlaceholder('Role needed…')
+    await expect(roleInput).toBeVisible()
+    await roleInput.fill('cinematographer')
+    await expect(page).toHaveURL(/role=cinematographer/, { timeout: 2000 })
+  })
+
+  test('Role filter is pre-filled from URL', async ({ page }) => {
+    await page.goto('/explore?role=director')
+    const roleInput = page.getByPlaceholder('Role needed…')
+    await expect(roleInput).toHaveValue('director')
+  })
+
+  test('Seed project card is visible in explore', async ({ page }) => {
+    const projectId = process.env.TEST_PROJECT_ID!
+    await page.goto('/explore')
+    await page.waitForLoadState('networkidle')
+    await expect(page.locator(`a[href="/projects/${projectId}"]`)).toBeVisible({ timeout: 8000 })
+  })
+
+  test('Nonsense role filter shows empty state', async ({ page }) => {
+    await page.goto('/explore?role=zzz-no-such-role-xyz')
+    await page.waitForLoadState('networkidle')
+    await expect(page.getByLabel('No projects found')).toBeVisible({ timeout: 8000 })
+  })
+
 })
