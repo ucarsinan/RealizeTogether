@@ -10,6 +10,7 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: 1,
   globalSetup: './tests/global-setup.ts',
+  globalTeardown: './tests/global-teardown.ts',
   reporter: [['html', { outputFolder: 'tests/reports/playwright' }], ['list']],
   use: {
     baseURL: process.env.TEST_BASE_URL || 'http://localhost:3000',
@@ -32,10 +33,23 @@ export default defineConfig({
         '**/messages.spec.ts',
         '**/project-flow.spec.ts',
         '**/security.spec.ts',
+        '**/dashboard.spec.ts',
+        '**/project-detail.spec.ts',
       ],
       use: {
         ...devices['Desktop Chrome'],
         storageState: 'tests/.auth/user-a.json',
+      },
+    },
+    {
+      name: 'chromium-user-b',
+      testMatch: [
+        '**/apply-flow.spec.ts',
+        '**/profile.spec.ts',
+      ],
+      use: {
+        ...devices['Desktop Chrome'],
+        storageState: 'tests/.auth/user-b.json',
       },
     },
   ],
