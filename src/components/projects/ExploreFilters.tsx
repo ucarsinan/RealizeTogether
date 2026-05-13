@@ -111,7 +111,7 @@ export function ExploreFilters({
           <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6b6762]" />
         </div>
         <input
-          key={searchParams.get('role') ?? ''}
+          key={`role-${searchParams.get('role') ?? ''}`}
           type="text"
           placeholder="Role needed…"
           defaultValue={searchParams.get('role') ?? ''}
