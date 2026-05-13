@@ -22,4 +22,27 @@ test.describe('Explore', () => {
     await expect(page.locator('div.min-h-screen').first()).toBeVisible()
   })
 
+  test('Commitment filter changes URL param', async ({ page }) => {
+    await page.goto('/explore')
+    // Click the first commitment chip that's not "Any"
+    // commitmentOptions: Hobby → 'hobby', Side Project → 'side_project', Serious → 'serious', Professional → 'professional'
+    await page.getByRole('button', { name: 'Hobby' }).click()
+    await expect(page).toHaveURL(/commitment=hobby/)
+  })
+
+  test('Multiple filters combine in URL', async ({ page }) => {
+    await page.goto('/explore')
+    await page.getByRole('button', { name: 'Idea' }).click()
+    await expect(page).toHaveURL(/stage=idea/)
+    await page.getByRole('button', { name: 'Hobby' }).click()
+    await expect(page).toHaveURL(/commitment=hobby/)
+    await expect(page).toHaveURL(/stage=idea/)
+  })
+
+  test('All Stages button resets stage filter', async ({ page }) => {
+    await page.goto('/explore?stage=idea')
+    await page.getByRole('button', { name: 'All Stages' }).click()
+    await expect(page).not.toHaveURL(/stage=idea/)
+  })
+
 })
