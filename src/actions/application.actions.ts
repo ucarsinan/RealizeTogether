@@ -284,6 +284,41 @@ export async function rejectApplication(applicationId: string): Promise<ActionRe
 }
 
 // ─────────────────────────────────────────────
+// BEWERBUNG ZURÜCKZIEHEN
+// ─────────────────────────────────────────────
+
+export async function withdrawApplication(applicationId: string): Promise<ActionResult<void>> {
+  const supabase = await createClient()
+
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser()
+  if (authError || !user) return { success: false, error: 'Not authenticated' }
+
+  const { data: application } = await supabase
+    .from('project_applications')
+    .select('project_id, applicant_id, status')
+    .eq('id', applicationId)
+    .single()
+
+  if (!application) return { success: false, error: 'Application not found' }
+  if (application.applicant_id !== user.id) return { success: false, error: 'Not authorized' }
+  if (application.status !== 'pending') {
+    return { success: false, error: 'Only pending applications can be withdrawn' }
+  }
+
+  const { error } = await supabase.from('project_applications').delete().eq('id', applicationId)
+
+  if (error) return { success: false, error: error.message }
+
+  revalidatePath('/dashboard')
+  revalidatePath(`/projects/${application.project_id}`)
+
+  return { success: true, data: undefined }
+}
+
+// ─────────────────────────────────────────────
 // EIGENE BEWERBUNGEN LADEN (für Applicant)
 // ─────────────────────────────────────────────
 

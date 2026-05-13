@@ -10,6 +10,7 @@ import { STAGE_LABELS, COMMITMENT_LABELS } from '@/lib/utils'
 import { Plus, MessageCircle } from 'lucide-react'
 import { getCreatorAnalytics } from '@/actions/analytics.actions'
 import { AnalyticsSection } from '@/components/dashboard/AnalyticsSection'
+import { WithdrawButton } from '@/components/applications/WithdrawButton'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -179,14 +180,17 @@ export default async function DashboardPage() {
                           Role: {app.project_roles.role_name}
                         </p>
                       )}
-                      {convId && (
-                        <Link
-                          href={`/messages/${convId}`}
-                          className="inline-flex items-center gap-1.5 border border-[#e0ddd8] hover:border-[#e8621a] text-[#6b6762] hover:text-[#e8621a] text-[11px] px-3 py-1 rounded-full transition-colors font-sans"
-                        >
-                          <MessageCircle className="w-3 h-3" /> Open Chat
-                        </Link>
-                      )}
+                      <div className="flex items-center gap-2 flex-wrap">
+                        {convId && (
+                          <Link
+                            href={`/messages/${convId}`}
+                            className="inline-flex items-center gap-1.5 border border-[#e0ddd8] hover:border-[#e8621a] text-[#6b6762] hover:text-[#e8621a] text-[11px] px-3 py-1 rounded-full transition-colors font-sans"
+                          >
+                            <MessageCircle className="w-3 h-3" /> Open Chat
+                          </Link>
+                        )}
+                        {app.status === 'pending' && <WithdrawButton applicationId={app.id} />}
+                      </div>
                     </div>
                   )
                 })}
