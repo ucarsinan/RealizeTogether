@@ -43,7 +43,11 @@ export async function getCreatorAnalytics(): Promise<ActionResult<CreatorAnalyti
     .select('id, title, status')
     .eq('creator_id', user.id)
 
-  if (projectsError) return { success: false, error: projectsError.message }
+  if (projectsError) {
+    console.error('[analytics] projects query error:', projectsError)
+    return { success: false, error: projectsError.message }
+  }
+  console.log('[analytics] user.id:', user.id, 'projects found:', projects?.length)
   if (!projects || projects.length === 0) {
     return {
       success: true,
