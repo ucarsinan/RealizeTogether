@@ -1,14 +1,13 @@
 # TASKS.md — AI Task Board
 
-> Simple task board for AI agents and humans.
-> Keep this file updated. Move tasks as they progress.
-> One task = one checkbox. Be concrete enough that any agent can act on it.
+> One task = one checkbox. Keep In Progress to ≤2 items.
+> Update this file at the end of every session.
 
 ---
 
 ## In Progress
 
-- [ ] TODO: task currently being worked on — assigned to: Claude Code / Codex / Gemini / human
+_Nichts aktiv in Arbeit._
 
 ---
 
@@ -16,38 +15,51 @@
 
 Tasks ready to be picked up. Ordered by priority (top = highest).
 
-- [ ] TODO: next task
-- [ ] TODO: next task
+- [x] 14 Commits gepusht, E2E grün — 2026-05-13
+- [x] E2E analytics tests aktiviert — 9/9 grün — 2026-05-13
+- [x] Creator Dashboard Analytics: Metriken dokumentiert in PRODUCT.md — 2026-05-13
+- [x] KI-Matching / Empfehlungen: vollständig implementiert (Embeddings + cosine similarity, Explore-Strip) — 2026-05-13
+- [x] Passwort-Reset Flow (forgot-password + update-password) — 2026-05-13
+- [x] Projekt bearbeiten (Edit-Page + updateProject Action) — 2026-05-13
+- [x] Bewerbung zurückziehen (pending only, Dashboard) — 2026-05-13
+- [x] Account-Löschung DSGVO (Storage-Cleanup + Auth-Delete + Danger Zone UI) — 2026-05-13
+- [ ] Email-Verifizierung aktivieren: Supabase Dashboard → Auth → Email → "Confirm email" toggle
 
 ---
 
 ## Done
 
-Completed tasks. Keep recent completions here; archive old ones below.
-
-- [x] TODO: completed task — completed: YYYY-MM-DD
+- [x] Auth (Register/Login) — 2026
+- [x] Profil erstellen/bearbeiten, Avatar & Video Upload — 2026
+- [x] Profil-Verifikation (Portfolio-Links) — 2026
+- [x] Projekt erstellen/bearbeiten, Explore, Projekt-Detailseite — 2026
+- [x] Trust Funnel Level 2 (NDA + Synopsis) — 2026
+- [x] Bewerbungen einreichen + verwalten — 2026
+- [x] Messaging / Chat + Double Opt-in Match — 2026
+- [x] Email-Notifications (Resend) — 2026
+- [x] Public Profile Page `/profile/[id]` — 2026
+- [x] User Skills (KI-Extraktion aus Bio via FastAPI) — 2026
+- [x] Soft Realtime: Unread Badge + 30s-Polling — 2026
+- [x] Projekt-Suche / Filter (Textsuche + Category + Rollen) — 2026
+- [x] Creator Analytics implementiert + in Dashboard eingebunden — 2026-05-13
+- [x] Analytics Supabase FK-Ambiguität behoben (separate Queries) — 2026-05-13
 
 ---
 
 ## Blocked
 
-Tasks that cannot proceed without external input or a prerequisite.
-
-- [ ] TODO: blocked task — blocked by: [reason] — needs: [what is required to unblock]
+_Nichts geblockt._
 
 ---
 
 ## Parking Lot
 
-Ideas and tasks that are not scheduled but should not be forgotten.
-
-- [ ] TODO: future idea or deferred task
-- [ ] TODO: future idea or deferred task
+- [ ] Mobile-Optimierung (Desktop-First-Entscheidung getroffen, Mobile ist sekundär)
+- [ ] Realtime Chat (Supabase Realtime) — on ice, Polling reicht vorerst
+- [ ] Einladungs-/Referral-System
 
 ---
 
 ## Archive
-
-Move old completed tasks here to keep the Done section clean.
 
 <!-- Completed tasks older than ~2 weeks can be moved here -->
