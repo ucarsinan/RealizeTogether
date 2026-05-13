@@ -52,7 +52,7 @@ async function globalSetup(_config: FullConfig) {
       description: 'Automatisch angelegtes Testprojekt — wird nach dem Run gelöscht.',
       stage: 'idea',
       commitment_type: 'part_time',
-      collab_type: 'remote',
+      collab_type: 'passion',
       status: 'open',
       creator_id: userAId,
     })
