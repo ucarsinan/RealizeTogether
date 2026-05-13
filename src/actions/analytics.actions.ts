@@ -69,9 +69,8 @@ export async function getCreatorAnalytics(): Promise<ActionResult<CreatorAnalyti
     supabase.from('nda_consents').select('project_id').in('project_id', projectIds),
   ])
 
-  if (appsResult.error) {
-    console.error('[analytics] project_applications query error:', appsResult.error.message)
-  }
+  if (appsResult.error) return { success: false, error: appsResult.error.message }
+  if (ndasResult.error) return { success: false, error: ndasResult.error.message }
 
   const apps = appsResult.data ?? []
   const ndas = ndasResult.data ?? []

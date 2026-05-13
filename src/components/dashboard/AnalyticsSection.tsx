@@ -83,9 +83,7 @@ export function AnalyticsSection({ data }: { data: CreatorAnalytics | null }) {
                 </td>
                 <td className="py-3 pr-4 font-sans text-[13px] text-[#1a1918]">{p.nda_consents}</td>
                 <td className="py-3 pr-4 font-sans text-[13px] text-[#1a1918]">
-                  {p.applications.total > 0 && p.applications.verified > 0
-                    ? `${p.applications.total} (${p.applications.verified}✓)`
-                    : p.applications.total}
+                  {p.applications.total}
                 </td>
                 <td className="py-3 pr-4 font-sans text-[13px] text-[#1a1918]">
                   {p.applications.in_talks}
