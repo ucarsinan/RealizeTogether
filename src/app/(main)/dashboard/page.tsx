@@ -8,6 +8,8 @@ import type { ConversationPreview } from '@/actions/conversation.actions'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { STAGE_LABELS, COMMITMENT_LABELS } from '@/lib/utils'
 import { Plus, MessageCircle } from 'lucide-react'
+import { getCreatorAnalytics } from '@/actions/analytics.actions'
+import { AnalyticsSection } from '@/components/dashboard/AnalyticsSection'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -16,19 +18,26 @@ export default async function DashboardPage() {
   } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
-  const [projectsResult, applicationsResult, conversationsResult, receivedCountResult] =
-    await Promise.all([
-      getMyProjects(),
-      getMyApplications(),
-      getMyConversations(),
-      getReceivedApplicationsCount(),
-    ])
+  const [
+    projectsResult,
+    applicationsResult,
+    conversationsResult,
+    receivedCountResult,
+    analyticsResult,
+  ] = await Promise.all([
+    getMyProjects(),
+    getMyApplications(),
+    getMyConversations(),
+    getReceivedApplicationsCount(),
+    getCreatorAnalytics(),
+  ])
 
   const projects = projectsResult.success ? projectsResult.data : []
   const applications = applicationsResult.success ? applicationsResult.data : []
   const conversations = conversationsResult.success ? conversationsResult.data : []
 
   const receivedApplicationsCount = receivedCountResult.success ? receivedCountResult.data : 0
+  const analytics = analyticsResult.success ? analyticsResult.data : null
 
   const stats = [
     { value: projects.filter((p) => p.status === 'open').length, label: 'Open Projects' },
@@ -224,6 +233,8 @@ export default async function DashboardPage() {
             Edit profile
           </Link>
         </div>
+
+        <AnalyticsSection data={analytics} />
       </div>
     </div>
   )
