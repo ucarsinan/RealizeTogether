@@ -64,10 +64,14 @@ export async function getCreatorAnalytics(): Promise<ActionResult<CreatorAnalyti
   const [appsResult, ndasResult] = await Promise.all([
     supabase
       .from('project_applications')
-      .select('project_id, status, profiles(is_verified)')
+      .select('project_id, status, profiles!project_applications_applicant_id_fkey(is_verified)')
       .in('project_id', projectIds),
     supabase.from('nda_consents').select('project_id').in('project_id', projectIds),
   ])
+
+  if (appsResult.error) {
+    console.error('[analytics] project_applications query error:', appsResult.error.message)
+  }
 
   const apps = appsResult.data ?? []
   const ndas = ndasResult.data ?? []
