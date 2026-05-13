@@ -137,9 +137,9 @@ pending → in_talks → matched
 | **Public Profile Page `/profile/[id]`** | ✅ Done | — | — |
 | **User Skills** | ✅ Done | — | KI-Extraktion aus Bio via FastAPI (OpenAI). `skills text[]` in `profiles`. Magic Wand Button im ProfileForm. |
 | **Soft Realtime (Unread Badge + Polling)** | ✅ Done | — | Entschieden: Option B. Kein Supabase Realtime. Unread Badge via 30s-Polling, MessagesPoller auf /messages. |
-| KI-Matching / Empfehlungen | 📋 Backlog | Niedrig | FastAPI-Backend scope |
+| **KI-Matching / Empfehlungen** | ✅ Done | — | Embedding-basiert (text-embedding-3-small + cosine similarity). Skills-Embedding in profiles, Role-Embedding in project_roles. Explore-Strip "Recommended for you". |
 | **Projekt-Suche / Filter** | ✅ Done | — | Textsuche (title+logline) + Category (server) + Rollen-Filter (client). ExploreResults Client Component. |
-| Creator Dashboard Analytics | 📋 Backlog | Niedrig | Was messen? |
+| **Creator Dashboard Analytics** | ✅ Done | — | Global: Total Applications, Matches, NDA Consents, Match Rate. Pro Projekt: Pending / In Talks / Matched / Rejected / Verified Applicants, Match Rate. |
 
 ---
 
