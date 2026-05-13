@@ -51,7 +51,7 @@ async function globalSetup(_config: FullConfig) {
       title: '[E2E Test] Playwright Test Project',
       description: 'Automatisch angelegtes Testprojekt — wird nach dem Run gelöscht.',
       stage: 'idea',
-      commitment_type: 'part_time',
+      commitment_type: 'hobby',
       collab_type: 'passion',
       status: 'open',
       creator_id: userAId,
