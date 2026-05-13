@@ -33,7 +33,7 @@ test.describe('Dashboard', () => {
     const projectId = process.env.TEST_PROJECT_ID!
     await page.goto('/dashboard')
     await page.waitForLoadState('networkidle')
-    await expect(page.locator(`a[href="/projects/${projectId}"]`)).toBeVisible()
+    await expect(page.locator(`a[href="/projects/${projectId}"]`).first()).toBeVisible()
   })
 
   test('Dashboard shows Open Projects stat', async ({ page }) => {
