@@ -40,6 +40,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 claude-sync.md
+.claude/settings.local.json
 
 # testing
 tests/reports/
@@ -55,3 +56,15 @@ backend/__pycache__/
 backend/*.pyc
 backend/.env
 .env.test
+
+# Git Policy — auto-managed (git-policy.mjs)
+# Edit rules in: personal-assistant/docs/git-policy/registry.yml
+.claude/
+.superpowers/
+orchestration/current-state.md
+scratch.md
+scratchpad.md
+.env
+.env.local
+.env.*.local
+# End Git Policy
