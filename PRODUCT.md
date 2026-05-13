@@ -324,5 +324,21 @@ shadow-[0_4px_32px_rgba(0,0,0,0.07)]
 
 ---
 
-*Zuletzt aktualisiert: 2026-03-31*
+---
+
+## 10. Launch-Checklist
+
+| Bereich | Status | Notiz |
+|---|---|---|
+| Email Verification (Resend-Button) | ✅ Done | Login + Register Done-Screen |
+| SEO / OG-Tags | ✅ Done | Root layout + landing.html |
+| Skeleton Loading (Explore, Dashboard, Messages) | ✅ Done | Per-Page loading.tsx |
+| Supabase Auth Rate Limiting | ⚠️ Config required | Dashboard → Auth → Rate Limits aktivieren |
+| Custom Rate Limiting (API-Level) | 📋 Post-Launch | Braucht Upstash Redis + @upstash/ratelimit |
+| Monitoring / Error Tracking | 📋 Post-Launch | Sentry oder PostHog |
+| OG-Image | 📋 Post-Launch | Next.js opengraph-image.tsx |
+
+---
+
+*Zuletzt aktualisiert: 2026-05-13*
 *Erstellt auf Basis von Codebase-Analyse — TODO-Punkte vom Owner zu befüllen*
