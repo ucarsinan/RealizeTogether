@@ -8,14 +8,17 @@ import { getCreatorAnalytics } from '@/actions/analytics.actions'
 import { createClient } from '@/lib/supabase/server'
 
 // Builds a mock Supabase client.
-// projects: array of { id, title, status } for the creator
-// apps: array of { project_id, status, profiles: { is_verified: boolean } }
+// projects: array of { id, title, status }
+// apps: array of { project_id, status, applicant_id }
 // ndas: array of { project_id }
+// verifiedIds: set of applicant_ids that are verified
 function makeSupabase(
   projects: { id: string; title: string; status: string }[],
-  apps: { project_id: string; status: string; profiles: { is_verified: boolean } }[],
-  ndas: { project_id: string }[]
+  apps: { project_id: string; status: string; applicant_id: string }[],
+  ndas: { project_id: string }[],
+  verifiedIds: string[] = []
 ) {
+  const profilesData = verifiedIds.map((id) => ({ id, is_verified: true }))
   return {
     auth: {
       getUser: vi.fn().mockResolvedValue({ data: { user: { id: 'u1' } }, error: null }),
@@ -37,6 +40,12 @@ function makeSupabase(
         return {
           select: vi.fn().mockReturnThis(),
           in: vi.fn().mockResolvedValue({ data: ndas, error: null }),
+        }
+      }
+      if (table === 'profiles') {
+        return {
+          select: vi.fn().mockReturnThis(),
+          in: vi.fn().mockResolvedValue({ data: profilesData, error: null }),
         }
       }
       return {}
@@ -64,11 +73,12 @@ describe('getCreatorAnalytics', () => {
       makeSupabase(
         [{ id: 'p1', title: 'Film A', status: 'open' }],
         [
-          { project_id: 'p1', status: 'pending', profiles: { is_verified: false } },
-          { project_id: 'p1', status: 'matched', profiles: { is_verified: true } },
-          { project_id: 'p1', status: 'rejected', profiles: { is_verified: false } },
+          { project_id: 'p1', status: 'pending', applicant_id: 'a1' },
+          { project_id: 'p1', status: 'matched', applicant_id: 'a2' },
+          { project_id: 'p1', status: 'rejected', applicant_id: 'a3' },
         ],
-        [{ project_id: 'p1' }, { project_id: 'p1' }]
+        [{ project_id: 'p1' }, { project_id: 'p1' }],
+        ['a2']
       ) as never
     )
     const result = await getCreatorAnalytics()
@@ -94,11 +104,12 @@ describe('getCreatorAnalytics', () => {
           { id: 'p2', title: 'Film B', status: 'open' },
         ],
         [
-          { project_id: 'p1', status: 'matched', profiles: { is_verified: true } },
-          { project_id: 'p1', status: 'pending', profiles: { is_verified: false } },
-          { project_id: 'p2', status: 'matched', profiles: { is_verified: false } },
+          { project_id: 'p1', status: 'matched', applicant_id: 'a1' },
+          { project_id: 'p1', status: 'pending', applicant_id: 'a2' },
+          { project_id: 'p2', status: 'matched', applicant_id: 'a3' },
         ],
-        [{ project_id: 'p1' }, { project_id: 'p2' }, { project_id: 'p2' }]
+        [{ project_id: 'p1' }, { project_id: 'p2' }, { project_id: 'p2' }],
+        ['a1']
       ) as never
     )
     const result = await getCreatorAnalytics()

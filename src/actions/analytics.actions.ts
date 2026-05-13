@@ -64,16 +64,26 @@ export async function getCreatorAnalytics(): Promise<ActionResult<CreatorAnalyti
   const [appsResult, ndasResult] = await Promise.all([
     supabase
       .from('project_applications')
-      .select('project_id, status, profiles(is_verified)')
+      .select('project_id, status, applicant_id')
       .in('project_id', projectIds),
     supabase.from('nda_consents').select('project_id').in('project_id', projectIds),
   ])
 
-  if (appsResult.error) return { success: false, error: appsResult.error.message }
-  if (ndasResult.error) return { success: false, error: ndasResult.error.message }
-
   const apps = appsResult.data ?? []
   const ndas = ndasResult.data ?? []
+
+  // Fetch verified status for applicants separately (avoids join ambiguity)
+  const applicantIds = [...new Set(apps.map((a) => a.applicant_id))]
+  const verifiedSet = new Set<string>()
+  if (applicantIds.length > 0) {
+    const { data: profileData } = await supabase
+      .from('profiles')
+      .select('id, is_verified')
+      .in('id', applicantIds)
+    for (const p of profileData ?? []) {
+      if (p.is_verified) verifiedSet.add(p.id)
+    }
+  }
 
   // Count NDAs per project
   const ndaByProject: Record<string, number> = {}
@@ -112,8 +122,7 @@ export async function getCreatorAnalytics(): Promise<ActionResult<CreatorAnalyti
     else if (status === 'in_talks') bucket.in_talks++
     else if (status === 'matched') bucket.matched++
     else if (status === 'rejected') bucket.rejected++
-    const profile = app.profiles as unknown as { is_verified: boolean } | null
-    if (profile?.is_verified) bucket.verified++
+    if (verifiedSet.has(app.applicant_id)) bucket.verified++
   }
 
   const empty = { total: 0, pending: 0, in_talks: 0, matched: 0, rejected: 0, verified: 0 }
