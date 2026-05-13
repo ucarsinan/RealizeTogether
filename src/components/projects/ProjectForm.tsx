@@ -2,7 +2,12 @@
 
 import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
-import { createProject, uploadSynopsis, type ProjectRoleInput } from '@/actions/project.actions'
+import {
+  createProject,
+  updateProject,
+  uploadSynopsis,
+  type ProjectRoleInput,
+} from '@/actions/project.actions'
 import type { ProjectStage, CommitmentType, CollabType } from '@/lib/types'
 import { cn, COMMITMENT_LABELS, STAGE_LABELS, COLLAB_LABELS } from '@/lib/utils'
 import {
@@ -239,24 +244,42 @@ function SynopsisUpload({ projectId }: { projectId: string }) {
   )
 }
 
-export function ProjectForm() {
+type ProjectFormInitialData = {
+  title: string
+  logline: string
+  description: string
+  category: string
+  stage: ProjectStage
+  commitment_type: CommitmentType
+  collab_type: CollabType
+  requires_nda: boolean
+  roles: ProjectRoleInput[]
+}
+
+type ProjectFormProps = {
+  mode?: 'create' | 'edit'
+  projectId?: string
+  initialData?: ProjectFormInitialData
+}
+
+export function ProjectForm({ mode = 'create', projectId, initialData }: ProjectFormProps) {
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
   const [error, setError] = useState<string | null>(null)
   const [createdProjectId, setCreatedProjectId] = useState<string | null>(null)
 
   const [formData, setFormData] = useState({
-    title: '',
-    logline: '',
-    description: '',
-    category: 'film',
-    stage: 'idea' as ProjectStage,
-    commitment_type: 'serious' as CommitmentType,
-    collab_type: 'both' as CollabType,
-    requires_nda: false,
+    title: initialData?.title ?? '',
+    logline: initialData?.logline ?? '',
+    description: initialData?.description ?? '',
+    category: initialData?.category ?? 'film',
+    stage: (initialData?.stage ?? 'idea') as ProjectStage,
+    commitment_type: (initialData?.commitment_type ?? 'serious') as CommitmentType,
+    collab_type: (initialData?.collab_type ?? 'both') as CollabType,
+    requires_nda: initialData?.requires_nda ?? false,
   })
 
-  const [roles, setRoles] = useState<ProjectRoleInput[]>([])
+  const [roles, setRoles] = useState<ProjectRoleInput[]>(initialData?.roles ?? [])
 
   function handleChange(field: string, value: string | boolean) {
     setFormData((prev) => ({ ...prev, [field]: value }))
@@ -268,6 +291,15 @@ export function ProjectForm() {
   function handleSubmit() {
     setError(null)
     startTransition(async () => {
+      if (mode === 'edit' && projectId) {
+        const result = await updateProject(projectId, { ...formData, roles })
+        if (!result.success) {
+          setError(result.error)
+          return
+        }
+        router.push(`/projects/${projectId}`)
+        return
+      }
       const result = await createProject({ ...formData, roles })
       if (!result.success) {
         setError(result.error)
@@ -477,7 +509,13 @@ export function ProjectForm() {
           className="w-full bg-[#e8621a] hover:bg-[#c9521a] text-white font-bold font-sans text-[13px] px-6 py-3 rounded-full transition-colors duration-150 disabled:opacity-50 flex items-center justify-center gap-2"
         >
           {isPending && <Loader2 className="w-4 h-4 animate-spin" />}
-          {isPending ? 'Creating...' : 'Create Project'}
+          {isPending
+            ? mode === 'edit'
+              ? 'Saving...'
+              : 'Creating...'
+            : mode === 'edit'
+              ? 'Save Changes'
+              : 'Create Project'}
         </button>
         {!isValid && (
           <p className="font-sans text-[11px] text-center text-[#6b6762] mt-2">

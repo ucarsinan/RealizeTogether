@@ -283,6 +283,87 @@ export async function getProject(id: string): Promise<ActionResult<ProjectWithRo
   }
 }
 
+// ─────────────────────────────────────────────
+// PROJEKT BEARBEITEN
+// ─────────────────────────────────────────────
+
+export type UpdateProjectInput = CreateProjectInput
+
+export async function updateProject(
+  projectId: string,
+  input: UpdateProjectInput
+): Promise<ActionResult<{ id: string }>> {
+  const supabase = await createClient()
+
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser()
+  if (authError || !user) return { success: false, error: 'Not authenticated' }
+
+  const { data: existing } = await supabase
+    .from('projects')
+    .select('creator_id')
+    .eq('id', projectId)
+    .single()
+
+  if (!existing || existing.creator_id !== user.id) {
+    return { success: false, error: 'Not authorized' }
+  }
+
+  const { error: updateError } = await supabase
+    .from('projects')
+    .update({
+      title: input.title.trim(),
+      description: input.description.trim(),
+      logline: input.logline.trim() || null,
+      category: input.category,
+      stage: input.stage,
+      commitment_type: input.commitment_type,
+      collab_type: input.collab_type,
+      requires_nda: input.requires_nda,
+    })
+    .eq('id', projectId)
+
+  if (updateError) return { success: false, error: updateError.message }
+
+  // Replace all roles: delete existing, insert new
+  await supabase.from('project_roles').delete().eq('project_id', projectId)
+
+  if (input.roles.length > 0) {
+    const rolesData = input.roles
+      .filter((r) => r.role_name.trim() !== '')
+      .map((r) => ({
+        project_id: projectId,
+        role_name: r.role_name.trim(),
+        quantity: r.quantity,
+        description: r.description.trim() || null,
+      }))
+
+    if (rolesData.length > 0) {
+      const { data: insertedRoles, error: rolesError } = await supabase
+        .from('project_roles')
+        .insert(rolesData)
+        .select('id, role_name, description')
+
+      if (rolesError) return { success: false, error: rolesError.message }
+
+      for (const role of insertedRoles ?? []) {
+        const roleText = [role.role_name, role.description].filter(Boolean).join(' — ')
+        void (async () => {
+          await generateAndStoreRoleEmbedding(role.id, roleText)
+        })()
+      }
+    }
+  }
+
+  revalidatePath(`/projects/${projectId}`)
+  revalidatePath('/dashboard')
+  revalidatePath('/explore')
+
+  return { success: true, data: { id: projectId } }
+}
+
 export async function getMyProjects(): Promise<ActionResult<ProjectWithRoles[]>> {
   const supabase = await createClient()
 

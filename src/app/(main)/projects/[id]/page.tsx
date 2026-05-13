@@ -7,7 +7,7 @@ import { checkNdaConsent } from '@/actions/nda.actions'
 import { getTalentMatches, type TalentMatch } from '@/actions/matching.actions'
 import { SynopsisViewer } from '@/components/trust-funnel/SynopsisViewer'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { CheckCircle, Lock, Users, Play, UserCircle } from 'lucide-react'
+import { CheckCircle, Lock, Users, Play, UserCircle, Pencil } from 'lucide-react'
 import { COMMITMENT_LABELS, STAGE_LABELS, COLLAB_LABELS } from '@/lib/utils'
 import { Breadcrumb } from '@/components/layout/Breadcrumb'
 
@@ -47,7 +47,17 @@ export default async function ProjectDetailPage({ params }: { params: Params }) 
   return (
     <div className="min-h-screen bg-[#f2f0ed]">
       <div className="max-w-270 mx-auto px-10 max-md:px-5 py-10 space-y-6">
-        <Breadcrumb items={[{ label: 'Explore', href: '/explore' }, { label: project.title }]} />
+        <div className="flex items-center justify-between">
+          <Breadcrumb items={[{ label: 'Explore', href: '/explore' }, { label: project.title }]} />
+          {isOwner && (
+            <Link
+              href={`/projects/${id}/edit`}
+              className="flex items-center gap-1.5 font-sans text-[12px] font-medium text-[#6b6762] hover:text-[#e8621a] border border-[#e0ddd8] hover:border-[#e8621a] px-4 py-2 rounded-full transition-colors"
+            >
+              <Pencil className="w-3.5 h-3.5" /> Edit
+            </Link>
+          )}
+        </div>
 
         {/* Header card */}
         <div className="bg-white border border-[#e0ddd8] rounded-2xl p-8 shadow-[0_4px_32px_rgba(0,0,0,0.07)] space-y-6">
