@@ -58,6 +58,14 @@ export default function RegisterPage() {
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [done, setDone] = useState(false)
+  const [resendStatus, setResendStatus] = useState<'idle' | 'sending' | 'sent'>('idle')
+
+  async function handleResend() {
+    setResendStatus('sending')
+    const supabase = createClient()
+    await supabase.auth.resend({ type: 'signup', email })
+    setResendStatus('sent')
+  }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -97,6 +105,22 @@ export default function RegisterPage() {
               We sent a confirmation link to <strong className="text-[#1a1918]">{email}</strong>.
               Click it and you&apos;ll be taken straight to your profile setup.
             </p>
+            <div className="mt-5 pt-5 border-t border-[#e0ddd8]">
+              {resendStatus === 'sent' ? (
+                <p className="font-sans text-[12px] text-[#e8621a]">
+                  Email sent — check your inbox again.
+                </p>
+              ) : (
+                <button
+                  type="button"
+                  onClick={handleResend}
+                  disabled={resendStatus === 'sending'}
+                  className="font-sans text-[12px] text-[#6b6762] hover:text-[#e8621a] disabled:opacity-60 transition-colors"
+                >
+                  {resendStatus === 'sending' ? 'Sending…' : "Didn't receive it? Resend email →"}
+                </button>
+              )}
+            </div>
           </div>
           <Link href="/login" className="font-sans text-[13px] text-[#6b6762] mt-5 inline-block">
             ← Back to log in

@@ -58,20 +58,34 @@ function LoginForm() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const [emailUnconfirmed, setEmailUnconfirmed] = useState(false)
+  const [resendStatus, setResendStatus] = useState<'idle' | 'sending' | 'sent'>('idle')
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setError(null)
+    setEmailUnconfirmed(false)
     setLoading(true)
     const supabase = createClient()
     const { error } = await supabase.auth.signInWithPassword({ email, password })
     if (error) {
-      setError(error.message)
+      if (error.message.toLowerCase().includes('email not confirmed')) {
+        setEmailUnconfirmed(true)
+      } else {
+        setError(error.message)
+      }
       setLoading(false)
       return
     }
     router.push(redirectTo)
     router.refresh()
+  }
+
+  async function handleResend() {
+    setResendStatus('sending')
+    const supabase = createClient()
+    await supabase.auth.resend({ type: 'signup', email })
+    setResendStatus('sent')
   }
 
   return (
@@ -188,6 +202,28 @@ function LoginForm() {
               <p className="font-sans text-[12px] text-red-600 bg-red-50 px-4 py-2.5 rounded-full">
                 {error}
               </p>
+            )}
+
+            {emailUnconfirmed && (
+              <div className="font-sans text-[12px] bg-[#fdf2ec] border border-[#f5c5a3] px-4 py-3 rounded-2xl flex flex-col gap-2">
+                <p className="text-[#1a1918]">
+                  Please confirm your email address before logging in.
+                </p>
+                {resendStatus === 'sent' ? (
+                  <p className="text-[#e8621a] font-medium">
+                    Confirmation email sent — check your inbox.
+                  </p>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={handleResend}
+                    disabled={resendStatus === 'sending'}
+                    className="text-[#e8621a] font-medium hover:underline disabled:opacity-60 text-left"
+                  >
+                    {resendStatus === 'sending' ? 'Sending…' : 'Resend confirmation email →'}
+                  </button>
+                )}
+              </div>
             )}
 
             <button
