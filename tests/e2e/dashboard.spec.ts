@@ -41,4 +41,27 @@ test.describe('Dashboard', () => {
     await page.waitForLoadState('networkidle')
     await expect(page.getByText('Open Projects')).toBeVisible()
   })
+
+  test('Dashboard shows CREATOR ANALYTICS section heading', async ({ page }) => {
+    await page.goto('/dashboard')
+    await page.waitForLoadState('networkidle')
+    await expect(page.getByText('CREATOR ANALYTICS')).toBeVisible()
+  })
+
+  test('Dashboard shows Total Applications analytics chip', async ({ page }) => {
+    await page.goto('/dashboard')
+    await page.waitForLoadState('networkidle')
+    await expect(page.getByText('Total Applications')).toBeVisible()
+  })
+
+  test('Dashboard analytics project table links to project detail', async ({ page }) => {
+    const projectId = process.env.TEST_PROJECT_ID!
+    await page.goto('/dashboard')
+    await page.waitForLoadState('networkidle')
+    // The analytics table contains a link to the seed project
+    const analyticsLink = page.locator(
+      `.mt-6 a[href="/projects/${projectId}"]`
+    ).first()
+    await expect(analyticsLink).toBeVisible()
+  })
 })
