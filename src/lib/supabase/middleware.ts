@@ -31,7 +31,11 @@ export async function updateSession(request: NextRequest) {
   // Redirect unauthenticated users away from protected routes
   const pathname = request.nextUrl.pathname
   const isPublic =
-    pathname === '/' || pathname.startsWith('/login') || pathname.startsWith('/register')
+    pathname === '/' ||
+    pathname.startsWith('/login') ||
+    pathname.startsWith('/register') ||
+    pathname.startsWith('/forgot-password') ||
+    pathname.startsWith('/update-password')
 
   if (!user && !isPublic) {
     const url = request.nextUrl.clone()
